@@ -3,8 +3,7 @@
 import React, { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 
-interface MinimalInputProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {
+interface MinimalInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string;
   error?: string;
   variant?: "default" | "floating";

@@ -6,9 +6,7 @@ export const fetchDashboardAnalytics = createAsyncThunk(
   "analytics/fetchDashboard",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await api.get<any>(
-        "/api/company/analytics/dashboard",
-      );
+      const response = await api.get<any>("/api/company/analytics/dashboard");
       return response.data;
     } catch (error: any) {
       return rejectWithValue(

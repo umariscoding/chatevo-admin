@@ -3,8 +3,7 @@
 import React from "react";
 import IOSLoader from "./IOSLoader";
 
-interface MinimalButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface MinimalButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "primary" | "secondary" | "ghost" | "outline";
   size?: "sm" | "md" | "lg";
   loading?: boolean;
