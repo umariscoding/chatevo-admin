@@ -1,15 +1,6 @@
 // Authentication related types
 export type UserType = "company" | "user" | "guest";
 
-export interface User {
-  user_id: string;
-  company_id: string;
-  email: string;
-  name: string;
-  is_anonymous: boolean;
-  created_at: string;
-}
-
 export interface Company {
   company_id: string;
   name: string;
