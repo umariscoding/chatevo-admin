@@ -1,6 +1,6 @@
-# Chatelio Frontend
+# Chatelio Admin
 
-A Next.js 14 frontend application for the Chatelio multi-tenant chatbot platform.
+A Next.js 14 admin frontend application for the Chatelio multi-tenant chatbot platform.
 
 ## Project Structure
 
