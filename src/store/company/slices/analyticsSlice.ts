@@ -1,5 +1,4 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import type { AnalyticsDashboard } from "@/interfaces/Analytics.interface";
 import { companyApi as api } from "@/utils/company/api";
 
 // Async thunk for fetching dashboard analytics
@@ -7,7 +6,7 @@ export const fetchDashboardAnalytics = createAsyncThunk(
   "analytics/fetchDashboard",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await api.get<AnalyticsDashboard>(
+      const response = await api.get<any>(
         "/api/company/analytics/dashboard",
       );
       return response.data;
@@ -20,7 +19,7 @@ export const fetchDashboardAnalytics = createAsyncThunk(
 );
 
 interface AnalyticsState {
-  dashboard: AnalyticsDashboard | null;
+  dashboard: any | null;
   loading: boolean;
   error: string | null;
   lastFetched: number | null;
@@ -55,7 +54,7 @@ const analyticsSlice = createSlice({
       })
       .addCase(
         fetchDashboardAnalytics.fulfilled,
-        (state, action: PayloadAction<AnalyticsDashboard>) => {
+        (state, action: PayloadAction<any>) => {
           state.loading = false;
           state.dashboard = action.payload;
           state.lastFetched = Date.now();
