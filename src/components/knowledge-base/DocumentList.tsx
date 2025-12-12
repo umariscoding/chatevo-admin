@@ -10,12 +10,8 @@ import {
   listDocuments,
   deleteDocument,
 } from "@/store/company/slices/knowledgeBaseSlice";
-import MinimalButton from "@/components/ui/MinimalButton";
 import { Icons } from "@/components/ui";
-import type {
-  DocumentListProps,
-  DocumentItemProps,
-} from "@/interfaces/KnowledgeBase.interface";
+import type { DocumentListProps } from "@/interfaces/KnowledgeBase.interface";
 import type { Document } from "@/types/knowledgeBase";
 
 const formatFileSize = (bytes: number): string => {
@@ -31,151 +27,103 @@ const formatDate = (dateString: string): string => {
     year: "numeric",
     month: "short",
     day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
   });
-};
-
-const getStatusIcon = (status: Document["embeddings_status"]) => {
-  switch (status) {
-    case "completed":
-      return <Icons.CheckCircle className="h-5 w-5 text-success-500" />;
-    case "pending":
-      return <Icons.Clock className="h-5 w-5 text-warning-400" />;
-    case "failed":
-      return <Icons.AlertCircle className="h-5 w-5 text-error-600" />;
-    default:
-      return <Icons.Clock className="h-5 w-5 text-text-tertiary" />;
-  }
 };
 
 const getStatusColor = (status: Document["embeddings_status"]) => {
   switch (status) {
     case "completed":
-      return "bg-success-100 text-success-800";
+      return "bg-green-100 text-green-700";
     case "pending":
-      return "bg-warning-50 text-warning-700";
+      return "bg-yellow-100 text-yellow-700";
     case "failed":
-      return "bg-error-100 text-error-800";
+      return "bg-red-100 text-red-700";
     default:
-      return "bg-secondary-100 text-secondary-600";
+      return "bg-neutral-100 text-neutral-700";
   }
 };
 
-const DocumentItem: React.FC<DocumentItemProps> = ({
-  document,
-  onDelete,
-  className = "",
-}) => {
-  const [isDeleting, setIsDeleting] = useState(false);
-
-  const handleDelete = async () => {
-    if (window.confirm("Are you sure you want to delete this document?")) {
-      setIsDeleting(true);
-      try {
-        await onDelete(document.doc_id);
-      } finally {
-        setIsDeleting(false);
-      }
-    }
-  };
-
-  const getFileTypeIcon = (contentType: string) => {
-    if (contentType.includes("pdf"))
-      return <Icons.FileText className="h-6 w-6 text-error-600" />;
-    if (contentType.includes("word") || contentType.includes("document"))
-      return <Icons.FileText className="h-6 w-6 text-primary-600" />;
-    if (contentType.includes("text"))
-      return <Icons.Document className="h-6 w-6 text-success-600" />;
-    return <Icons.Document className="h-6 w-6 text-neutral-600" />;
-  };
-
-  return (
-    <div
-      className={`group bg-white border border-neutral-200 rounded-2xl p-5 hover:shadow-xl hover:border-primary-200 transition-all duration-300 hover:-translate-y-1 ${className}`}
-    >
-      {/* Header with Icon, Title and Actions */}
-      <div className="flex items-start justify-between mb-4">
-        <div className="flex items-center space-x-3">
-          <div className="p-2 rounded-lg bg-gradient-to-br from-neutral-50 to-neutral-100 group-hover:from-primary-50 group-hover:to-primary-100 transition-colors duration-300">
-            {getFileTypeIcon(document.content_type)}
-          </div>
-          <div className="flex-1 min-w-0">
-            <h4 className="text-lg font-semibold text-neutral-900 truncate group-hover:text-primary-700 transition-colors">
-              {document.filename}
-            </h4>
-          </div>
-        </div>
-
-        <div className="flex items-center space-x-2">
-          <MinimalButton
-            variant="outline"
-            size="sm"
-            onClick={handleDelete}
-            loading={isDeleting}
-            className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-neutral-400 border-neutral-200 hover:text-error-600 hover:border-error-300 hover:bg-error-50"
-          >
-            <Icons.Trash className="h-4 w-4" />
-          </MinimalButton>
-        </div>
-      </div>
-
-      {/* Compact Metadata */}
-      <div className="space-y-2 mb-4">
-        <div className="flex items-center justify-between text-sm">
-          <span className="text-neutral-500">Size</span>
-          <span className="font-medium text-neutral-700">
-            {formatFileSize(document.file_size)}
-          </span>
-        </div>
-        <div className="flex items-center justify-between text-sm">
-          <span className="text-neutral-500">Type</span>
-          <span className="font-medium text-neutral-700">
-            {document.content_type.split("/")[1]?.toUpperCase() || "FILE"}
-          </span>
-        </div>
-        <div className="flex items-center justify-between text-sm">
-          <span className="text-neutral-500">Created</span>
-          <span className="font-medium text-neutral-700">
-            {formatDate(document.created_at)}
-          </span>
-        </div>
-      </div>
-
-      {/* Status Badge */}
-      <div className="flex justify-center">
-        <span
-          className={`inline-flex items-center px-3 py-1.5 text-xs font-semibold rounded-full ${getStatusColor(document.embeddings_status)}`}
-        >
-          <span
-            className={`w-1.5 h-1.5 rounded-full mr-2 ${
-              document.embeddings_status === "completed"
-                ? "bg-success-500"
-                : document.embeddings_status === "pending"
-                  ? "bg-warning-500"
-                  : "bg-error-500"
-            }`}
-          ></span>
-          {document.embeddings_status.charAt(0).toUpperCase() +
-            document.embeddings_status.slice(1)}
-        </span>
-      </div>
-    </div>
-  );
+const getFileTypeIcon = (contentType: string) => {
+  if (contentType.includes("pdf"))
+    return <Icons.FileText className="h-5 w-5 text-red-600" />;
+  if (contentType.includes("word") || contentType.includes("document"))
+    return <Icons.FileText className="h-5 w-5 text-primary-600" />;
+  if (contentType.includes("text"))
+    return <Icons.Document className="h-5 w-5 text-green-600" />;
+  return <Icons.Document className="h-5 w-5 text-neutral-600" />;
 };
+
 
 const DocumentList: React.FC<DocumentListProps> = ({ className = "" }) => {
   const dispatch = useCompanyAppDispatch();
   const { documents, loading, error } = useCompanyAppSelector(
     (state) => state.knowledgeBase,
   );
+  const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [docsPerPage, setDocsPerPage] = useState(10);
+  const [deletingDocId, setDeletingDocId] = useState<string | null>(null);
 
   useEffect(() => {
     dispatch(listDocuments());
   }, [dispatch]);
 
   const handleDelete = async (docId: string) => {
-    await dispatch(deleteDocument(docId));
+    if (window.confirm("Are you sure you want to delete this document?")) {
+      setDeletingDocId(docId);
+      try {
+        await dispatch(deleteDocument(docId));
+      } finally {
+        setDeletingDocId(null);
+      }
+    }
+  };
+
+  // Filter documents based on search term
+  const filteredDocuments = documents.filter((doc) => {
+    const searchLower = searchTerm.toLowerCase();
+    return doc.filename.toLowerCase().includes(searchLower);
+  });
+
+  // Calculate pagination
+  const totalPages = Math.ceil(filteredDocuments.length / docsPerPage);
+  const indexOfLastDoc = currentPage * docsPerPage;
+  const indexOfFirstDoc = indexOfLastDoc - docsPerPage;
+  const currentDocuments = filteredDocuments.slice(indexOfFirstDoc, indexOfLastDoc);
+
+  // Reset to first page when search term or docs per page changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, docsPerPage]);
+
+  // Generate pagination pages array
+  const getPageNumbers = () => {
+    const pages = [];
+    const maxVisiblePages = 5;
+
+    if (totalPages <= maxVisiblePages) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      if (currentPage <= 3) {
+        for (let i = 1; i <= 4; i++) pages.push(i);
+        pages.push("...");
+        pages.push(totalPages);
+      } else if (currentPage >= totalPages - 2) {
+        pages.push(1);
+        pages.push("...");
+        for (let i = totalPages - 3; i <= totalPages; i++) pages.push(i);
+      } else {
+        pages.push(1);
+        pages.push("...");
+        for (let i = currentPage - 1; i <= currentPage + 1; i++) pages.push(i);
+        pages.push("...");
+        pages.push(totalPages);
+      }
+    }
+
+    return pages;
   };
 
   if (loading && documents.length === 0) {
@@ -198,57 +146,276 @@ const DocumentList: React.FC<DocumentListProps> = ({ className = "" }) => {
 
   return (
     <div className={`${className}`}>
-      {/* Header Section */}
-      <div className="mb-8">
-        <h2 className="text-2xl font-bold text-neutral-900 mb-2">
-          Your Documents
-        </h2>
-        <div className="flex items-center space-x-2 text-neutral-600">
-          <span className="text-lg font-medium">{documents.length}</span>
-          <span>
-            {documents.length === 1 ? "document" : "documents"} in your
-            knowledge base
-          </span>
-        </div>
-      </div>
-
       {error && (
-        <div className="mb-6 p-5 bg-gradient-to-r from-error-50 to-error-100 border border-error-200 rounded-2xl">
-          <div className="flex items-center space-x-3">
-            <div className="p-1 bg-error-200 rounded-full">
-              <Icons.AlertCircle className="h-5 w-5 text-error-700" />
+        <div className="mb-6 p-4 bg-gradient-to-r from-red-50 to-red-100 border border-red-200 rounded-xl shadow-lg">
+          <div className="flex items-center">
+            <div className="flex-shrink-0">
+              <Icons.AlertCircle className="h-5 w-5 text-red-600" />
             </div>
-            <p className="text-sm font-medium text-error-800">
-              {typeof error === "string"
-                ? error
-                : "An error occurred while loading documents."}
-            </p>
+            <div className="ml-3 flex-1">
+              <p className="text-sm font-medium text-red-800">
+                {typeof error === "string"
+                  ? error
+                  : "An error occurred while loading documents."}
+              </p>
+            </div>
+            <button
+              onClick={() => {}}
+              className="text-red-400 hover:text-red-600 text-xl font-bold"
+            >
+              ×
+            </button>
           </div>
         </div>
       )}
 
-      {documents.length === 0 ? (
-        <div className="text-center py-20">
-          <div className="mx-auto flex items-center justify-center h-24 w-24 rounded-full bg-gradient-to-br from-neutral-100 to-neutral-200 mb-8">
-            <Icons.Document className="h-12 w-12 text-neutral-400" />
-          </div>
-          <h3 className="text-2xl font-semibold text-neutral-900 mb-3">
-            No documents yet
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-6">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+          <h3 className="text-xl font-semibold text-neutral-900">
+            Documents
+            <span className="text-sm font-normal text-neutral-600 ml-2">
+              ({filteredDocuments.length} {searchTerm ? "found" : "total"})
+            </span>
           </h3>
-          <p className="text-lg text-neutral-600 max-w-lg mx-auto leading-relaxed">
-            Use the upload options above to start building your knowledge base.
-            Your chatbot will use this content to provide intelligent responses.
+          {searchTerm && (
+            <div className="text-sm text-neutral-600">
+              Showing results for "{searchTerm}"
+            </div>
+          )}
+        </div>
+
+        <div className="flex flex-col sm:flex-row gap-3">
+          {/* Search Box */}
+          <div className="relative">
+            <Icons.Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-neutral-400" />
+            <input
+              type="text"
+              placeholder="Search documents..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full sm:w-64 pl-10 pr-4 py-2 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"
+            />
+            {searchTerm && (
+              <button
+                onClick={() => setSearchTerm("")}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-neutral-400 hover:text-neutral-600"
+              >
+                <Icons.Close className="h-4 w-4" />
+              </button>
+            )}
+          </div>
+
+          {/* Pagination Size Selector */}
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-neutral-600 whitespace-nowrap">
+              Show:
+            </span>
+            <select
+              value={docsPerPage}
+              onChange={(e) => setDocsPerPage(Number(e.target.value))}
+              className="border border-neutral-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+            >
+              <option value={5}>5</option>
+              <option value={10}>10</option>
+              <option value={15}>15</option>
+              <option value={20}>20</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      {filteredDocuments.length === 0 ? (
+        <div className="text-center py-16">
+          <div className="relative">
+            <div className="mx-auto h-16 w-16 rounded-full bg-gradient-to-br from-neutral-100 to-neutral-200 flex items-center justify-center mb-6">
+              <Icons.Document className="h-8 w-8 text-neutral-400" />
+            </div>
+          </div>
+          <h3 className="text-lg font-semibold text-neutral-900 mb-2">
+            {searchTerm ? "No Documents Found" : "No Documents Yet"}
+          </h3>
+          <p className="text-neutral-600 mb-6 max-w-sm mx-auto">
+            {searchTerm
+              ? `No documents found matching "${searchTerm}". Try adjusting your search.`
+              : "Upload documents to start building your knowledge base."}
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-          {documents.map((document) => (
-            <DocumentItem
-              key={document.doc_id}
-              document={document}
-              onDelete={handleDelete}
-            />
-          ))}
+        <div className="overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-lg">
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-neutral-200">
+              <thead className="bg-gradient-to-r from-neutral-50 to-neutral-100">
+                <tr>
+                  <th
+                    scope="col"
+                    className="px-6 py-4 text-left text-xs font-semibold text-neutral-700 uppercase tracking-wider"
+                  >
+                    Document
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-6 py-4 text-left text-xs font-semibold text-neutral-700 uppercase tracking-wider"
+                  >
+                    Type
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-6 py-4 text-left text-xs font-semibold text-neutral-700 uppercase tracking-wider"
+                  >
+                    Size
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-6 py-4 text-left text-xs font-semibold text-neutral-700 uppercase tracking-wider"
+                  >
+                    Status
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-6 py-4 text-left text-xs font-semibold text-neutral-700 uppercase tracking-wider"
+                  >
+                    Created
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-6 py-4 text-right text-xs font-semibold text-neutral-700 uppercase tracking-wider"
+                  >
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-neutral-200">
+                {currentDocuments.map((document) => (
+                  <tr
+                    key={document.doc_id}
+                    className="hover:bg-neutral-50 transition-colors duration-150"
+                  >
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="flex items-center space-x-3">
+                        <div className="flex-shrink-0">
+                          {getFileTypeIcon(document.content_type)}
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <p className="text-sm font-semibold text-neutral-900 truncate max-w-xs">
+                            {document.filename}
+                          </p>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-neutral-600">
+                      {document.content_type.split("/")[1]?.toUpperCase() || "FILE"}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-neutral-600">
+                      {formatFileSize(document.file_size)}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span
+                        className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold ${getStatusColor(document.embeddings_status)}`}
+                      >
+                        <span
+                          className={`w-1.5 h-1.5 rounded-full mr-1.5 ${
+                            document.embeddings_status === "completed"
+                              ? "bg-green-600"
+                              : document.embeddings_status === "pending"
+                                ? "bg-yellow-600"
+                                : "bg-red-600"
+                          }`}
+                        ></span>
+                        {document.embeddings_status.charAt(0).toUpperCase() +
+                          document.embeddings_status.slice(1)}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-neutral-600">
+                      {formatDate(document.created_at)}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm">
+                      <button
+                        onClick={() => handleDelete(document.doc_id)}
+                        disabled={deletingDocId === document.doc_id}
+                        className="text-red-600 hover:text-red-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors p-2 hover:bg-red-50 rounded-lg"
+                        aria-label="Delete document"
+                      >
+                        {deletingDocId === document.doc_id ? (
+                          <div className="animate-spin h-4 w-4 border-2 border-red-600 border-t-transparent rounded-full"></div>
+                        ) : (
+                          <Icons.Trash className="h-4 w-4" />
+                        )}
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* Pagination */}
+      {filteredDocuments.length > 0 && totalPages > 1 && (
+        <div className="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="text-sm text-neutral-600">
+            Showing {indexOfFirstDoc + 1} to{" "}
+            {Math.min(indexOfLastDoc, filteredDocuments.length)} of{" "}
+            {filteredDocuments.length} documents
+          </div>
+
+          <nav className="flex items-center space-x-1">
+            {/* Previous Button */}
+            <button
+              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
+              className={`inline-flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors ${
+                currentPage === 1
+                  ? "text-neutral-400 cursor-not-allowed"
+                  : "text-neutral-600 hover:text-primary-600 hover:bg-primary-50"
+              }`}
+            >
+              <Icons.ArrowLeft className="h-4 w-4 mr-1" />
+              Previous
+            </button>
+
+            {/* Page Numbers */}
+            <div className="flex items-center space-x-1">
+              {getPageNumbers().map((page, index) =>
+                page === "..." ? (
+                  <span
+                    key={`ellipsis-${index}`}
+                    className="px-3 py-2 text-sm text-neutral-400"
+                  >
+                    ...
+                  </span>
+                ) : (
+                  <button
+                    key={page}
+                    onClick={() => setCurrentPage(page as number)}
+                    className={`inline-flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors ${
+                      currentPage === page
+                        ? "bg-primary-600 text-white shadow-sm"
+                        : "text-neutral-600 hover:text-primary-600 hover:bg-primary-50"
+                    }`}
+                  >
+                    {page}
+                  </button>
+                ),
+              )}
+            </div>
+
+            {/* Next Button */}
+            <button
+              onClick={() =>
+                setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+              }
+              disabled={currentPage === totalPages}
+              className={`inline-flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors ${
+                currentPage === totalPages
+                  ? "text-neutral-400 cursor-not-allowed"
+                  : "text-neutral-600 hover:text-primary-600 hover:bg-primary-50"
+              }`}
+            >
+              Next
+              <Icons.ArrowLeft className="h-4 w-4 ml-1 rotate-180" />
+            </button>
+          </nav>
         </div>
       )}
     </div>

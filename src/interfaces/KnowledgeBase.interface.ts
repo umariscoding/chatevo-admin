@@ -4,12 +4,6 @@ export interface DocumentListProps {
   className?: string;
 }
 
-export interface DocumentItemProps {
-  document: Document;
-  onDelete: (docId: string) => void;
-  className?: string;
-}
-
 export interface FileUploadProps {
   onUpload: (file: File) => void;
   loading?: boolean;
