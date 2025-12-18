@@ -3,7 +3,7 @@
 import React from "react";
 import { Icons } from "@/components/ui";
 
-export type SettingsSection = "profile" | "chatbot" | "publishing";
+export type SettingsSection = "profile" | "chatbot" | "publishing" | "embed";
 
 interface SettingsSidebarProps {
   activeSection: SettingsSection;
@@ -28,6 +28,12 @@ const sections = [
     label: "Publishing",
     description: "Public access control",
     icon: Icons.Globe,
+  },
+  {
+    id: "embed" as const,
+    label: "Embed Widget",
+    description: "Website integration code",
+    icon: Icons.Code,
   },
 ];
 

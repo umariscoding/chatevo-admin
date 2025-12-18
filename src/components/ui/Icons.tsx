@@ -34,6 +34,9 @@ import {
   Zap,
   AlertTriangle,
   Shield,
+  Code,
+  Copy,
+  CheckCheck,
 } from "lucide-react";
 
 // Icon component props interface
@@ -189,5 +192,17 @@ export const Icons = {
 
   Shield: ({ className = "h-5 w-5", size }: IconProps) => (
     <Shield className={className} size={size} />
+  ),
+
+  Code: ({ className = "h-5 w-5", size }: IconProps) => (
+    <Code className={className} size={size} />
+  ),
+
+  Copy: ({ className = "h-5 w-5", size }: IconProps) => (
+    <Copy className={className} size={size} />
+  ),
+
+  CheckCheck: ({ className = "h-5 w-5", size }: IconProps) => (
+    <CheckCheck className={className} size={size} />
   ),
 };

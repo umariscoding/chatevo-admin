@@ -19,6 +19,7 @@ import SettingsSidebar, {
 import ProfileSection from "@/components/settings/ProfileSection";
 import ChatbotSection from "@/components/settings/ChatbotSection";
 import PublishingSection from "@/components/settings/PublishingSection";
+import EmbedSection from "@/components/settings/EmbedSection";
 import { useSettings } from "@/hooks/useSettings";
 
 export default function SettingsPage() {
@@ -179,6 +180,13 @@ export default function SettingsPage() {
                 onPublishToggle={(checked) =>
                   updateField("isPublished", checked)
                 }
+              />
+            )}
+
+            {activeSection === "embed" && (
+              <EmbedSection
+                slug={formData.slug || null}
+                isPublished={formData.isPublished}
               />
             )}
           </div>
