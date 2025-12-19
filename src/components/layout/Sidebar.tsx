@@ -41,6 +41,17 @@ const getNavigationSections = (): NavigationSection[] => [
     ],
   },
   {
+    title: "Integration",
+    items: [
+      {
+        name: "Embed Widget",
+        href: "/embed",
+        icon: Icons.Code,
+        allowedUserTypes: ["company"],
+      },
+    ],
+  },
+  {
     title: "Settings",
     items: [
       {
