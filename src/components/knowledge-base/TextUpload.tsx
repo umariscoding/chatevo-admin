@@ -73,64 +73,84 @@ const TextUpload: React.FC<TextUploadProps> = ({
   return (
     <div className={`space-y-6 ${className}`}>
       {/* Form */}
-      <form onSubmit={handleSubmit} className="space-y-5">
+      <form onSubmit={handleSubmit} className="space-y-6">
         {/* Filename Input */}
-        <div>
-          <MinimalInput
-            label="Filename"
-            type="text"
-            value={filename}
-            onChange={handleFilenameChange}
-            error={errors.filename}
-            placeholder="e.g., company-policy.txt"
-            required
-            disabled={loading}
-            variant="floating"
-            theme="light"
-          />
-          <p className="mt-1.5 text-xs text-neutral-600">
-            Give your content a descriptive name (e.g., company-guidelines.txt)
+        <div className="space-y-2">
+          <label className="block text-sm font-bold text-slate-900">
+            Filename <span className="text-red-500">*</span>
+          </label>
+          <div className="relative">
+            <input
+              type="text"
+              value={filename}
+              onChange={handleFilenameChange}
+              placeholder="e.g., company-policy.txt"
+              required
+              disabled={loading}
+              className={`w-full rounded-xl border px-4 py-3 text-sm bg-white text-slate-900 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed transition-all ${
+                errors.filename
+                  ? "border-red-500/60 focus:ring-red-500"
+                  : "border-slate-200/80 hover:border-slate-300"
+              }`}
+            />
+          </div>
+          {errors.filename && (
+            <p className="text-xs text-red-600 font-medium flex items-center gap-1">
+              <Icons.AlertCircle className="h-3.5 w-3.5 flex-shrink-0" />
+              {errors.filename}
+            </p>
+          )}
+          <p className="text-xs text-slate-600 font-medium">
+            Give your content a descriptive name with .txt extension
           </p>
         </div>
 
         {/* Content Textarea */}
-        <div>
-          <label className="block text-sm font-semibold text-neutral-900 mb-2">
+        <div className="space-y-2">
+          <label className="block text-sm font-bold text-slate-900">
             Content <span className="text-red-500">*</span>
           </label>
           <textarea
             value={content}
             onChange={handleContentChange}
             placeholder="Paste or type your content here..."
-            rows={10}
-            className={`w-full rounded-lg border bg-white text-neutral-900 placeholder-neutral-500 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed transition-all ${
+            rows={8}
+            className={`w-full rounded-xl border px-4 py-3 text-sm bg-white text-slate-900 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed transition-all resize-none ${
               errors.content
-                ? "border-red-500 focus:ring-red-500"
-                : "border-neutral-300 hover:border-neutral-400"
+                ? "border-red-500/60 focus:ring-red-500"
+                : "border-slate-200/80 hover:border-slate-300"
             }`}
             disabled={loading}
             required
           />
           {errors.content && (
-            <p className="mt-2 text-sm text-red-600 flex items-center space-x-1">
-              <Icons.Close className="h-4 w-4 flex-shrink-0" />
-              <span>{errors.content}</span>
+            <p className="text-xs text-red-600 font-medium flex items-center gap-1">
+              <Icons.AlertCircle className="h-3.5 w-3.5 flex-shrink-0" />
+              {errors.content}
             </p>
           )}
 
           {/* Character and Word Count */}
-          <div className="mt-3 flex justify-between text-xs text-neutral-600 px-1">
-            <span className="font-medium">{wordCount} words</span>
-            <span className="font-medium">{charCount} characters</span>
+          <div className="flex justify-between items-center pt-2 px-1">
+            <div className="flex gap-4 text-xs font-semibold text-slate-600">
+              <span className="bg-slate-100/50 px-3 py-1 rounded-lg">{wordCount} words</span>
+              <span className="bg-slate-100/50 px-3 py-1 rounded-lg">{charCount} chars</span>
+            </div>
+            {content.length > 0 && (
+              <div className="text-xs text-slate-500">
+                {content.trim().length > 0 ? "✓ Ready" : "Content needed"}
+              </div>
+            )}
           </div>
         </div>
 
         {/* Submit Button */}
-        <div className="flex justify-end pt-2">
+        <div className="flex justify-end pt-3 border-t border-slate-200/40">
           <Button
             type="submit"
             loading={loading}
             disabled={!filename.trim() || !content.trim() || loading}
+            className="bg-gradient-to-r from-primary-600 to-primary-700 hover:shadow-lg hover:shadow-primary-500/30"
           >
             Upload Content
           </Button>

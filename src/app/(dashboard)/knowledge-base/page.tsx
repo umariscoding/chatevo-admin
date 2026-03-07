@@ -13,12 +13,13 @@ import {
 import { Icons, IOSContentLoader } from "@/components/ui";
 import Button from "@/components/ui/Button";
 import DocumentList from "@/components/knowledge-base/DocumentList";
-import UploadModal from "@/components/knowledge-base/UploadModal";
+import UploadDrawer from "@/components/knowledge-base/UploadDrawer";
 
 export default function KnowledgeBasePage() {
   const dispatch = useCompanyAppDispatch();
   const companyAuth = useCompanyAppSelector((state) => state.companyAuth);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const knowledgeBase = useCompanyAppSelector((state) => state.knowledgeBase);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
 
@@ -80,35 +81,39 @@ export default function KnowledgeBasePage() {
   // Only company accounts can access knowledge base management
   if (!companyAuth.isAuthenticated) {
     return (
-      <div className="min-h-screen">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="min-h-screen flex items-center justify-center px-4">
+        <div className="max-w-2xl w-full">
           <div className="text-center space-y-8">
+            {/* Decorative background elements */}
+            <div className="absolute top-20 right-10 w-64 h-64 bg-primary-500/5 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute bottom-20 left-10 w-96 h-96 bg-violet-500/5 rounded-full blur-3xl pointer-events-none" />
+
             {/* Icon */}
-            <div className="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-primary-100">
-              <Icons.BookOpen className="h-10 w-10 text-primary-600" />
+            <div className="relative z-10">
+              <div className="inline-flex items-center justify-center h-24 w-24 rounded-2xl bg-gradient-to-br from-primary-100 to-primary-50 shadow-lg shadow-primary-200/30">
+                <Icons.Shield className="h-12 w-12 text-primary-600" />
+              </div>
             </div>
 
             {/* Content */}
             <div className="space-y-4">
-              <h1 className="text-4xl font-bold text-text-primary">
-                Knowledge Base
+              <h1 className="text-4xl font-bold text-slate-900 tracking-[-0.02em]">
+                Access Restricted
               </h1>
-              <p className="text-xl text-text-secondary max-w-2xl mx-auto">
-                Access to knowledge base management is restricted to company
-                accounts.
+              <p className="text-lg text-slate-600 max-w-xl mx-auto leading-relaxed">
+                Knowledge base management is exclusive to company accounts. Please sign in with your company credentials to access this feature.
               </p>
             </div>
 
-            {/* Access Restricted Card */}
-            <div className="bg-bg-secondary border border-border-light rounded-xl p-8 max-w-md mx-auto">
-              <div className="text-center space-y-4">
-                <Icons.Shield className="mx-auto h-12 w-12 text-warning-500" />
-                <h3 className="text-lg font-medium text-text-primary">
-                  Access Restricted
-                </h3>
-                <p className="text-text-secondary">
-                  Only company administrators can manage the knowledge base and
-                  upload documents.
+            {/* Status Card */}
+            <div className="relative z-10 bg-gradient-to-br from-slate-50 to-slate-100/50 border border-slate-200/60 rounded-2xl p-8 max-w-sm mx-auto shadow-sm">
+              <div className="space-y-4">
+                <div className="flex items-center justify-center space-x-2">
+                  <div className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
+                  <p className="text-sm font-semibold text-slate-900">Company Access Only</p>
+                </div>
+                <p className="text-sm text-slate-600 leading-relaxed">
+                  Only authorized administrators can manage documents and content for your knowledge base.
                 </p>
               </div>
             </div>
@@ -119,43 +124,42 @@ export default function KnowledgeBasePage() {
   }
 
   return (
-    <div className="min-h-screen">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Header Section with Upload Button */}
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <div className="flex items-center space-x-3 mb-2">
-              <div className="p-2 rounded-lg bg-primary-100">
-                <Icons.BookOpen className="h-6 w-6 text-primary-600" />
-              </div>
-              <div>
-                <h1 className="text-3xl font-bold text-text-primary">
-                  Knowledge Base
-                </h1>
-                <p className="text-text-secondary">
-                  Manage your documents and content that powers your chatbot
-                </p>
-              </div>
-            </div>
-          </div>
-          <Button
-            onClick={() => setIsModalOpen(true)}
-            className="flex items-center space-x-2"
-          >
-            <Icons.Plus className="h-5 w-5" />
-            <span>Add Content</span>
-          </Button>
+    <div className="space-y-6">
+      {/* Header with Title and CTA */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-[-0.02em] mb-1">
+            Knowledge Base
+          </h1>
+          <p className="text-slate-600">
+            {knowledgeBase.documents.length} document{knowledgeBase.documents.length !== 1 ? 's' : ''} •{' '}
+            {knowledgeBase.documents.filter((d) => d.embeddings_status === "completed").length} processed
+          </p>
         </div>
 
-        {/* Documents List */}
-        <DocumentList />
+        {/* Add Content Button */}
+        <button
+          onClick={() => setIsDrawerOpen(true)}
+          className="group relative inline-flex items-center justify-center px-6 py-3 rounded-lg bg-gradient-to-br from-primary-600 to-primary-700 text-white font-semibold overflow-hidden transition-all duration-300 hover:shadow-lg hover:shadow-primary-500/30 hover:-translate-y-0.5 active:translate-y-0 self-start sm:self-center"
+        >
+          {/* Animated background shine */}
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 -translate-x-full group-hover:translate-x-full transition-all duration-500" />
+
+          <div className="relative flex items-center gap-2">
+            <Icons.Plus className="h-5 w-5" />
+            <span>Add Content</span>
+          </div>
+        </button>
       </div>
 
-      {/* Upload Modal */}
-      <UploadModal
-        isOpen={isModalOpen}
+      {/* Documents Section */}
+      <DocumentList />
+
+      {/* Upload Drawer */}
+      <UploadDrawer
+        isOpen={isDrawerOpen}
         onClose={() => {
-          setIsModalOpen(false);
+          setIsDrawerOpen(false);
           setUploadProgress(0);
         }}
         onFileUpload={handleFileUpload}

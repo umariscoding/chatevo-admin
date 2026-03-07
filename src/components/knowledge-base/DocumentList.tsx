@@ -58,7 +58,6 @@ const DocumentList: React.FC<DocumentListProps> = ({ className = "" }) => {
   const { documents, loading, error } = useCompanyAppSelector(
     (state) => state.knowledgeBase,
   );
-  const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [docsPerPage, setDocsPerPage] = useState(10);
   const [deletingDocId, setDeletingDocId] = useState<string | null>(null);
@@ -78,11 +77,7 @@ const DocumentList: React.FC<DocumentListProps> = ({ className = "" }) => {
     }
   };
 
-  // Filter documents based on search term
-  const filteredDocuments = documents.filter((doc) => {
-    const searchLower = searchTerm.toLowerCase();
-    return doc.filename.toLowerCase().includes(searchLower);
-  });
+  const filteredDocuments = documents;
 
   // Calculate pagination
   const totalPages = Math.ceil(filteredDocuments.length / docsPerPage);
@@ -93,10 +88,10 @@ const DocumentList: React.FC<DocumentListProps> = ({ className = "" }) => {
     indexOfLastDoc,
   );
 
-  // Reset to first page when search term or docs per page changes
+  // Reset to first page when docs per page changes
   useEffect(() => {
     setCurrentPage(1);
-  }, [searchTerm, docsPerPage]);
+  }, [docsPerPage]);
 
   // Generate pagination pages array
   const getPageNumbers = () => {
@@ -131,15 +126,18 @@ const DocumentList: React.FC<DocumentListProps> = ({ className = "" }) => {
   if (loading && documents.length === 0) {
     return (
       <div className={`${className}`}>
-        <div className="text-center py-20">
-          <div className="mx-auto flex items-center justify-center h-24 w-24 rounded-full bg-gradient-to-br from-primary-100 to-primary-200 mb-8">
-            <div className="animate-spin rounded-full h-8 w-8 border-3 border-primary-600 border-t-transparent"></div>
+        <div className="py-24 flex flex-col items-center justify-center">
+          <div className="flex justify-center mb-8">
+            <div className="relative w-16 h-16">
+              <div className="absolute inset-0 rounded-full border-4 border-slate-200" />
+              <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-primary-600 border-r-primary-600 animate-spin" />
+            </div>
           </div>
-          <h3 className="text-2xl font-semibold text-neutral-900 mb-3">
-            Loading documents...
+          <h3 className="text-xl font-bold text-slate-900 mb-2">
+            Loading documents
           </h3>
-          <p className="text-lg text-neutral-600">
-            Please wait while we fetch your knowledge base documents.
+          <p className="text-slate-600 text-sm">
+            Fetching your knowledge base...
           </p>
         </div>
       </div>
@@ -149,12 +147,12 @@ const DocumentList: React.FC<DocumentListProps> = ({ className = "" }) => {
   return (
     <div className={`${className}`}>
       {error && (
-        <div className="mb-6 p-4 bg-gradient-to-r from-red-50 to-red-100 border border-red-200 rounded-xl shadow-lg">
-          <div className="flex items-center">
-            <div className="flex-shrink-0">
-              <Icons.AlertCircle className="h-5 w-5 text-red-600" />
-            </div>
-            <div className="ml-3 flex-1">
+        <div className="mb-6 p-4 bg-gradient-to-r from-red-50 to-red-100/50 border border-red-200/80 rounded-xl shadow-md backdrop-blur-sm">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="flex-shrink-0 p-1">
+                <Icons.AlertCircle className="h-5 w-5 text-red-600" />
+              </div>
               <p className="text-sm font-medium text-red-800">
                 {typeof error === "string"
                   ? error
@@ -163,59 +161,26 @@ const DocumentList: React.FC<DocumentListProps> = ({ className = "" }) => {
             </div>
             <button
               onClick={() => {}}
-              className="text-red-400 hover:text-red-600 text-xl font-bold"
+              className="text-red-400 hover:text-red-600 transition-colors p-1"
+              aria-label="Dismiss"
             >
-              ×
+              <Icons.Close className="h-4 w-4" />
             </button>
           </div>
         </div>
       )}
 
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-6">
-        <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-          <h3 className="text-xl font-semibold text-neutral-900">
-            Documents
-            <span className="text-sm font-normal text-neutral-600 ml-2">
-              ({filteredDocuments.length} {searchTerm ? "found" : "total"})
-            </span>
-          </h3>
-          {searchTerm && (
-            <div className="text-sm text-neutral-600">
-              Showing results for "{searchTerm}"
-            </div>
-          )}
-        </div>
-
-        <div className="flex flex-col sm:flex-row gap-3">
-          {/* Search Box */}
-          <div className="relative">
-            <Icons.Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-neutral-400" />
-            <input
-              type="text"
-              placeholder="Search documents..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full sm:w-64 pl-10 pr-4 py-2 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"
-            />
-            {searchTerm && (
-              <button
-                onClick={() => setSearchTerm("")}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-neutral-400 hover:text-neutral-600"
-              >
-                <Icons.Close className="h-4 w-4" />
-              </button>
-            )}
-          </div>
-
-          {/* Pagination Size Selector */}
-          <div className="flex items-center gap-2">
-            <span className="text-sm text-neutral-600 whitespace-nowrap">
+      {/* Pagination Size Selector */}
+      {filteredDocuments.length > 0 && (
+        <div className="flex justify-end mb-4">
+          <div className="flex items-center gap-2 px-3 py-2.5 border border-slate-200/80 bg-white/50 backdrop-blur-sm rounded-lg">
+            <span className="text-xs font-semibold text-slate-600 whitespace-nowrap">
               Show:
             </span>
             <select
               value={docsPerPage}
               onChange={(e) => setDocsPerPage(Number(e.target.value))}
-              className="border border-neutral-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              className="border-0 bg-transparent text-sm font-medium text-slate-900 focus:outline-none focus:ring-0 cursor-pointer"
             >
               <option value={5}>5</option>
               <option value={10}>10</option>
@@ -224,124 +189,132 @@ const DocumentList: React.FC<DocumentListProps> = ({ className = "" }) => {
             </select>
           </div>
         </div>
-      </div>
+      )}
 
       {filteredDocuments.length === 0 ? (
-        <div className="text-center py-16">
-          <div className="relative">
-            <div className="mx-auto h-16 w-16 rounded-full bg-gradient-to-br from-neutral-100 to-neutral-200 flex items-center justify-center mb-6">
-              <Icons.Document className="h-8 w-8 text-neutral-400" />
+        <div className="py-24">
+          <div className="text-center space-y-6">
+            <div className="flex justify-center">
+              <div className="relative">
+                <div className="absolute inset-0 bg-primary-500/10 rounded-full blur-xl" />
+                <div className="relative inline-flex items-center justify-center h-24 w-24 rounded-2xl bg-gradient-to-br from-slate-100 to-slate-50 shadow-md">
+                  <Icons.Document className="h-12 w-12 text-slate-300" />
+                </div>
+              </div>
+            </div>
+            <div>
+              <h3 className="text-2xl font-bold text-slate-900 mb-2">
+                Your knowledge base is empty
+              </h3>
+              <p className="text-slate-600 max-w-md mx-auto leading-relaxed">
+                Upload documents or add text content to get started
+              </p>
             </div>
           </div>
-          <h3 className="text-lg font-semibold text-neutral-900 mb-2">
-            {searchTerm ? "No Documents Found" : "No Documents Yet"}
-          </h3>
-          <p className="text-neutral-600 mb-6 max-w-sm mx-auto">
-            {searchTerm
-              ? `No documents found matching "${searchTerm}". Try adjusting your search.`
-              : "Upload documents to start building your knowledge base."}
-          </p>
         </div>
       ) : (
-        <div className="overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-lg">
+        <div className="overflow-hidden rounded-2xl border border-slate-200/60 bg-gradient-to-b from-white to-slate-50/30 shadow-lg hover:shadow-xl transition-shadow duration-300">
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-neutral-200">
-              <thead className="bg-gradient-to-r from-neutral-50 to-neutral-100">
+            <table className="min-w-full divide-y divide-slate-200/60">
+              <thead className="bg-gradient-to-r from-slate-50/50 to-slate-100/50 border-b border-slate-200/60">
                 <tr>
                   <th
                     scope="col"
-                    className="px-6 py-4 text-left text-xs font-semibold text-neutral-700 uppercase tracking-wider"
+                    className="px-6 py-4 text-left text-xs font-bold text-slate-900 uppercase tracking-wider"
                   >
                     Document
                   </th>
                   <th
                     scope="col"
-                    className="px-6 py-4 text-left text-xs font-semibold text-neutral-700 uppercase tracking-wider"
+                    className="px-6 py-4 text-left text-xs font-bold text-slate-900 uppercase tracking-wider"
                   >
                     Type
                   </th>
                   <th
                     scope="col"
-                    className="px-6 py-4 text-left text-xs font-semibold text-neutral-700 uppercase tracking-wider"
+                    className="px-6 py-4 text-left text-xs font-bold text-slate-900 uppercase tracking-wider"
                   >
                     Size
                   </th>
                   <th
                     scope="col"
-                    className="px-6 py-4 text-left text-xs font-semibold text-neutral-700 uppercase tracking-wider"
+                    className="px-6 py-4 text-left text-xs font-bold text-slate-900 uppercase tracking-wider"
                   >
                     Status
                   </th>
                   <th
                     scope="col"
-                    className="px-6 py-4 text-left text-xs font-semibold text-neutral-700 uppercase tracking-wider"
+                    className="px-6 py-4 text-left text-xs font-bold text-slate-900 uppercase tracking-wider"
                   >
                     Created
                   </th>
                   <th
                     scope="col"
-                    className="px-6 py-4 text-right text-xs font-semibold text-neutral-700 uppercase tracking-wider"
+                    className="px-6 py-4 text-right text-xs font-bold text-slate-900 uppercase tracking-wider"
                   >
                     Actions
                   </th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-neutral-200">
-                {currentDocuments.map((document) => (
+              <tbody className="bg-white divide-y divide-slate-200/60">
+                {currentDocuments.map((document, index) => (
                   <tr
                     key={document.doc_id}
-                    className="hover:bg-neutral-50 transition-colors duration-150"
+                    className="hover:bg-gradient-to-r hover:from-slate-50/80 hover:to-primary-50/30 transition-all duration-150 group"
+                    style={{
+                      animation: `fadeIn 0.3s ease-out ${index * 0.05}s both`
+                    }}
                   >
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    <td className="px-6 py-5 whitespace-nowrap">
                       <div className="flex items-center space-x-3">
-                        <div className="flex-shrink-0">
+                        <div className="flex-shrink-0 p-2.5 bg-slate-100/50 rounded-lg group-hover:bg-primary-100/50 transition-colors">
                           {getFileTypeIcon(document.content_type)}
                         </div>
                         <div className="min-w-0 flex-1">
-                          <p className="text-sm font-semibold text-neutral-900 truncate max-w-xs">
+                          <p className="text-sm font-semibold text-slate-900 truncate max-w-xs group-hover:text-primary-700 transition-colors">
                             {document.filename}
                           </p>
                         </div>
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-neutral-600">
+                    <td className="px-6 py-5 whitespace-nowrap text-sm font-medium text-slate-600">
                       {document.content_type.split("/")[1]?.toUpperCase() ||
                         "FILE"}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-neutral-600">
+                    <td className="px-6 py-5 whitespace-nowrap text-sm font-medium text-slate-600">
                       {formatFileSize(document.file_size)}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    <td className="px-6 py-5 whitespace-nowrap">
                       <span
-                        className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold ${getStatusColor(document.embeddings_status)}`}
+                        className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-bold gap-2 ${getStatusColor(document.embeddings_status)}`}
                       >
                         <span
-                          className={`w-1.5 h-1.5 rounded-full mr-1.5 ${
+                          className={`w-2 h-2 rounded-full ${
                             document.embeddings_status === "completed"
-                              ? "bg-green-600"
+                              ? "bg-emerald-600 animate-pulse"
                               : document.embeddings_status === "pending"
-                                ? "bg-yellow-600"
+                                ? "bg-amber-600 animate-pulse"
                                 : "bg-red-600"
                           }`}
-                        ></span>
+                        />
                         {document.embeddings_status.charAt(0).toUpperCase() +
                           document.embeddings_status.slice(1)}
                       </span>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-neutral-600">
+                    <td className="px-6 py-5 whitespace-nowrap text-sm font-medium text-slate-600">
                       {formatDate(document.created_at)}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm">
+                    <td className="px-6 py-5 whitespace-nowrap text-right text-sm">
                       <button
                         onClick={() => handleDelete(document.doc_id)}
                         disabled={deletingDocId === document.doc_id}
-                        className="text-red-600 hover:text-red-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors p-2 hover:bg-red-50 rounded-lg"
+                        className="inline-flex items-center justify-center p-2 text-slate-400 hover:text-red-600 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-red-50 rounded-lg transition-all duration-200 group/btn"
                         aria-label="Delete document"
                       >
                         {deletingDocId === document.doc_id ? (
-                          <div className="animate-spin h-4 w-4 border-2 border-red-600 border-t-transparent rounded-full"></div>
+                          <div className="animate-spin h-4 w-4 border-2 border-red-600 border-t-transparent rounded-full" />
                         ) : (
-                          <Icons.Trash className="h-4 w-4" />
+                          <Icons.Trash className="h-4 w-4 group-hover/btn:scale-110 transition-transform" />
                         )}
                       </button>
                     </td>
@@ -353,48 +326,64 @@ const DocumentList: React.FC<DocumentListProps> = ({ className = "" }) => {
         </div>
       )}
 
+      {/* Animation keyframes */}
+      <style>{`
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      `}</style>
+
       {/* Pagination */}
       {filteredDocuments.length > 0 && totalPages > 1 && (
-        <div className="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="text-sm text-neutral-600">
-            Showing {indexOfFirstDoc + 1} to{" "}
-            {Math.min(indexOfLastDoc, filteredDocuments.length)} of{" "}
-            {filteredDocuments.length} documents
+        <div className="mt-8 flex flex-col sm:flex-row items-center justify-between gap-6 px-6 py-6 bg-gradient-to-r from-slate-50/50 to-slate-100/30 rounded-xl border border-slate-200/40">
+          <div className="text-sm font-medium text-slate-700">
+            Showing <span className="font-bold text-slate-900">{indexOfFirstDoc + 1}</span> to{" "}
+            <span className="font-bold text-slate-900">
+              {Math.min(indexOfLastDoc, filteredDocuments.length)}
+            </span>{" "}
+            of <span className="font-bold text-slate-900">{filteredDocuments.length}</span> documents
           </div>
 
-          <nav className="flex items-center space-x-1">
+          <nav className="flex items-center space-x-1 bg-white/60 rounded-lg p-1 border border-slate-200/50">
             {/* Previous Button */}
             <button
               onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
               disabled={currentPage === 1}
-              className={`inline-flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors ${
+              className={`inline-flex items-center gap-1.5 px-3 py-2 text-xs font-bold rounded-md transition-all duration-200 ${
                 currentPage === 1
-                  ? "text-neutral-400 cursor-not-allowed"
-                  : "text-neutral-600 hover:text-primary-600 hover:bg-primary-50"
+                  ? "text-slate-300 cursor-not-allowed"
+                  : "text-slate-700 hover:text-slate-900 hover:bg-slate-100"
               }`}
             >
-              <Icons.ArrowLeft className="h-4 w-4 mr-1" />
-              Previous
+              <Icons.ArrowLeft className="h-4 w-4" />
+              <span className="hidden sm:inline">Previous</span>
             </button>
 
             {/* Page Numbers */}
-            <div className="flex items-center space-x-1">
+            <div className="flex items-center space-x-0.5">
               {getPageNumbers().map((page, index) =>
                 page === "..." ? (
                   <span
                     key={`ellipsis-${index}`}
-                    className="px-3 py-2 text-sm text-neutral-400"
+                    className="px-2.5 py-2 text-xs text-slate-400 font-bold"
                   >
-                    ...
+                    ⋯
                   </span>
                 ) : (
                   <button
                     key={page}
                     onClick={() => setCurrentPage(page as number)}
-                    className={`inline-flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors ${
+                    className={`inline-flex items-center px-3 py-2 text-xs font-bold rounded-md transition-all duration-200 ${
                       currentPage === page
-                        ? "bg-primary-600 text-white shadow-sm"
-                        : "text-neutral-600 hover:text-primary-600 hover:bg-primary-50"
+                        ? "bg-primary-600 text-white shadow-md shadow-primary-200/50"
+                        : "text-slate-700 hover:text-slate-900 hover:bg-slate-100"
                     }`}
                   >
                     {page}
@@ -409,14 +398,14 @@ const DocumentList: React.FC<DocumentListProps> = ({ className = "" }) => {
                 setCurrentPage((prev) => Math.min(prev + 1, totalPages))
               }
               disabled={currentPage === totalPages}
-              className={`inline-flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors ${
+              className={`inline-flex items-center gap-1.5 px-3 py-2 text-xs font-bold rounded-md transition-all duration-200 ${
                 currentPage === totalPages
-                  ? "text-neutral-400 cursor-not-allowed"
-                  : "text-neutral-600 hover:text-primary-600 hover:bg-primary-50"
+                  ? "text-slate-300 cursor-not-allowed"
+                  : "text-slate-700 hover:text-slate-900 hover:bg-slate-100"
               }`}
             >
-              Next
-              <Icons.ArrowLeft className="h-4 w-4 ml-1 rotate-180" />
+              <span className="hidden sm:inline">Next</span>
+              <Icons.ArrowLeft className="h-4 w-4 rotate-180" />
             </button>
           </nav>
         </div>
