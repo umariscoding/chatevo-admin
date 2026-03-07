@@ -9,12 +9,10 @@ import {
 } from "@/hooks/company/useCompanyAuth";
 import { logoutCompanyComprehensive } from "@/store/company/slices/companyAuthSlice";
 import { Icons } from "@/components/ui";
-import MinimalButton from "@/components/ui/MinimalButton";
 import IOSLoader from "@/components/ui/IOSLoader";
 import type { HeaderProps } from "@/interfaces/Header.interface";
 
 const LogoutButton: React.FC = () => {
-  const companyAuth = useCompanyAppSelector((state) => state.companyAuth);
   const dispatch = useCompanyAppDispatch();
   const router = useRouter();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
@@ -22,7 +20,6 @@ const LogoutButton: React.FC = () => {
   const handleLogout = async () => {
     setIsLoggingOut(true);
     try {
-      // Company logout: Clear company data (knowledge base, analytics, etc.)
       await dispatch(logoutCompanyComprehensive());
       router.push("/company/login");
     } catch (error) {
@@ -33,22 +30,20 @@ const LogoutButton: React.FC = () => {
   };
 
   return (
-    <MinimalButton
+    <button
       onClick={handleLogout}
-      variant="outline"
-      size="sm"
       disabled={isLoggingOut}
-      className="text-text-secondary border-border-light hover:border-primary-600 hover:bg-primary-600/10 hover:text-primary-600 transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+      className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium text-slate-400 hover:text-slate-200 hover:bg-white/[0.06] border border-transparent hover:border-white/[0.08] transition-all duration-150 disabled:opacity-40 disabled:cursor-not-allowed"
     >
       {isLoggingOut ? (
-        <IOSLoader size="sm" color="primary" className="mr-2" />
+        <IOSLoader size="sm" color="primary" />
       ) : (
         <>
-          <Icons.Logout className="h-4 w-4 mr-2" />
-          Logout
+          <Icons.Logout className="h-4 w-4" />
+          <span>Sign out</span>
         </>
       )}
-    </MinimalButton>
+    </button>
   );
 };
 
@@ -59,44 +54,39 @@ const Header: React.FC<HeaderProps> = ({
 }) => {
   const companyAuth = useCompanyAppSelector((state) => state.companyAuth);
 
-  // Get first name from company name
-  const getFirstName = () => {
-    if (companyAuth.isAuthenticated && companyAuth.company?.name) {
-      // Extract first word from company name
-      return companyAuth.company.name.split(" ")[0];
-    }
-    return "Company";
-  };
+  const today = new Date().toLocaleDateString("en-US", {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+  });
 
   return (
     <header
-      className={`bg-bg-primary shadow-sm border-b border-border-light ${className}`}
+      className={`
+        sticky top-0 z-20 h-14 flex items-center px-6
+        bg-[#f8fafc]/95 backdrop-blur-md
+        border-b border-slate-200/70
+        ${className}
+      `}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16">
-          <div className="flex items-center">
-            {showMobileMenuButton && (
-              <button
-                onClick={onMenuToggle}
-                className="md:hidden inline-flex items-center justify-center p-2 rounded-md text-text-secondary hover:text-text-primary hover:bg-bg-secondary focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-600"
-              >
-                <Icons.Menu />
-              </button>
-            )}
-            <div className="flex-shrink-0 ml-4 md:ml-0">
-              <h1 className="text-xl font-semibold text-text-primary">
-                Hi,{" "}
-                <span className="text-primary-600 font-bold">
-                  {getFirstName()}
-                </span>
-              </h1>
-            </div>
-          </div>
+      {/* Left side */}
+      <div className="flex items-center gap-3 flex-1">
+        {showMobileMenuButton && (
+          <button
+            onClick={onMenuToggle}
+            className="md:hidden p-2 -ml-1 rounded-lg text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition-colors"
+          >
+            <Icons.Menu className="h-5 w-5" />
+          </button>
+        )}
+        <span className="hidden sm:block text-sm text-slate-400 font-medium">
+          {today}
+        </span>
+      </div>
 
-          <div className="flex items-center">
-            <LogoutButton />
-          </div>
-        </div>
+      {/* Right side */}
+      <div className="flex items-center gap-1">
+        <LogoutButton />
       </div>
     </header>
   );

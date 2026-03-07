@@ -8,12 +8,9 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
   ResponsiveContainer,
 } from "recharts";
 
-import Card from "@/components/ui/Card";
-import SkeletonLoader from "@/components/ui/SkeletonLoader";
 import { Icons } from "@/components/ui";
 import type { MessagesTimePoint } from "@/interfaces/Analytics.interface";
 
@@ -23,142 +20,107 @@ interface MessagesChartProps {
   className?: string;
 }
 
+const CustomTooltip = ({ active, payload, label }: any) => {
+  if (!active || !payload?.length) return null;
+  return (
+    <div className="bg-slate-900 border border-white/10 rounded-lg px-3 py-2.5 shadow-xl">
+      <p className="text-[11px] text-slate-400 mb-1">{label}</p>
+      <p className="text-sm font-semibold text-violet-300">
+        {payload[0].value?.toLocaleString()} messages
+      </p>
+    </div>
+  );
+};
+
 const MessagesChart: React.FC<MessagesChartProps> = ({
   data,
   loading = false,
   className = "",
 }) => {
-  if (loading) {
-    return (
-      <Card className={className}>
-        <div className="p-6">
-          <div className="mb-4">
-            <div className="h-6 bg-neutral-200 rounded w-1/3 mb-2"></div>
-            <div className="h-4 bg-neutral-200 rounded w-1/2"></div>
-          </div>
-          <SkeletonLoader className="h-80" />
-        </div>
-      </Card>
-    );
-  }
-
-  // Format data for chart
   const chartData = data.map((point) => {
-    // Parse date as local date to avoid timezone issues
     const dateParts = point.date.split("-");
     const localDate = new Date(
       parseInt(dateParts[0]),
       parseInt(dateParts[1]) - 1,
-      parseInt(dateParts[2]),
+      parseInt(dateParts[2])
     );
-
     return {
-      date: localDate.toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-      }),
+      date: localDate.toLocaleDateString("en-US", { month: "short", day: "numeric" }),
       "Total Messages": point.totalMessages || 0,
     };
   });
 
-  return (
-    <Card
-      className={`bg-white border-border-light hover:border-border-medium transition-colors duration-200 ${className}`}
-    >
-      <div className="p-6">
-        {/* Simple header */}
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-accent-100 rounded-xl shadow-inner">
-              <Icons.MessageCircle className="h-5 w-5 text-accent-600" />
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold text-text-primary">
-                Messages Over Time
-              </h3>
-              <p className="text-sm text-text-secondary">
-                Daily message activity for the last 7 days
-              </p>
-            </div>
-          </div>
+  const total = chartData.reduce((sum, p) => sum + p["Total Messages"], 0);
 
-          <div className="text-right">
-            <div className="text-2xl font-bold text-accent-600">
-              {chartData
-                .reduce((sum, point) => sum + point["Total Messages"], 0)
-                .toLocaleString()}
-            </div>
-            <div className="text-xs text-text-secondary">Total Messages</div>
+  return (
+    <div className={`bg-white rounded-xl border border-slate-200/80 p-5 hover:border-slate-300 hover:shadow-md hover:shadow-slate-200/50 transition-all duration-200 ${className}`}>
+      {/* Header */}
+      <div className="flex items-center justify-between mb-5">
+        <div className="flex items-center gap-3">
+          <div className="p-2 rounded-lg bg-violet-50">
+            <Icons.MessageCircle className="h-4 w-4 text-violet-600" />
+          </div>
+          <div>
+            <h3 className="text-sm font-semibold text-slate-800 tracking-[-0.01em]">Messages Over Time</h3>
+            <p className="text-[11px] text-slate-400 mt-0.5">Daily activity — last 7 days</p>
           </div>
         </div>
-
-        {/* Simple chart container */}
-        <div className="bg-bg-secondary rounded-lg p-4">
-          <div className="h-80">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart
-                data={chartData}
-                margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
-              >
-                <CartesianGrid
-                  strokeDasharray="3 3"
-                  stroke="#e2e8f0"
-                  vertical={false}
-                />
-                <XAxis
-                  dataKey="date"
-                  stroke="#64748b"
-                  fontSize={12}
-                  tickLine={false}
-                  axisLine={false}
-                />
-                <YAxis
-                  stroke="#64748b"
-                  fontSize={12}
-                  tickLine={false}
-                  axisLine={false}
-                  tickFormatter={(value) => value.toLocaleString()}
-                />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: "white",
-                    border: "1px solid #e2e8f0",
-                    borderRadius: "8px",
-                    boxShadow: "0 10px 15px -3px rgba(15, 23, 42, 0.1)",
-                    fontSize: "14px",
-                    padding: "12px",
-                  }}
-                  labelStyle={{
-                    color: "#0f172a",
-                    fontWeight: "600",
-                    marginBottom: "4px",
-                  }}
-                  formatter={(value, name) => [
-                    <span style={{ color: "#0891b2", fontWeight: "600" }}>
-                      {value.toLocaleString()}
-                    </span>,
-                    name,
-                  ]}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="Total Messages"
-                  stroke="#0891b2"
-                  strokeWidth={3}
-                  dot={{ r: 4, fill: "#0891b2", strokeWidth: 0 }}
-                  activeDot={{
-                    r: 6,
-                    fill: "#0e7490",
-                    strokeWidth: 2,
-                    stroke: "white",
-                  }}
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
+        <div className="text-right">
+          {loading ? (
+            <div className="w-14 h-6 rounded-lg bg-slate-100 animate-pulse" />
+          ) : (
+            <>
+              <p className="text-xl font-bold text-slate-900 tracking-[-0.03em]">{total.toLocaleString()}</p>
+              <p className="text-[10px] text-slate-400 font-medium">total</p>
+            </>
+          )}
         </div>
       </div>
-    </Card>
+
+      {/* Chart */}
+      {loading ? (
+        <div className="h-52 rounded-lg bg-slate-50 animate-pulse" />
+      ) : (
+        <div className="h-52 -mx-1">
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+              <defs>
+                <linearGradient id="msgLineGlow" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stopColor="#8b5cf6" />
+                  <stop offset="100%" stopColor="#7c3aed" />
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
+              <XAxis
+                dataKey="date"
+                stroke="#cbd5e1"
+                fontSize={11}
+                tickLine={false}
+                axisLine={false}
+                tick={{ fill: "#94a3b8" }}
+              />
+              <YAxis
+                stroke="#cbd5e1"
+                fontSize={11}
+                tickLine={false}
+                axisLine={false}
+                tick={{ fill: "#94a3b8" }}
+                tickFormatter={(v) => v === 0 ? "0" : v >= 1000 ? `${(v / 1000).toFixed(1)}k` : v}
+              />
+              <Tooltip content={<CustomTooltip />} cursor={{ stroke: "#e2e8f0", strokeWidth: 1, strokeDasharray: "4 2" }} />
+              <Line
+                type="monotone"
+                dataKey="Total Messages"
+                stroke="url(#msgLineGlow)"
+                strokeWidth={2.5}
+                dot={{ r: 3.5, fill: "#7c3aed", strokeWidth: 0 }}
+                activeDot={{ r: 5, fill: "#6d28d9", strokeWidth: 2, stroke: "white" }}
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+      )}
+    </div>
   );
 };
 
