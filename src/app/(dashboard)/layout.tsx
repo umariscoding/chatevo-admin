@@ -36,20 +36,16 @@ export default function DashboardLayout({
       <CompanyAuthProvider>
         <CompanyProtectedRoute>
           <div className="h-screen overflow-hidden bg-sidebar-bg flex">
-            {/* Sidebar - Fixed and locked */}
             <div className="w-72 flex-shrink-0 h-screen fixed left-0 top-0 z-10">
               <Sidebar isOpen={sidebarOpen} onClose={handleSidebarClose} />
             </div>
 
-            {/* Main content area - with left margin for sidebar */}
-            <div className="flex-1 ml-72 bg-bg-secondary h-screen overflow-y-auto smooth-scroll-container">
-              {/* Header */}
+            <div className="flex-1 ml-72 bg-neutral-50 h-screen overflow-y-auto smooth-scroll-container">
               <Header
                 onMenuToggle={handleMenuToggle}
                 showMobileMenuButton={true}
               />
 
-              {/* Main content */}
               <main>
                 <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                   {children}

@@ -17,66 +17,61 @@ export default function ProfileSection({
   onSlugChange,
 }: ProfileSectionProps) {
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       <div>
-        <h2 className="text-2xl font-bold text-neutral-900 mb-2">Profile</h2>
-        <p className="text-neutral-600">
-          Manage your company profile and public URL
+        <h2 className="text-lg font-semibold text-neutral-900">Profile</h2>
+        <p className="text-sm text-neutral-500 mt-0.5">
+          Your company information and public URL
         </p>
       </div>
 
-      <div className="bg-white rounded-xl border border-neutral-200 p-6 space-y-6">
-        {/* Read-only fields */}
-        <div className="space-y-5">
+      <div className="bg-white rounded-lg border border-neutral-200 divide-y divide-neutral-100">
+        {/* Read-only info */}
+        <div className="p-5 space-y-4">
           <div>
-            <div className="flex items-center space-x-2 mb-3">
-              <div className="w-8 h-8 rounded-lg bg-primary-100 flex items-center justify-center">
-                <Icons.User className="h-4 w-4 text-primary-600" />
-              </div>
-              <label className="text-sm font-semibold text-neutral-700">
-                Company Name
-              </label>
-            </div>
-            <div className="bg-neutral-50 rounded-lg p-4 border border-neutral-200">
-              <p className="text-neutral-900 font-medium">{name}</p>
-            </div>
+            <label className="text-xs font-medium text-neutral-500 uppercase tracking-wider">
+              Company Name
+            </label>
+            <p className="mt-1 text-sm text-neutral-900 font-medium">{name}</p>
           </div>
 
           <div>
-            <div className="flex items-center space-x-2 mb-3">
-              <div className="w-8 h-8 rounded-lg bg-primary-100 flex items-center justify-center">
-                <Icons.Globe className="h-4 w-4 text-primary-600" />
-              </div>
-              <label className="text-sm font-semibold text-neutral-700">
-                Email Address
-              </label>
-            </div>
-            <div className="bg-neutral-50 rounded-lg p-4 border border-neutral-200">
-              <p className="text-neutral-900 font-medium">{email}</p>
-            </div>
+            <label className="text-xs font-medium text-neutral-500 uppercase tracking-wider">
+              Email
+            </label>
+            <p className="mt-1 text-sm text-neutral-900 font-medium">{email}</p>
           </div>
         </div>
 
-        <div className="border-t border-neutral-200 pt-6">
-          <div className="flex items-center space-x-2 mb-3">
-            <div className="w-8 h-8 rounded-lg bg-primary-100 flex items-center justify-center">
-              <Icons.Globe className="h-4 w-4 text-primary-600" />
-            </div>
-            <label className="text-sm font-semibold text-neutral-700">
-              Company Slug
-            </label>
-          </div>
+        {/* Slug */}
+        <div className="p-5">
+          <label className="text-xs font-medium text-neutral-500 uppercase tracking-wider">
+            Company Slug
+          </label>
+          <p className="text-xs text-neutral-400 mt-1 mb-2.5">
+            This sets your public chatbot URL
+          </p>
           <input
             type="text"
             value={slug}
             onChange={(e) => onSlugChange(e.target.value)}
-            placeholder="Your company slug"
-            className="w-full rounded-lg border border-neutral-300 bg-white text-neutral-900 placeholder-neutral-400 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all"
+            placeholder="my-company"
+            className="w-full rounded-lg border border-neutral-200 bg-white text-neutral-900 placeholder-neutral-400 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400 transition-all"
           />
-          <p className="text-sm text-neutral-500 mt-2 flex items-center space-x-2">
-            <Icons.AlertCircle className="h-4 w-4 text-primary-500" />
-            <span>Lowercase letters, numbers, and hyphens only</span>
-          </p>
+          <div className="flex items-center gap-1.5 mt-2">
+            <Icons.AlertCircle className="h-3 w-3 text-neutral-400" />
+            <p className="text-xs text-neutral-400">
+              Lowercase letters, numbers, and hyphens only
+            </p>
+          </div>
+          {slug && (
+            <div className="mt-3 flex items-center gap-2 bg-neutral-50 px-3 py-2 rounded-md">
+              <Icons.Globe className="h-3.5 w-3.5 text-neutral-400" />
+              <span className="text-xs text-neutral-500 font-mono">
+                yoursite.com/<span className="text-primary-600 font-medium">{slug}</span>
+              </span>
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -13,41 +13,27 @@ const IOSLoader: React.FC<IOSLoaderProps> = ({
   color = "primary",
   className = "",
 }) => {
-  const sizeClasses = {
-    sm: "w-4 h-4",
-    md: "w-6 h-6",
-    lg: "w-8 h-8",
-    xl: "w-12 h-12",
+  const sizes = {
+    sm: "w-4 h-4 border-[1.5px]",
+    md: "w-5 h-5 border-2",
+    lg: "w-7 h-7 border-2",
+    xl: "w-10 h-10 border-[2.5px]",
   };
 
-  const colorClasses = {
-    primary: "text-primary-600",
-    white: "text-white",
-    dark: "text-neutral-700",
+  const colors = {
+    primary: "border-primary-200 border-t-primary-600",
+    white: "border-white/20 border-t-white",
+    dark: "border-neutral-200 border-t-neutral-700",
   };
 
   return (
-    <div className={`${sizeClasses[size]} ${colorClasses[color]} ${className}`}>
-      <svg className="animate-spin" fill="none" viewBox="0 0 24 24">
-        <circle
-          className="opacity-25"
-          cx="12"
-          cy="12"
-          r="10"
-          stroke="currentColor"
-          strokeWidth="4"
-        />
-        <path
-          className="opacity-75"
-          fill="currentColor"
-          d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-        />
-      </svg>
-    </div>
+    <div
+      className={`${sizes[size]} ${colors[color]} rounded-full animate-spin ${className}`}
+      style={{ animationDuration: "0.6s" }}
+    />
   );
 };
 
-// Inline content loader (for sections within pages)
 interface IOSContentLoaderProps {
   isLoading: boolean;
   message?: string;
@@ -69,10 +55,10 @@ export const IOSContentLoader: React.FC<IOSContentLoaderProps> = ({
 
   return (
     <div
-      className={`flex flex-col items-center justify-center py-12 ${className}`}
+      className={`flex flex-col items-center justify-center py-16 ${className}`}
     >
-      <IOSLoader size="lg" color="primary" className="mb-4" />
-      <p className="text-text-secondary font-medium">{message}</p>
+      <IOSLoader size="lg" color="primary" className="mb-3" />
+      <p className="text-sm text-text-secondary">{message}</p>
     </div>
   );
 };

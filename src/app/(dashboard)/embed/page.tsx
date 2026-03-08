@@ -4,6 +4,7 @@ import React from "react";
 import { useCompanyAppSelector } from "@/hooks/company/useCompanyAuth";
 import { useEmbedSettings } from "@/hooks/useEmbedSettings";
 import { Icons, IOSContentLoader } from "@/components/ui";
+import IOSLoader from "@/components/ui/IOSLoader";
 import { API_CONFIG } from "@/constants/api";
 
 const COLOR_PRESETS = [
@@ -30,7 +31,6 @@ export default function EmbedPage() {
   const isPublished = companyAuth.company?.is_published;
   const apiUrl = API_CONFIG.BASE_URL;
 
-  // Convert position for embed code (bottom-left/bottom-right format)
   const positionForEmbed =
     settings.position === "left" ? "bottom-left" : "bottom-right";
 
@@ -118,50 +118,45 @@ export default function EmbedPage() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto">
+    <div className="max-w-7xl mx-auto animate-in">
       {/* Header */}
-      <div className="mb-8">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold text-neutral-900 mb-2">
-              Embed Widget
-            </h1>
-            <p className="text-neutral-600">
-              Add a floating chat widget to any website with a single line of
-              code
-            </p>
-          </div>
-          {saving && (
-            <div className="flex items-center gap-2 text-sm text-neutral-500">
-              <div className="w-4 h-4 border-2 border-neutral-300 border-t-primary-600 rounded-full animate-spin" />
-              Saving...
-            </div>
-          )}
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h1 className="text-2xl font-bold text-neutral-900 mb-1">
+            Embed Widget
+          </h1>
+          <p className="text-sm text-neutral-500">
+            Add a chat widget to any website with one line of code
+          </p>
         </div>
+        {saving && (
+          <div className="flex items-center gap-2 text-sm text-neutral-500">
+            <IOSLoader size="sm" color="primary" />
+            <span>Saving...</span>
+          </div>
+        )}
       </div>
 
-      {/* Requirements Check */}
+      {/* Requirements Warning */}
       {(!slug || !isPublished) && (
-        <div className="bg-warning-50 p-5 rounded-xl border border-warning-200 mb-6">
-          <div className="flex items-start space-x-3">
-            <div className="p-2 bg-warning-200 rounded-lg">
-              <Icons.AlertCircle className="h-5 w-5 text-warning-700" />
-            </div>
+        <div className="bg-warning-50 border border-warning-200 rounded-lg p-4 mb-6">
+          <div className="flex items-start gap-3">
+            <Icons.AlertCircle className="h-4 w-4 text-warning-600 flex-shrink-0 mt-0.5" />
             <div>
-              <h4 className="font-semibold text-warning-800 mb-2">
+              <p className="text-sm font-medium text-warning-800 mb-1.5">
                 Setup Required
-              </h4>
+              </p>
               <ul className="text-sm text-warning-700 space-y-1">
                 {!slug && (
                   <li className="flex items-center gap-2">
-                    <Icons.Close className="h-4 w-4" />
-                    Set a company slug in Settings &gt; Profile
+                    <span className="w-1 h-1 rounded-full bg-warning-500" />
+                    Set a company slug in Settings
                   </li>
                 )}
                 {!isPublished && (
                   <li className="flex items-center gap-2">
-                    <Icons.Close className="h-4 w-4" />
-                    Publish your chatbot in Settings &gt; Publishing
+                    <span className="w-1 h-1 rounded-full bg-warning-500" />
+                    Publish your chatbot in Settings
                   </li>
                 )}
               </ul>
@@ -172,119 +167,91 @@ export default function EmbedPage() {
 
       {slug && isPublished && (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Left Column - Settings */}
-          <div className="space-y-6">
-            {/* Customization Options */}
-            <div className="bg-white rounded-xl border border-neutral-200 p-6 space-y-6">
-              <div className="flex items-center space-x-3 pb-4 border-b border-neutral-200">
-                <div className="p-2 bg-primary-100 rounded-xl">
-                  <Icons.Settings className="h-5 w-5 text-primary-600" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-neutral-900">
-                    Customization
-                  </h3>
-                  <p className="text-sm text-neutral-600">
-                    Settings auto-save. Click refresh to update preview.
-                  </p>
-                </div>
+          {/* Settings */}
+          <div className="space-y-5">
+            <div className="bg-white rounded-lg border border-neutral-200 p-5 space-y-5">
+              <div className="pb-4 border-b border-neutral-100">
+                <h3 className="text-sm font-semibold text-neutral-900">
+                  Customization
+                </h3>
+                <p className="text-xs text-neutral-500 mt-0.5">
+                  Settings auto-save. Click refresh to update preview.
+                </p>
               </div>
 
-              {/* Theme Selection */}
-              <div className="space-y-3">
-                <label className="text-sm font-medium text-neutral-700">
+              {/* Theme */}
+              <div className="space-y-2">
+                <label className="text-xs font-medium text-neutral-600 uppercase tracking-wider">
                   Theme
                 </label>
-                <div className="flex gap-3">
-                  <button
-                    onClick={() => updateSetting("theme", "light")}
-                    className={`flex-1 p-3 rounded-xl border-2 transition-all ${
-                      settings.theme === "light"
-                        ? "border-primary-500 bg-primary-50"
-                        : "border-neutral-200 hover:border-neutral-300"
-                    }`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-lg bg-white border border-neutral-200 flex items-center justify-center">
-                        <div className="w-4 h-4 rounded bg-neutral-100" />
+                <div className="flex gap-2">
+                  {(["light", "dark"] as const).map((t) => (
+                    <button
+                      key={t}
+                      onClick={() => updateSetting("theme", t)}
+                      className={`flex-1 p-3 rounded-lg border-2 transition-all flex items-center gap-2.5 ${
+                        settings.theme === t
+                          ? "border-primary-500 bg-primary-50/50"
+                          : "border-neutral-200 hover:border-neutral-300"
+                      }`}
+                    >
+                      <div
+                        className={`w-6 h-6 rounded border ${
+                          t === "light"
+                            ? "bg-white border-neutral-200"
+                            : "bg-neutral-800 border-neutral-700"
+                        } flex items-center justify-center`}
+                      >
+                        <div
+                          className={`w-3 h-3 rounded-sm ${
+                            t === "light" ? "bg-neutral-100" : "bg-neutral-700"
+                          }`}
+                        />
                       </div>
-                      <p className="font-medium text-neutral-900 text-sm">
-                        Light
-                      </p>
-                    </div>
-                  </button>
-                  <button
-                    onClick={() => updateSetting("theme", "dark")}
-                    className={`flex-1 p-3 rounded-xl border-2 transition-all ${
-                      settings.theme === "dark"
-                        ? "border-primary-500 bg-primary-50"
-                        : "border-neutral-200 hover:border-neutral-300"
-                    }`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-lg bg-zinc-800 border border-zinc-700 flex items-center justify-center">
-                        <div className="w-4 h-4 rounded bg-zinc-700" />
-                      </div>
-                      <p className="font-medium text-neutral-900 text-sm">
-                        Dark
-                      </p>
-                    </div>
-                  </button>
+                      <span className="text-sm font-medium text-neutral-700 capitalize">
+                        {t}
+                      </span>
+                    </button>
+                  ))}
                 </div>
               </div>
 
-              {/* Position Selection */}
-              <div className="space-y-3">
-                <label className="text-sm font-medium text-neutral-700">
+              {/* Position */}
+              <div className="space-y-2">
+                <label className="text-xs font-medium text-neutral-600 uppercase tracking-wider">
                   Position
                 </label>
-                <div className="flex gap-3">
-                  <button
-                    onClick={() => updateSetting("position", "right")}
-                    className={`flex-1 p-3 rounded-xl border-2 transition-all ${
-                      settings.position === "right"
-                        ? "border-primary-500 bg-primary-50"
-                        : "border-neutral-200 hover:border-neutral-300"
-                    }`}
-                  >
-                    <div className="flex items-center justify-center gap-2">
-                      <div className="w-8 h-6 rounded border border-neutral-300 relative bg-white">
+                <div className="flex gap-2">
+                  {(["right", "left"] as const).map((pos) => (
+                    <button
+                      key={pos}
+                      onClick={() => updateSetting("position", pos)}
+                      className={`flex-1 p-3 rounded-lg border-2 transition-all flex items-center justify-center gap-2 ${
+                        settings.position === pos
+                          ? "border-primary-500 bg-primary-50/50"
+                          : "border-neutral-200 hover:border-neutral-300"
+                      }`}
+                    >
+                      <div className="w-7 h-5 rounded border border-neutral-300 relative bg-white">
                         <div
-                          className="w-2 h-2 rounded-sm absolute bottom-0.5 right-0.5"
-                          style={{ background: settings.primaryColor }}
+                          className="w-1.5 h-1.5 rounded-sm absolute bottom-0.5"
+                          style={{
+                            background: settings.primaryColor,
+                            [pos === "left" ? "left" : "right"]: "2px",
+                          }}
                         />
                       </div>
-                      <span className="text-sm font-medium text-neutral-700">
-                        Right
+                      <span className="text-sm font-medium text-neutral-700 capitalize">
+                        {pos}
                       </span>
-                    </div>
-                  </button>
-                  <button
-                    onClick={() => updateSetting("position", "left")}
-                    className={`flex-1 p-3 rounded-xl border-2 transition-all ${
-                      settings.position === "left"
-                        ? "border-primary-500 bg-primary-50"
-                        : "border-neutral-200 hover:border-neutral-300"
-                    }`}
-                  >
-                    <div className="flex items-center justify-center gap-2">
-                      <div className="w-8 h-6 rounded border border-neutral-300 relative bg-white">
-                        <div
-                          className="w-2 h-2 rounded-sm absolute bottom-0.5 left-0.5"
-                          style={{ background: settings.primaryColor }}
-                        />
-                      </div>
-                      <span className="text-sm font-medium text-neutral-700">
-                        Left
-                      </span>
-                    </div>
-                  </button>
+                    </button>
+                  ))}
                 </div>
               </div>
 
-              {/* Color Selection */}
-              <div className="space-y-3">
-                <label className="text-sm font-medium text-neutral-700">
+              {/* Color */}
+              <div className="space-y-2">
+                <label className="text-xs font-medium text-neutral-600 uppercase tracking-wider">
                   Brand Color
                 </label>
                 <div className="flex items-center gap-2 flex-wrap">
@@ -292,7 +259,7 @@ export default function EmbedPage() {
                     <button
                       key={color.value}
                       onClick={() => updateSetting("primaryColor", color.value)}
-                      className={`w-9 h-9 rounded-lg transition-all ${
+                      className={`w-8 h-8 rounded-lg transition-all ${
                         settings.primaryColor === color.value
                           ? "ring-2 ring-offset-2 ring-neutral-400 scale-110"
                           : "hover:scale-105"
@@ -301,14 +268,14 @@ export default function EmbedPage() {
                       title={color.name}
                     />
                   ))}
-                  <div className="flex items-center gap-2 ml-1">
+                  <div className="flex items-center gap-1.5 ml-1">
                     <input
                       type="color"
                       value={settings.primaryColor}
                       onChange={(e) =>
                         updateSetting("primaryColor", e.target.value)
                       }
-                      className="w-9 h-9 rounded-lg cursor-pointer border-0 p-0"
+                      className="w-8 h-8 rounded-lg cursor-pointer border-0 p-0"
                     />
                     <input
                       type="text"
@@ -316,7 +283,7 @@ export default function EmbedPage() {
                       onChange={(e) =>
                         updateSetting("primaryColor", e.target.value)
                       }
-                      className="w-20 px-2 py-1.5 text-xs border border-neutral-200 rounded-lg font-mono"
+                      className="w-20 px-2 py-1.5 text-xs border border-neutral-200 rounded-lg font-mono focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400"
                       placeholder="#6366f1"
                     />
                   </div>
@@ -324,23 +291,23 @@ export default function EmbedPage() {
               </div>
 
               {/* Welcome Text */}
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-neutral-700">
+              <div className="space-y-1.5">
+                <label className="text-xs font-medium text-neutral-600 uppercase tracking-wider">
                   Welcome Message
                 </label>
                 <input
                   type="text"
                   value={settings.welcomeText}
                   onChange={(e) => updateSetting("welcomeText", e.target.value)}
-                  className="w-full px-4 py-2.5 border border-neutral-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                  placeholder="Hi there! How can we help you today?"
+                  className="w-full px-3 py-2 border border-neutral-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400"
+                  placeholder="Hi there! How can we help?"
                 />
               </div>
 
-              {/* Subtitle Text */}
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-neutral-700">
-                  Header Subtitle
+              {/* Subtitle */}
+              <div className="space-y-1.5">
+                <label className="text-xs font-medium text-neutral-600 uppercase tracking-wider">
+                  Subtitle
                 </label>
                 <input
                   type="text"
@@ -348,76 +315,65 @@ export default function EmbedPage() {
                   onChange={(e) =>
                     updateSetting("subtitleText", e.target.value)
                   }
-                  className="w-full px-4 py-2.5 border border-neutral-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-neutral-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400"
                   placeholder="We typically reply instantly"
                 />
               </div>
             </div>
 
-            {/* Embed Code Section */}
-            <div className="bg-white rounded-xl border border-neutral-200 p-6 space-y-4">
+            {/* Embed Code */}
+            <div className="bg-white rounded-lg border border-neutral-200 p-5 space-y-3">
               <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-3">
-                  <div className="p-2 bg-neutral-100 rounded-xl">
-                    <Icons.Code className="h-5 w-5 text-neutral-600" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-neutral-900">
-                      Embed Code
-                    </h3>
-                    <p className="text-sm text-neutral-600">
-                      Paste in your website&apos;s{" "}
-                      <code className="bg-neutral-100 px-1 py-0.5 rounded text-xs font-mono">
-                        &lt;head&gt;
-                      </code>
-                    </p>
-                  </div>
+                <div>
+                  <h3 className="text-sm font-semibold text-neutral-900">
+                    Embed Code
+                  </h3>
+                  <p className="text-xs text-neutral-500 mt-0.5">
+                    Paste in your website&apos;s{" "}
+                    <code className="bg-neutral-100 px-1 py-0.5 rounded text-[10px] font-mono">
+                      &lt;head&gt;
+                    </code>
+                  </p>
                 </div>
                 <button
                   onClick={handleCopy}
-                  className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium bg-primary-600 text-white hover:bg-primary-700 transition-all"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium bg-primary-600 text-white hover:bg-primary-700 transition-colors"
                 >
-                  <Icons.Copy className="h-4 w-4" />
+                  <Icons.Copy className="h-3.5 w-3.5" />
                   Copy
                 </button>
               </div>
 
-              <pre className="bg-neutral-900 text-neutral-100 p-4 rounded-xl overflow-x-auto text-xs font-mono leading-relaxed">
+              <pre className="bg-neutral-900 text-neutral-300 p-4 rounded-lg overflow-x-auto text-xs font-mono leading-relaxed">
                 <code>{embedCode}</code>
               </pre>
             </div>
           </div>
 
-          {/* Right Column - Live Preview */}
+          {/* Preview */}
           <div className="lg:sticky lg:top-4 h-fit">
-            <div className="bg-white rounded-xl border border-neutral-200 p-6">
+            <div className="bg-white rounded-lg border border-neutral-200 p-5">
               <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center space-x-3">
-                  <div className="p-2 bg-primary-100 rounded-xl">
-                    <Icons.Eye className="h-5 w-5 text-primary-600" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-neutral-900">
-                      Live Preview
-                    </h3>
-                    <p className="text-sm text-neutral-600">
-                      Interactive widget preview
-                    </p>
-                  </div>
+                <div>
+                  <h3 className="text-sm font-semibold text-neutral-900">
+                    Live Preview
+                  </h3>
+                  <p className="text-xs text-neutral-500 mt-0.5">
+                    Interactive widget preview
+                  </p>
                 </div>
                 <button
                   onClick={refreshPreview}
-                  className="p-2 text-neutral-500 hover:text-neutral-700 hover:bg-neutral-100 rounded-lg transition-colors"
+                  className="p-1.5 text-neutral-400 hover:text-neutral-700 hover:bg-neutral-100 rounded-md transition-colors"
                   title="Refresh preview"
                 >
                   <Icons.Refresh className="h-4 w-4" />
                 </button>
               </div>
 
-              {/* Iframe Preview */}
               <div
-                className="relative rounded-xl overflow-hidden border border-neutral-200"
-                style={{ height: "700px" }}
+                className="relative rounded-lg overflow-hidden border border-neutral-200"
+                style={{ height: "600px" }}
               >
                 <iframe
                   key={previewKey}
@@ -428,8 +384,8 @@ export default function EmbedPage() {
                 />
               </div>
 
-              <p className="text-xs text-neutral-500 mt-3 text-center">
-                Click the chat button to interact with the widget
+              <p className="text-xs text-neutral-400 mt-3 text-center">
+                Click the chat button to interact
               </p>
             </div>
           </div>

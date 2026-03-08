@@ -1,5 +1,5 @@
-// Base Button component
 import React, { memo } from "react";
+import IOSLoader from "./IOSLoader";
 
 import type { ButtonProps } from "@/interfaces/Button.interface";
 
@@ -18,25 +18,25 @@ const Button = memo(
       ref,
     ) => {
       const baseClasses =
-        "inline-flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none";
+        "inline-flex items-center justify-center font-medium transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/40 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none active:scale-[0.98]";
 
       const variants = {
         primary:
-          "bg-primary-600 hover:bg-primary-700 text-text-white shadow-lg shadow-primary-600/20 hover:shadow-xl hover:shadow-primary-600/30",
+          "bg-primary-600 hover:bg-primary-700 text-white rounded-lg shadow-sm hover:shadow-md",
         secondary:
-          "bg-neutral-200 hover:bg-neutral-300 text-text-primary border border-border-light",
+          "bg-neutral-100 hover:bg-neutral-200 text-neutral-700 border border-neutral-200 rounded-lg",
         outline:
-          "border border-primary-600 bg-transparent hover:bg-primary-50 text-primary-600 hover:text-primary-700",
+          "border border-neutral-300 bg-transparent hover:bg-primary-50 text-neutral-700 hover:text-primary-600 hover:border-primary-400 rounded-lg",
         ghost:
-          "hover:bg-bg-secondary hover:text-primary-600 text-text-secondary",
+          "hover:bg-neutral-100 text-neutral-600 hover:text-neutral-900 rounded-lg",
         destructive:
-          "bg-error-600 text-text-white hover:bg-error-700 shadow-lg shadow-error-600/20",
+          "bg-error-600 text-white hover:bg-error-700 rounded-lg shadow-sm",
       };
 
       const sizes = {
-        sm: "h-9 px-3 text-sm",
-        md: "h-10 py-2 px-4",
-        lg: "h-11 px-8",
+        sm: "h-8 px-3 text-sm gap-1.5",
+        md: "h-9 py-2 px-4 text-sm gap-2",
+        lg: "h-10 px-6 text-base gap-2",
       };
 
       const classes = `${baseClasses} ${variants[variant]} ${sizes[size]} ${className || ""}`;
@@ -48,7 +48,14 @@ const Button = memo(
           disabled={disabled || loading}
           {...props}
         >
-          {loading ? "Loading..." : children}
+          {loading ? (
+            <div className="flex items-center gap-2">
+              <IOSLoader size="sm" color={variant === "primary" || variant === "destructive" ? "white" : "primary"} />
+              <span>Loading...</span>
+            </div>
+          ) : (
+            children
+          )}
         </button>
       );
     },

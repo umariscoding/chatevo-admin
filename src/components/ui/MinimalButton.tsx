@@ -27,77 +27,38 @@ const MinimalButton = React.forwardRef<HTMLButtonElement, MinimalButtonProps>(
     },
     ref,
   ) => {
-    const baseClasses = `
-      inline-flex items-center justify-center rounded-lg font-medium
-      transition-all duration-200 focus:outline-none
-      disabled:opacity-50 disabled:cursor-not-allowed
-      ${fullWidth ? "w-full" : ""}
-    `;
+    const baseClasses =
+      "inline-flex items-center justify-center font-medium transition-all duration-150 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed";
 
-    const defaultVariants = {
-      primary: `
-        bg-primary-600 hover:bg-primary-700 text-text-white
-        focus:ring-2 focus:ring-primary-600/40 focus:ring-offset-1 focus:ring-offset-bg-primary
-        shadow-lg shadow-primary-600/20 hover:shadow-xl hover:shadow-primary-600/30
-      `,
-      secondary: `
-        bg-neutral-200 hover:bg-neutral-300 text-text-primary
-        focus:ring-2 focus:ring-primary-600/40 focus:ring-offset-1 focus:ring-offset-bg-primary
-        border border-border-light hover:border-border-medium
-      `,
-      ghost: `
-        bg-transparent hover:bg-bg-secondary text-text-secondary hover:text-text-primary
-        focus:ring-2 focus:ring-primary-600/40 focus:ring-offset-1 focus:ring-offset-bg-primary
-      `,
-      outline: `
-        bg-transparent border border-border-light hover:border-primary-600
-        text-text-secondary hover:text-primary-600 hover:bg-primary-50
-        focus:ring-2 focus:ring-primary-600/40 focus:ring-offset-1 focus:ring-offset-bg-primary
-      `,
+    const variants = {
+      primary:
+        "bg-primary-600 hover:bg-primary-700 text-white rounded-lg shadow-sm hover:shadow-md active:scale-[0.98]",
+      secondary:
+        "bg-neutral-100 hover:bg-neutral-200 text-neutral-700 rounded-lg border border-neutral-200 active:scale-[0.98]",
+      ghost:
+        "bg-transparent hover:bg-neutral-100 text-neutral-600 hover:text-neutral-900 rounded-lg",
+      outline:
+        "bg-transparent border border-neutral-300 hover:border-primary-400 text-neutral-700 hover:text-primary-600 hover:bg-primary-50 rounded-lg",
     };
-
-    const authVariants = {
-      primary: `
-        bg-primary-600 hover:bg-primary-700 text-text-white
-        focus:ring-2 focus:ring-primary-600/40 focus:ring-offset-1 focus:ring-offset-sidebar-bg
-        shadow-lg shadow-primary-600/30 hover:shadow-xl hover:shadow-primary-600/40
-      `,
-      secondary: `
-        bg-sidebar-hover hover:bg-sidebar-active text-sidebar-text
-        focus:ring-2 focus:ring-primary-600/40 focus:ring-offset-1 focus:ring-offset-sidebar-bg
-        border border-sidebar-border hover:border-neutral-600
-      `,
-      ghost: `
-        bg-transparent hover:bg-sidebar-hover text-sidebar-text hover:text-sidebar-text-hover
-        focus:ring-2 focus:ring-primary-600/40 focus:ring-offset-1 focus:ring-offset-sidebar-bg
-      `,
-      outline: `
-        bg-transparent border border-sidebar-border hover:border-primary-600
-        text-sidebar-text hover:text-sidebar-text-hover hover:bg-sidebar-hover
-        focus:ring-2 focus:ring-primary-600/40 focus:ring-offset-1 focus:ring-offset-sidebar-bg
-      `,
-    };
-
-    const variants = theme === "auth" ? authVariants : defaultVariants;
 
     const sizes = {
-      sm: "px-3 py-2 text-sm",
-      md: "px-6 py-3 text-base",
-      lg: "px-8 py-4 text-base",
+      sm: "px-3 py-1.5 text-sm gap-1.5",
+      md: "px-4 py-2.5 text-sm gap-2",
+      lg: "px-6 py-3 text-base gap-2",
     };
 
-    const classes = `${baseClasses} ${variants[variant]} ${sizes[size]} ${className}`;
+    const widthClass = fullWidth ? "w-full" : "";
 
     return (
       <button
         ref={ref}
-        className={classes}
+        className={`${baseClasses} ${variants[variant]} ${sizes[size]} ${widthClass} ${className}`}
         disabled={disabled || loading}
         {...props}
       >
         {loading ? (
-          <div className="flex items-center space-x-2">
-            <IOSLoader size="sm" color="white" />
+          <div className="flex items-center gap-2">
+            <IOSLoader size="sm" color={variant === "primary" ? "white" : "primary"} />
             <span>Loading...</span>
           </div>
         ) : (

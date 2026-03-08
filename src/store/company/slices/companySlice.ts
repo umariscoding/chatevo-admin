@@ -70,7 +70,6 @@ const companySlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    // Batch Update Settings
     builder
       .addCase(batchUpdateSettings.pending, (state) => {
         state.loading = true;

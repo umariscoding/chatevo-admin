@@ -57,7 +57,7 @@ export const loginCompany = createAsyncThunk(
   },
 );
 
-// Verify Company Token
+// Verify Company Token and fetch fresh company data
 export const verifyCompanyToken = createAsyncThunk(
   "companyAuth/verify",
   async (_, { rejectWithValue, getState }) => {
@@ -71,14 +71,30 @@ export const verifyCompanyToken = createAsyncThunk(
         throw new Error("No company token found");
       }
 
-      // Use axios directly to ensure we use the specific company token
-      const response = await axios.get(`${API_CONFIG.BASE_URL}/auth/verify`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
+      const headers = {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      };
+
+      // Verify token
+      const verifyRes = await axios.get(`${API_CONFIG.BASE_URL}/auth/verify`, {
+        headers,
       });
-      return response.data;
+
+      if (!verifyRes.data.valid) {
+        return verifyRes.data;
+      }
+
+      // Fetch fresh company data
+      const profileRes = await axios.get(
+        `${API_CONFIG.BASE_URL}/auth/company/profile`,
+        { headers },
+      );
+
+      return {
+        ...verifyRes.data,
+        company: profileRes.data.company,
+      };
     } catch (error: any) {
       return rejectWithValue(
         error.response?.data?.detail ||
@@ -136,6 +152,9 @@ const companyAuthSlice = createSlice({
     },
     updateCompanyInfo: (state, action: PayloadAction<Company>) => {
       state.company = action.payload;
+      if (typeof window !== "undefined") {
+        localStorage.setItem("company_data", JSON.stringify(action.payload));
+      }
     },
     // Load tokens and company data from storage
     loadFromStorage: (state) => {
@@ -240,7 +259,6 @@ const companyAuthSlice = createSlice({
         state.loading = false;
         state.isAuthenticated = action.payload.valid;
         if (!action.payload.valid) {
-          // Token invalid - clear everything
           state.company = null;
           state.tokens = null;
           state.isAuthenticated = false;
@@ -249,8 +267,16 @@ const companyAuthSlice = createSlice({
             localStorage.removeItem("company_refresh_token");
             localStorage.removeItem("company_data");
           }
+        } else if (action.payload.company) {
+          // Update with fresh company data from server
+          state.company = action.payload.company;
+          if (typeof window !== "undefined") {
+            localStorage.setItem(
+              "company_data",
+              JSON.stringify(action.payload.company),
+            );
+          }
         }
-        // Note: We don't update company data from verification - use stored data from login
       })
       .addCase(verifyCompanyToken.rejected, (state) => {
         state.loading = false;
