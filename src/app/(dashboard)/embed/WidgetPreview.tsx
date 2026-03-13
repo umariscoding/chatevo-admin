@@ -150,10 +150,7 @@ export default function WidgetPreview({
               if (data.type === "start") {
                 setChatId(data.chat_id);
               } else if (data.type === "chunk" && data.content) {
-                fullResponse += data.content
-                  .replace(/\\n/g, "\n")
-                  .replace(/\\r/g, "\r")
-                  .replace(/\\"/g, '"');
+                fullResponse += data.content;
 
                 const currentResponse = fullResponse;
                 if (!botMsgAdded) {
