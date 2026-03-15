@@ -13,14 +13,11 @@ import { updateCompanyInfo } from "@/store/company/slices/companyAuthSlice";
 import { Icons, IOSContentLoader, Toggle } from "@/components/ui";
 import { useSettings } from "@/hooks/useSettings";
 
-type Tab = "profile" | "chatbot";
-
 export default function SettingsPage() {
   const dispatch = useCompanyAppDispatch();
   const companyAuth = useCompanyAppSelector((state) => state.companyAuth);
   const { loading, error } = useCompanyAppSelector((state) => state.company);
 
-  const [activeTab, setActiveTab] = useState<Tab>("profile");
   const [saveSuccess, setSaveSuccess] = useState(false);
 
   const { formData, updateField, getChanges, markAsSaved, resetChanges } =
@@ -42,17 +39,8 @@ export default function SettingsPage() {
       if (changes.changedFields.has("chatbotTitle")) {
         updateData.chatbot_title = formData.chatbotTitle;
       }
-      if (changes.changedFields.has("chatbotDescription")) {
-        updateData.chatbot_description = formData.chatbotDescription;
-      }
       if (changes.changedFields.has("isPublished")) {
         updateData.is_published = formData.isPublished;
-      }
-      if (changes.changedFields.has("defaultModel")) {
-        updateData.default_model = formData.defaultModel;
-      }
-      if (changes.changedFields.has("systemPrompt")) {
-        updateData.system_prompt = formData.systemPrompt;
       }
 
       const result = await dispatch(batchUpdateSettings(updateData)).unwrap();
@@ -120,42 +108,28 @@ export default function SettingsPage() {
       : `${formData.slug}.${CHAT_DOMAIN}`;
   };
 
-  const tabs: { id: Tab; label: string; icon: React.ReactNode }[] = [
-    {
-      id: "profile",
-      label: "Profile",
-      icon: <Icons.User className="h-4 w-4" />,
-    },
-    {
-      id: "chatbot",
-      label: "Chatbot",
-      icon: <Icons.Bot className="h-4 w-4" />,
-    },
-  ];
-
   return (
-    <div className="max-w-3xl mx-auto">
-      {/* Header */}
-      <div className="mb-8 flex items-start justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-neutral-900">Settings</h1>
-          <p className="text-sm text-neutral-500 mt-1">
-            Manage your chatbot configuration and preferences
-          </p>
-        </div>
+    <div className="max-w-2xl mx-auto pb-16">
+
+      {/* ── Page header ── */}
+      <div className="flex items-center justify-between mb-6 pt-1">
+        <h1 className="text-xl font-semibold text-neutral-900 tracking-tight">
+          Settings
+        </h1>
+
         {changes.hasChanges && (
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-2">
             <button
               onClick={() => resetChanges()}
               disabled={loading}
-              className="px-4 py-2 text-sm font-medium text-neutral-500 hover:text-neutral-700 border border-neutral-200 rounded-lg transition-all disabled:opacity-50 hover:bg-neutral-50"
+              className="px-3.5 py-1.5 text-sm font-medium text-neutral-500 hover:text-neutral-700 rounded-lg border border-neutral-200 hover:bg-neutral-50 transition-all disabled:opacity-40"
             >
               Discard
             </button>
             <button
               onClick={handleSave}
               disabled={loading}
-              className="px-5 py-2 text-sm font-semibold text-white bg-primary-600 hover:bg-primary-500 rounded-lg transition-all disabled:opacity-50 flex items-center gap-2 min-w-[80px] justify-center"
+              className="px-4 py-1.5 text-sm font-semibold text-white bg-primary-600 hover:bg-primary-500 rounded-lg transition-all disabled:opacity-40 flex items-center gap-2 min-w-[68px] justify-center"
             >
               {loading ? (
                 <div className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -167,285 +141,240 @@ export default function SettingsPage() {
         )}
       </div>
 
-      {/* Notifications */}
+      {/* ── Toasts ── */}
       {error && (
-        <div className="mb-5 flex items-center gap-3 bg-red-50 border border-red-200 rounded-xl p-4">
-          <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-red-100 flex items-center justify-center">
-            <Icons.AlertCircle className="h-4 w-4 text-red-600" />
-          </div>
+        <div className="mb-4 flex items-center gap-3 bg-red-50 border border-red-200 rounded-xl px-4 py-3">
+          <Icons.AlertCircle className="h-4 w-4 text-red-500 flex-shrink-0" />
           <p className="text-sm text-red-700 flex-1">
             {typeof error === "string" ? error : "Something went wrong."}
           </p>
           <button
             onClick={() => dispatch(clearError())}
-            className="text-red-400 hover:text-red-600 transition-colors p-1 rounded-lg hover:bg-red-100"
+            className="text-red-400 hover:text-red-600 transition-colors"
           >
-            <Icons.Close className="h-4 w-4" />
+            <Icons.Close className="h-3.5 w-3.5" />
           </button>
         </div>
       )}
 
       {saveSuccess && (
-        <div className="mb-5 flex items-center gap-3 bg-emerald-50 border border-emerald-200 rounded-xl p-4">
-          <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center">
-            <Icons.CheckCircle className="h-4 w-4 text-emerald-600" />
-          </div>
-          <p className="text-sm text-emerald-700 font-medium">
-            Settings saved successfully
-          </p>
+        <div className="mb-4 flex items-center gap-3 bg-primary-50 border border-primary-200 rounded-xl px-4 py-3">
+          <Icons.CheckCircle className="h-4 w-4 text-primary-500 flex-shrink-0" />
+          <p className="text-sm text-primary-700 font-medium">Settings saved</p>
         </div>
       )}
 
-      {/* Tabs */}
-      <div className="flex justify-center mb-8">
-        <div className="inline-flex items-center border border-neutral-200 bg-white rounded-xl p-1 gap-0.5">
-          {tabs.map((tab) => {
-            const isActive = activeTab === tab.id;
-            return (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-2 px-5 py-2 text-[13px] font-medium rounded-[10px] transition-all duration-200 ${
-                  isActive
-                    ? "bg-primary-600 text-white shadow-sm shadow-primary-600/25"
-                    : "text-neutral-500 hover:text-neutral-800 hover:bg-neutral-50"
+      {/* ══════════════════════════════════════
+          1. PUBLISHING
+          ══════════════════════════════════════ */}
+      <div className="mb-4">
+        <div
+          className={`relative overflow-hidden rounded-2xl border transition-all duration-500 ${
+            formData.isPublished
+              ? "border-primary-200 bg-gradient-to-br from-primary-50 to-white"
+              : "border-neutral-200 bg-white"
+          }`}
+        >
+          {formData.isPublished && (
+            <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-primary-400 via-primary-600 to-primary-400" />
+          )}
+
+          <div className="px-5 py-4 flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              {/* Status icon */}
+              <div
+                className={`relative w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-500 ${
+                  formData.isPublished
+                    ? "bg-primary-600 shadow-lg shadow-primary-600/25"
+                    : "bg-neutral-100"
                 }`}
               >
-                {tab.icon}
-                {tab.label}
-              </button>
-            );
-          })}
+                {formData.isPublished && (
+                  <div className="absolute inset-0 rounded-xl bg-primary-500 animate-ping opacity-20" />
+                )}
+                <Icons.Zap
+                  className={`h-4 w-4 relative z-10 transition-colors duration-300 ${
+                    formData.isPublished ? "text-white" : "text-neutral-400"
+                  }`}
+                />
+              </div>
+
+              <div>
+                <div className="flex items-center gap-2.5">
+                  <span className="text-sm font-bold text-neutral-900">
+                    {formData.isPublished ? "Live" : "Private"}
+                  </span>
+                  {formData.isPublished && (
+                    <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-primary-100 text-primary-700 text-[10px] font-semibold uppercase tracking-wider">
+                      <span className="relative flex h-1.5 w-1.5">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-500 opacity-75" />
+                        <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-primary-600" />
+                      </span>
+                      Online
+                    </span>
+                  )}
+                </div>
+                <p className="text-xs text-neutral-500 mt-0.5">
+                  {formData.isPublished
+                    ? "Your chatbot is publicly accessible"
+                    : "Toggle to make your chatbot public"}
+                </p>
+              </div>
+            </div>
+
+            <Toggle
+              checked={formData.isPublished}
+              onChange={(checked) => updateField("isPublished", checked)}
+              disabled={!formData.slug}
+              variant="success"
+              size="md"
+            />
+          </div>
+
+          {/* No slug warning */}
+          {!formData.slug && (
+            <div className="px-5 pb-4">
+              <div className="flex items-center gap-2 bg-amber-50 border border-amber-200/80 rounded-xl px-3.5 py-2.5">
+                <Icons.AlertCircle className="h-3.5 w-3.5 text-amber-500 flex-shrink-0" />
+                <p className="text-xs text-amber-700">
+                  Set a chatbot slug below before publishing
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* Public URLs */}
+          {formData.slug && formData.isPublished && (
+            <div className="px-5 pb-4">
+              <div className="grid grid-cols-2 gap-2">
+                <button
+                  onClick={handleVisitPublicChatbot}
+                  className="flex items-center justify-between bg-white hover:bg-primary-50 border border-primary-100 hover:border-primary-200 px-3.5 py-3 rounded-xl group transition-all text-left"
+                >
+                  <div>
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-neutral-400">
+                      Path
+                    </p>
+                    <p className="text-xs font-mono text-primary-600 font-semibold mt-0.5 truncate max-w-[120px]">
+                      /{formData.slug}
+                    </p>
+                  </div>
+                  <Icons.ExternalLink className="h-3.5 w-3.5 text-neutral-300 group-hover:text-primary-500 transition-colors flex-shrink-0" />
+                </button>
+                <button
+                  onClick={handleVisitSubdomain}
+                  className="flex items-center justify-between bg-white hover:bg-primary-50 border border-primary-100 hover:border-primary-200 px-3.5 py-3 rounded-xl group transition-all text-left"
+                >
+                  <div>
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-neutral-400">
+                      Subdomain
+                    </p>
+                    <p className="text-xs font-mono text-primary-600 font-semibold mt-0.5 truncate max-w-[120px]">
+                      {formData.slug}.
+                    </p>
+                  </div>
+                  <Icons.ExternalLink className="h-3.5 w-3.5 text-neutral-300 group-hover:text-primary-500 transition-colors flex-shrink-0" />
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
-      {/* === PROFILE TAB === */}
-      {activeTab === "profile" && (
-        <div className="bg-white rounded-xl border border-neutral-200 overflow-hidden">
-          <div className="px-6 py-4 border-b border-neutral-100">
-            <h2 className="text-sm font-semibold text-neutral-900">
-              Company Information
-            </h2>
-            <p className="text-xs text-neutral-500 mt-0.5">
-              Your account details
-            </p>
-          </div>
-          <div className="divide-y divide-neutral-100">
-            <div className="px-6 py-4 flex items-center justify-between">
-              <div>
-                <label className="text-xs font-medium text-neutral-400 uppercase tracking-wider">
-                  Company Name
-                </label>
-                <p className="mt-1 text-sm font-medium text-neutral-900">
-                  {formData.name}
-                </p>
+      {/* ══════════════════════════════════════
+          2. CHATBOT
+          ══════════════════════════════════════ */}
+      <div className="mb-4">
+        <div className="bg-white rounded-2xl border border-neutral-200 overflow-hidden">
+          {/* Section label */}
+          <div className="px-5 pt-5 pb-4">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-6 h-6 rounded-md bg-neutral-100 flex items-center justify-center">
+                <Icons.Bot className="h-3.5 w-3.5 text-neutral-500" />
               </div>
-              <div className="w-8 h-8 rounded-lg bg-primary-50 flex items-center justify-center">
-                <span className="text-xs font-bold text-primary-600">
-                  {formData.name?.charAt(0)?.toUpperCase()}
-                </span>
-              </div>
+              <span className="text-xs font-bold uppercase tracking-widest text-neutral-400">
+                Chatbot
+              </span>
             </div>
-            <div className="px-6 py-4">
-              <label className="text-xs font-medium text-neutral-400 uppercase tracking-wider">
-                Email
+
+            {/* Title */}
+            <div className="mb-4">
+              <label className="text-xs font-semibold text-neutral-600 mb-2 block">
+                Display Title
               </label>
-              <p className="mt-1 text-sm font-medium text-neutral-900">
-                {formData.email}
-              </p>
+              <input
+                type="text"
+                value={formData.chatbotTitle}
+                onChange={(e) => updateField("chatbotTitle", e.target.value)}
+                placeholder="Customer Support Assistant"
+                className="w-full rounded-xl border border-neutral-200 bg-neutral-50 text-neutral-900 placeholder-neutral-400 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400 focus:bg-white transition-all"
+              />
             </div>
-          </div>
-        </div>
-      )}
 
-      {/* === CHATBOT TAB === */}
-      {activeTab === "chatbot" && (
-        <div className="space-y-6">
-          {/* Chatbot Info Card */}
-          <div className="bg-white rounded-xl border border-neutral-200 overflow-hidden">
-            <div className="px-6 py-4 border-b border-neutral-100">
-              <h2 className="text-sm font-semibold text-neutral-900">
-                Chatbot Identity
-              </h2>
-              <p className="text-xs text-neutral-500 mt-0.5">
-                How your chatbot appears to visitors
-              </p>
-            </div>
-            <div className="px-6 py-5 space-y-5">
-              <div>
-                <label className="text-xs font-medium text-neutral-500 mb-1.5 block">
-                  Title
-                </label>
-                <input
-                  type="text"
-                  value={formData.chatbotTitle}
-                  onChange={(e) => updateField("chatbotTitle", e.target.value)}
-                  placeholder="Customer Support Assistant"
-                  className="w-full rounded-lg border border-neutral-200 bg-neutral-50/50 text-neutral-900 placeholder-neutral-400 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400 focus:bg-white transition-all"
-                />
-              </div>
-
-              <div>
-                <label className="text-xs font-medium text-neutral-500 mb-1.5 block">
-                  Description
-                </label>
-                <textarea
-                  value={formData.chatbotDescription}
-                  onChange={(e) =>
-                    updateField("chatbotDescription", e.target.value)
-                  }
-                  placeholder="Brief description of what your chatbot can help with..."
-                  rows={3}
-                  className="w-full rounded-lg border border-neutral-200 bg-neutral-50/50 text-neutral-900 placeholder-neutral-400 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400 focus:bg-white resize-none transition-all"
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Slug Card */}
-          <div className="bg-white rounded-xl border border-neutral-200 overflow-hidden">
-            <div className="px-6 py-4 border-b border-neutral-100">
-              <h2 className="text-sm font-semibold text-neutral-900">
-                Public URL
-              </h2>
-              <p className="text-xs text-neutral-500 mt-0.5">
-                Your chatbot&apos;s unique address
-              </p>
-            </div>
-            <div className="px-6 py-5">
-              <label className="text-xs font-medium text-neutral-500 mb-1.5 block">
-                Slug
+            {/* Slug */}
+            <div>
+              <label className="text-xs font-semibold text-neutral-600 mb-2 block">
+                URL Slug
               </label>
-              <div className="flex items-center gap-0">
-                <span className="inline-flex items-center px-3.5 py-2.5 rounded-l-lg border border-r-0 border-neutral-200 bg-neutral-100 text-xs text-neutral-500 font-mono">
-                  yoursite.com/
+              <div className="flex items-stretch rounded-xl border border-neutral-200 bg-neutral-50 focus-within:border-primary-400 focus-within:ring-2 focus-within:ring-primary-500/20 focus-within:bg-white transition-all overflow-hidden">
+                <span className="inline-flex items-center px-3.5 border-r border-neutral-200 text-xs text-neutral-400 font-mono bg-neutral-100 select-none whitespace-nowrap">
+                  chatevo.vercel.app/
                 </span>
                 <input
                   type="text"
                   value={formData.slug}
                   onChange={(e) => updateField("slug", e.target.value)}
                   placeholder="my-company"
-                  className="flex-1 rounded-r-lg border border-neutral-200 bg-neutral-50/50 text-neutral-900 placeholder-neutral-400 px-3.5 py-2.5 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400 focus:bg-white transition-all"
+                  className="flex-1 bg-transparent text-neutral-900 placeholder-neutral-400 px-3.5 py-2.5 text-sm font-mono focus:outline-none"
                 />
               </div>
-              <p className="text-xs text-neutral-400 mt-2">
-                Lowercase letters, numbers, and hyphens only (3-50 characters)
+              <p className="text-xs text-neutral-400 mt-1.5">
+                Lowercase letters, numbers, hyphens · 3–50 chars
               </p>
             </div>
-          </div>
-
-          {/* Publishing Card */}
-          <div className="bg-white rounded-xl border border-neutral-200 overflow-hidden">
-            <div className="px-6 py-4 border-b border-neutral-100">
-              <h2 className="text-sm font-semibold text-neutral-900">
-                Publishing
-              </h2>
-              <p className="text-xs text-neutral-500 mt-0.5">
-                Control your chatbot&apos;s visibility
-              </p>
-            </div>
-
-            <div className="px-6 py-4 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div
-                  className={`w-9 h-9 rounded-[10px] flex items-center justify-center transition-all duration-300 ${
-                    formData.isPublished
-                      ? "bg-emerald-500/10 shadow-sm shadow-emerald-500/10"
-                      : "bg-neutral-100"
-                  }`}
-                >
-                  <Icons.Globe
-                    className={`h-4 w-4 transition-colors duration-300 ${
-                      formData.isPublished
-                        ? "text-emerald-600"
-                        : "text-neutral-400"
-                    }`}
-                  />
-                </div>
-                <div>
-                  <div className="flex items-center gap-2">
-                    <p className="text-sm font-medium text-neutral-900">
-                      {formData.isPublished ? "Live" : "Not published"}
-                    </p>
-                    {formData.isPublished && (
-                      <span className="flex items-center gap-1">
-                        <span className="relative flex h-2 w-2">
-                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                          <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
-                        </span>
-                      </span>
-                    )}
-                  </div>
-                  <p className="text-xs text-neutral-500 mt-0.5">
-                    {formData.isPublished
-                      ? "Your chatbot is publicly accessible"
-                      : "Toggle to make your chatbot public"}
-                  </p>
-                </div>
-              </div>
-              <Toggle
-                checked={formData.isPublished}
-                onChange={(checked) => updateField("isPublished", checked)}
-                disabled={!formData.slug}
-                variant="success"
-                size="md"
-              />
-            </div>
-
-            {!formData.slug && (
-              <div className="px-6 pb-4">
-                <div className="flex items-start gap-2.5 bg-amber-50 border border-amber-200 rounded-lg p-3">
-                  <Icons.AlertCircle className="h-4 w-4 text-amber-600 flex-shrink-0 mt-0.5" />
-                  <p className="text-sm text-amber-700">
-                    Set a slug above before publishing
-                  </p>
-                </div>
-              </div>
-            )}
-
-            {formData.slug && formData.isPublished && (
-              <div className="px-6 pb-5 pt-1 space-y-2">
-                <p className="text-xs font-medium text-neutral-400 uppercase tracking-wider mb-2">
-                  Public URLs
-                </p>
-                <button
-                  onClick={handleVisitPublicChatbot}
-                  className="w-full flex items-center justify-between bg-neutral-50 hover:bg-neutral-100 px-4 py-3 rounded-lg border border-neutral-200 group transition-all text-left"
-                >
-                  <div>
-                    <p className="text-[10px] uppercase tracking-wider text-neutral-400 font-medium">
-                      Path
-                    </p>
-                    <p className="text-sm font-mono text-neutral-700 mt-0.5">
-                      {chatBaseUrl}/
-                      <span className="text-primary-600 font-semibold">
-                        {formData.slug}
-                      </span>
-                    </p>
-                  </div>
-                  <Icons.ExternalLink className="h-4 w-4 text-neutral-400 group-hover:text-primary-600 transition-colors" />
-                </button>
-                <button
-                  onClick={handleVisitSubdomain}
-                  className="w-full flex items-center justify-between bg-neutral-50 hover:bg-neutral-100 px-4 py-3 rounded-lg border border-neutral-200 group transition-all text-left"
-                >
-                  <div>
-                    <p className="text-[10px] uppercase tracking-wider text-neutral-400 font-medium">
-                      Subdomain
-                    </p>
-                    <p className="text-sm font-mono text-neutral-700 mt-0.5">
-                      {getSubdomainUrl()}
-                    </p>
-                  </div>
-                  <Icons.ExternalLink className="h-4 w-4 text-neutral-400 group-hover:text-primary-600 transition-colors" />
-                </button>
-              </div>
-            )}
           </div>
         </div>
-      )}
+      </div>
 
-      <div className="h-8" />
+      {/* ══════════════════════════════════════
+          3. ACCOUNT
+          ══════════════════════════════════════ */}
+      <div>
+        <div className="bg-white rounded-2xl border border-neutral-200 overflow-hidden">
+          <div className="px-5 pt-5 pb-4">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-6 h-6 rounded-md bg-neutral-100 flex items-center justify-center">
+                <Icons.User className="h-3.5 w-3.5 text-neutral-500" />
+              </div>
+              <span className="text-xs font-bold uppercase tracking-widest text-neutral-400">
+                Account
+              </span>
+            </div>
+
+            <div className="flex items-center gap-4">
+              {/* Avatar */}
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center flex-shrink-0 shadow-md shadow-primary-500/20">
+                <span className="text-base font-bold text-white">
+                  {formData.name?.charAt(0)?.toUpperCase()}
+                </span>
+              </div>
+
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-bold text-neutral-900 truncate">
+                  {formData.name}
+                </p>
+                <p className="text-xs text-neutral-400 mt-0.5 truncate">
+                  {formData.email}
+                </p>
+              </div>
+
+              <span className="text-[10px] font-semibold uppercase tracking-wider text-neutral-400 bg-neutral-100 px-2.5 py-1 rounded-lg flex-shrink-0">
+                Admin
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
