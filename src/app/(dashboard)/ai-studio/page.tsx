@@ -29,7 +29,7 @@ const MODEL_OPTIONS = [
     provider: "Groq",
     desc: "Fast, great for most use cases",
     speed: "~200 tok/s",
-    tag: "Recommended",
+    tag: null,
   },
   {
     id: "Llama-large",
@@ -37,7 +37,7 @@ const MODEL_OPTIONS = [
     provider: "Groq",
     desc: "Handles complex queries better",
     speed: "~90 tok/s",
-    tag: null,
+    tag: "Recommended",
   },
   {
     id: "OpenAI",
