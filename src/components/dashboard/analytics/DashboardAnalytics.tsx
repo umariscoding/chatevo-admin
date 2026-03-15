@@ -52,15 +52,21 @@ const StatCard: React.FC<StatCardProps> = ({
 
       {/* Value */}
       <div className="space-y-0.5">
-        <p className="text-2xl font-bold text-slate-900 tracking-[-0.03em] leading-none">
-          {loading ? (
-            <span className="inline-block w-16 h-7 rounded-lg bg-slate-100 animate-pulse" />
-          ) : (
-            Number(value).toLocaleString()
-          )}
-        </p>
-        <p className="text-sm font-medium text-slate-700 mt-1.5">{label}</p>
-        <p className="text-[11px] text-slate-400">{sublabel}</p>
+        {loading ? (
+          <div className="space-y-2">
+            <div className="h-7 w-16 rounded-lg bg-slate-100 animate-pulse" />
+            <div className="h-3.5 w-24 rounded bg-slate-100 animate-pulse mt-1.5" />
+            <div className="h-3 w-16 rounded bg-slate-100 animate-pulse" />
+          </div>
+        ) : (
+          <>
+            <p className="text-2xl font-bold text-slate-900 tracking-[-0.03em] leading-none">
+              {Number(value).toLocaleString()}
+            </p>
+            <p className="text-sm font-medium text-slate-700 mt-1.5">{label}</p>
+            <p className="text-[11px] text-slate-400">{sublabel}</p>
+          </>
+        )}
       </div>
 
       {/* Bottom accent line on hover */}
