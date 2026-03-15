@@ -89,39 +89,35 @@ export default function SettingsPage() {
 
   const changes = getChanges();
 
+  const CHAT_DOMAIN = "chatevo.vercel.app";
+  const isLocalhost =
+    typeof window !== "undefined" &&
+    (window.location.hostname === "localhost" ||
+      window.location.hostname === "127.0.0.1");
+  const chatBaseUrl = isLocalhost
+    ? "http://localhost:5173"
+    : `https://${CHAT_DOMAIN}`;
+
   const handleVisitPublicChatbot = () => {
-    if (formData.slug && typeof window !== "undefined") {
-      window.open(`${window.location.origin}/${formData.slug}`, "_blank");
+    if (formData.slug) {
+      window.open(`${chatBaseUrl}/${formData.slug}`, "_blank");
     }
   };
 
   const handleVisitSubdomain = () => {
-    if (typeof window !== "undefined" && formData.slug) {
-      const hostname = window.location.hostname;
-      const port = window.location.port ? `:${window.location.port}` : "";
-      const protocol = window.location.protocol;
-      let url;
-      if (hostname === "localhost" || hostname === "127.0.0.1") {
-        url = `${protocol}//${formData.slug}.localhost${port}`;
-      } else {
-        const parts = hostname.split(".");
-        const base = parts.length >= 2 ? parts.slice(-2).join(".") : hostname;
-        url = `${protocol}//${formData.slug}.${base}${port}`;
-      }
+    if (formData.slug) {
+      const url = isLocalhost
+        ? `http://${formData.slug}.localhost:5173`
+        : `https://${formData.slug}.${CHAT_DOMAIN}`;
       window.open(url, "_blank");
     }
   };
 
   const getSubdomainUrl = () => {
-    if (typeof window === "undefined" || !formData.slug) return "";
-    const hostname = window.location.hostname;
-    const port = window.location.port ? `:${window.location.port}` : "";
-    if (hostname === "localhost" || hostname === "127.0.0.1") {
-      return `${formData.slug}.localhost${port}`;
-    }
-    const parts = hostname.split(".");
-    const base = parts.length >= 2 ? parts.slice(-2).join(".") : hostname;
-    return `${formData.slug}.${base}${port}`;
+    if (!formData.slug) return "";
+    return isLocalhost
+      ? `${formData.slug}.localhost:5173`
+      : `${formData.slug}.${CHAT_DOMAIN}`;
   };
 
   const tabs: { id: Tab; label: string; icon: React.ReactNode }[] = [
@@ -421,10 +417,7 @@ export default function SettingsPage() {
                       Path
                     </p>
                     <p className="text-sm font-mono text-neutral-700 mt-0.5">
-                      {typeof window !== "undefined"
-                        ? window.location.origin
-                        : "https://yoursite.com"}
-                      /
+                      {chatBaseUrl}/
                       <span className="text-primary-600 font-semibold">
                         {formData.slug}
                       </span>
