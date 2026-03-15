@@ -48,48 +48,90 @@ function SetupRequiredBanner({
   isPublished?: boolean;
 }) {
   const router = useRouter();
+  const steps = [];
+
+  if (!slug) steps.push({ title: "Set a company slug", description: "Create a unique URL for your chatbot" });
+  if (!isPublished) steps.push({ title: "Publish your chatbot", description: "Make it publicly accessible" });
+
+  const totalSteps = steps.length;
 
   return (
-    <div className="mb-6 bg-white rounded-xl border border-neutral-200 overflow-hidden">
-      <div className="px-6 py-5 flex items-start gap-4">
-        <div className="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center flex-shrink-0">
-          <Icons.AlertCircle className="h-5 w-5 text-amber-600" />
-        </div>
-        <div className="flex-1">
-          <h3 className="text-sm font-semibold text-neutral-900">
-            Setup Required
-          </h3>
-          <p className="text-sm text-neutral-500 mt-1">
-            Complete the following steps in Settings to enable your embed widget:
-          </p>
-          <ul className="mt-3 space-y-2">
-            {!slug && (
-              <li className="flex items-center gap-2 text-sm text-neutral-700">
-                <span className="w-5 h-5 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0">
-                  <span className="text-[10px] font-bold text-amber-600">1</span>
+    <div className="mb-8">
+      {/* Premium card with subtle depth */}
+      <div className="relative overflow-hidden rounded-2xl bg-white border border-neutral-200 shadow-sm">
+        {/* Accent bar at top */}
+        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary-600 via-primary-500 to-primary-600" />
+
+        {/* Subtle background pattern */}
+        <div className="absolute inset-0 opacity-[0.02]" style={{
+          backgroundImage: `radial-gradient(circle at 20% 80%, currentColor 1px, transparent 1px)`,
+          backgroundSize: '40px 40px'
+        }} />
+
+        <div className="relative px-8 py-10">
+          <div className="flex items-start gap-8">
+            {/* Left: Icon and heading */}
+            <div className="flex-shrink-0">
+              <div className="relative">
+                {/* Subtle glow */}
+                <div className="absolute -inset-3 bg-primary-500/10 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="relative w-14 h-14 rounded-xl bg-gradient-to-br from-primary-500/20 to-primary-600/20 flex items-center justify-center border border-primary-500/30 backdrop-blur-sm">
+                  <Icons.CheckCircle className="h-7 w-7 text-primary-600" />
+                </div>
+              </div>
+            </div>
+
+            {/* Center: Content */}
+            <div className="flex-1 min-w-0">
+              <div className="mb-1">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary-50 border border-primary-200">
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary-600" />
+                  <span className="text-xs font-medium text-primary-700">Setup Required</span>
                 </span>
-                Set a company slug
-              </li>
-            )}
-            {!isPublished && (
-              <li className="flex items-center gap-2 text-sm text-neutral-700">
-                <span className="w-5 h-5 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0">
-                  <span className="text-[10px] font-bold text-amber-600">
-                    {!slug ? "2" : "1"}
-                  </span>
+              </div>
+
+              <h3 className="text-xl font-semibold text-neutral-900 mt-3 mb-2">
+                Complete {totalSteps === 1 ? 'one step' : `${totalSteps} steps`} to go live
+              </h3>
+              <p className="text-sm text-neutral-600 max-w-xl mb-6">
+                Your embed widget is almost ready. Just {totalSteps === 1 ? 'finish one final step' : 'complete these quick steps'} in Settings to start collecting conversations.
+              </p>
+
+              {/* Steps - Clean checklist style */}
+              <div className="space-y-2.5 mb-6">
+                {steps.map((step, idx) => (
+                  <div key={idx} className="flex items-center gap-3 group">
+                    <div className="flex-shrink-0 flex items-center justify-center">
+                      <div className="w-6 h-6 rounded-full bg-primary-100 border border-primary-300 flex items-center justify-center">
+                        <span className="text-xs font-bold text-primary-700">{idx + 1}</span>
+                      </div>
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-sm font-medium text-neutral-900">{step.title}</p>
+                      <p className="text-xs text-neutral-500">{step.description}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Right: CTA Button */}
+            <div className="flex-shrink-0">
+              <button
+                onClick={() => router.push("/settings")}
+                className="relative group inline-flex items-center gap-2 px-6 py-3.5 bg-primary-600 hover:bg-primary-700 active:bg-primary-800 text-white font-semibold rounded-xl transition-all duration-200 shadow-lg shadow-primary-600/20 hover:shadow-primary-600/40 active:scale-[0.98] whitespace-nowrap"
+              >
+                {/* Subtle shine effect on hover */}
+                <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-10 transition-opacity duration-300" />
+
+                <span className="relative flex items-center gap-2">
+                  Go to Settings
+                  <Icons.ChevronRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform duration-200" />
                 </span>
-                Publish your chatbot
-              </li>
-            )}
-          </ul>
+              </button>
+            </div>
+          </div>
         </div>
-        <button
-          onClick={() => router.push("/settings")}
-          className="flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-primary-700 bg-primary-50 hover:bg-primary-100 rounded-lg transition-all flex-shrink-0"
-        >
-          Go to Settings
-          <Icons.ChevronRight className="h-4 w-4" />
-        </button>
       </div>
     </div>
   );
