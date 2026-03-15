@@ -11,6 +11,9 @@ export interface Company {
   is_published: boolean;
   chatbot_title?: string;
   chatbot_description?: string;
+  default_model?: string;
+  system_prompt?: string;
+  tone?: string;
   created_at: string;
 }
 

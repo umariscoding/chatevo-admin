@@ -25,8 +25,8 @@ export const ROUTES = {
   CHAT_DETAIL: "/chat/[chatId]",
 
   // Knowledge Base routes
-  KNOWLEDGE_BASE: "/knowledge-base",
-  KNOWLEDGE_BASE_UPLOAD: "/knowledge-base/upload",
+  KNOWLEDGE_BASE: "/ai-studio",
+  KNOWLEDGE_BASE_UPLOAD: "/ai-studio/upload",
 
   // Public routes
   PUBLIC_CHATBOT: "/[slug]",

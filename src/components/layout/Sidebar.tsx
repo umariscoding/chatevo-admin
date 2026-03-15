@@ -27,9 +27,9 @@ const getNavigationSections = (): NavigationSection[] => [
     title: "Management",
     items: [
       {
-        name: "Knowledge Base",
-        href: "/knowledge-base",
-        icon: Icons.Document,
+        name: "AI Studio",
+        href: "/ai-studio",
+        icon: Icons.Brain,
         allowedUserTypes: ["company"],
       },
       {

@@ -8,6 +8,11 @@ export interface SettingsFormData {
   chatbotTitle: string;
   chatbotDescription: string;
 
+  // AI Configuration
+  defaultModel: string;
+  systemPrompt: string;
+  tone: string;
+
   // Publishing
   isPublished: boolean;
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import { useCompanyAppSelector } from "@/hooks/company/useCompanyAuth";
 import { useEmbedSettings } from "@/hooks/useEmbedSettings";
 import { Icons, IOSContentLoader } from "@/components/ui";
@@ -38,6 +39,61 @@ const BUTTON_ICON_DEFS: { value: ButtonIconType; label: string; paths: React.Rea
   { value: "help", label: "Help", paths: <><circle cx="12" cy="12" r="10" /><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" /><line x1="12" y1="17" x2="12.01" y2="17" /></> },
   { value: "robot", label: "Robot", paths: <><rect x="3" y="11" width="18" height="10" rx="2" /><circle cx="12" cy="5" r="2" /><path d="M12 7v4" /><line x1="8" y1="16" x2="8" y2="16" /><line x1="16" y1="16" x2="16" y2="16" /></> },
 ];
+
+function SetupRequiredBanner({
+  slug,
+  isPublished,
+}: {
+  slug?: string | null;
+  isPublished?: boolean;
+}) {
+  const router = useRouter();
+
+  return (
+    <div className="mb-6 bg-white rounded-xl border border-neutral-200 overflow-hidden">
+      <div className="px-6 py-5 flex items-start gap-4">
+        <div className="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center flex-shrink-0">
+          <Icons.AlertCircle className="h-5 w-5 text-amber-600" />
+        </div>
+        <div className="flex-1">
+          <h3 className="text-sm font-semibold text-neutral-900">
+            Setup Required
+          </h3>
+          <p className="text-sm text-neutral-500 mt-1">
+            Complete the following steps in Settings to enable your embed widget:
+          </p>
+          <ul className="mt-3 space-y-2">
+            {!slug && (
+              <li className="flex items-center gap-2 text-sm text-neutral-700">
+                <span className="w-5 h-5 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0">
+                  <span className="text-[10px] font-bold text-amber-600">1</span>
+                </span>
+                Set a company slug
+              </li>
+            )}
+            {!isPublished && (
+              <li className="flex items-center gap-2 text-sm text-neutral-700">
+                <span className="w-5 h-5 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0">
+                  <span className="text-[10px] font-bold text-amber-600">
+                    {!slug ? "2" : "1"}
+                  </span>
+                </span>
+                Publish your chatbot
+              </li>
+            )}
+          </ul>
+        </div>
+        <button
+          onClick={() => router.push("/settings")}
+          className="flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-primary-700 bg-primary-50 hover:bg-primary-100 rounded-lg transition-all flex-shrink-0"
+        >
+          Go to Settings
+          <Icons.ChevronRight className="h-4 w-4" />
+        </button>
+      </div>
+    </div>
+  );
+}
 
 export default function EmbedPage() {
   const companyAuth = useCompanyAppSelector((state) => state.companyAuth);
@@ -89,18 +145,7 @@ export default function EmbedPage() {
 
       {/* Requirements Warning */}
       {(!slug || !isPublished) && (
-        <div className="mb-6 flex items-start gap-2.5 bg-warning-50 border border-warning-200 rounded-lg p-3">
-          <Icons.AlertCircle className="h-4 w-4 text-warning-600 flex-shrink-0 mt-0.5" />
-          <div>
-            <p className="text-sm font-medium text-warning-800 mb-1">
-              Setup Required
-            </p>
-            <ul className="text-sm text-warning-700 space-y-0.5">
-              {!slug && <li>Set a company slug in Settings</li>}
-              {!isPublished && <li>Publish your chatbot in Settings</li>}
-            </ul>
-          </div>
-        </div>
+        <SetupRequiredBanner slug={slug} isPublished={isPublished} />
       )}
 
       {slug && isPublished && (

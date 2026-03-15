@@ -37,6 +37,15 @@ import {
   Code,
   Copy,
   CheckCheck,
+  Bot,
+  Cpu,
+  ChevronRight,
+  ExternalLink,
+  RotateCcw,
+  Sparkles,
+  Database,
+  Brain,
+  Terminal,
 } from "lucide-react";
 
 // Icon component props interface
@@ -204,5 +213,41 @@ export const Icons = {
 
   CheckCheck: ({ className = "h-5 w-5", size }: IconProps) => (
     <CheckCheck className={className} size={size} />
+  ),
+
+  Bot: ({ className = "h-5 w-5", size }: IconProps) => (
+    <Bot className={className} size={size} />
+  ),
+
+  Cpu: ({ className = "h-5 w-5", size }: IconProps) => (
+    <Cpu className={className} size={size} />
+  ),
+
+  ChevronRight: ({ className = "h-5 w-5", size }: IconProps) => (
+    <ChevronRight className={className} size={size} />
+  ),
+
+  ExternalLink: ({ className = "h-5 w-5", size }: IconProps) => (
+    <ExternalLink className={className} size={size} />
+  ),
+
+  RotateCcw: ({ className = "h-5 w-5", size }: IconProps) => (
+    <RotateCcw className={className} size={size} />
+  ),
+
+  Sparkles: ({ className = "h-5 w-5", size }: IconProps) => (
+    <Sparkles className={className} size={size} />
+  ),
+
+  Database: ({ className = "h-5 w-5", size }: IconProps) => (
+    <Database className={className} size={size} />
+  ),
+
+  Brain: ({ className = "h-5 w-5", size }: IconProps) => (
+    <Brain className={className} size={size} />
+  ),
+
+  Terminal: ({ className = "h-5 w-5", size }: IconProps) => (
+    <Terminal className={className} size={size} />
   ),
 };

@@ -8,6 +8,9 @@ interface BatchUpdateSettingsRequest {
   chatbot_title?: string;
   chatbot_description?: string;
   is_published?: boolean;
+  default_model?: string;
+  system_prompt?: string;
+  tone?: string;
 }
 
 interface BatchUpdateSettingsResponse {

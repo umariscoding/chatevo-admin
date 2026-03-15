@@ -13,6 +13,9 @@ export function useSettings() {
     chatbotTitle: company?.chatbot_title || company?.name || "",
     chatbotDescription:
       company?.chatbot_description || "Get help with our services and products",
+    defaultModel: company?.default_model || "Llama-instant",
+    systemPrompt: company?.system_prompt || "",
+    tone: company?.tone || "professional",
     isPublished: company?.is_published || false,
   });
 
@@ -29,6 +32,9 @@ export function useSettings() {
         chatbotDescription:
           company.chatbot_description ||
           "Get help with our services and products",
+        defaultModel: company.default_model || "Llama-instant",
+        systemPrompt: company.system_prompt || "",
+        tone: company.tone || "professional",
         isPublished: company.is_published || false,
       };
       setFormData(newData);
