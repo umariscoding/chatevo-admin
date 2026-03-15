@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import {
-  useCompanyAppSelector,
   useCompanyAppDispatch,
 } from "@/hooks/company/useCompanyAuth";
 import {
@@ -18,23 +17,23 @@ export const CompanyAuthProvider: React.FC<CompanyAuthProviderProps> = ({
   children,
 }) => {
   const dispatch = useCompanyAppDispatch();
-  const { tokens, isAuthenticated } = useCompanyAppSelector(
-    (state) => state.companyAuth,
-  );
   const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
     const initAuth = async () => {
-      // Load from storage first
+      // Load tokens and company data from localStorage
       dispatch(loadFromStorage());
 
-      // If we have tokens, verify them
+      // Verify stored token is valid (API interceptor handles refresh)
       const storedToken = localStorage.getItem("company_access_token");
       if (storedToken) {
         try {
           await dispatch(verifyCompanyToken()).unwrap();
         } catch (error) {
-          console.error("Company token verification failed:", error);
+          // Token expired/invalid, clear storage
+          localStorage.removeItem("company_access_token");
+          localStorage.removeItem("company_refresh_token");
+          localStorage.removeItem("company_data");
         }
       }
 
