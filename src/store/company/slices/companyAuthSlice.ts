@@ -57,6 +57,23 @@ export const loginCompany = createAsyncThunk(
   },
 );
 
+// Google Auth (sign in or register)
+export const googleAuthCompany = createAsyncThunk(
+  "companyAuth/googleAuth",
+  async (data: { credential: string }, { rejectWithValue }) => {
+    try {
+      const response = await api.post("/auth/company/google", data);
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(
+        error.response?.data?.detail ||
+          error.message ||
+          "Google authentication failed",
+      );
+    }
+  },
+);
+
 // Verify Company Token and fetch fresh company data
 export const verifyCompanyToken = createAsyncThunk(
   "companyAuth/verify",
@@ -246,6 +263,38 @@ const companyAuthSlice = createSlice({
         }
       })
       .addCase(loginCompany.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      });
+
+    // Google Auth
+    builder
+      .addCase(googleAuthCompany.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(googleAuthCompany.fulfilled, (state, action) => {
+        state.loading = false;
+        state.company = action.payload.company;
+        state.tokens = action.payload.tokens;
+        state.isAuthenticated = true;
+
+        if (typeof window !== "undefined") {
+          localStorage.setItem(
+            "company_access_token",
+            action.payload.tokens.access_token,
+          );
+          localStorage.setItem(
+            "company_refresh_token",
+            action.payload.tokens.refresh_token,
+          );
+          localStorage.setItem(
+            "company_data",
+            JSON.stringify(action.payload.company),
+          );
+        }
+      })
+      .addCase(googleAuthCompany.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       });

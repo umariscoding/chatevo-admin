@@ -3,15 +3,16 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
-import MinimalInput from "@/components/ui/MinimalInput";
 import MinimalButton from "@/components/ui/MinimalButton";
 import {
   useCompanyAppDispatch,
   useCompanyAppSelector,
 } from "@/hooks/company/useCompanyAuth";
+import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
 import {
   loginCompany,
   registerCompany,
+  googleAuthCompany,
   clearError,
 } from "@/store/company/slices/companyAuthSlice";
 import { APP_CONFIG, ROUTES, FORM_VALIDATION } from "@/constants/APP_CONSTANTS";
@@ -53,6 +54,21 @@ export default function CompanyAuthPage() {
     password: "",
   });
   const [formErrors, setFormErrors] = useState<FormErrors>({});
+  const [googleLoading, setGoogleLoading] = useState(false);
+
+  const handleGoogleSuccess = async (response: CredentialResponse) => {
+    if (!response.credential) return;
+    setGoogleLoading(true);
+    try {
+      await dispatch(
+        googleAuthCompany({ credential: response.credential }),
+      ).unwrap();
+    } catch (error) {
+      console.error("Google auth failed:", error);
+    } finally {
+      setGoogleLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (isCompanyAuthenticated) {
@@ -249,121 +265,163 @@ export default function CompanyAuthPage() {
 
           {/* Forms */}
           {isLogin ? (
-            <form onSubmit={handleLoginSubmit} className="space-y-5">
-              <div className="space-y-1.5">
-                <label className="block text-xs font-medium text-neutral-500 uppercase tracking-wider">Email</label>
-                <input
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  value={loginData.email}
-                  onChange={handleLoginInputChange}
-                  placeholder="you@company.com"
-                  className={`w-full px-4 py-2.5 bg-white border rounded-lg text-neutral-900 placeholder-neutral-400 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500/30 focus:border-primary-500/50 transition-all ${
-                    formErrors.email ? "border-error-500/50" : "border-neutral-200"
-                  }`}
-                />
-                {formErrors.email && (
-                  <p className="text-xs text-error-500">{formErrors.email}</p>
-                )}
+            <>
+              <form onSubmit={handleLoginSubmit} className="space-y-5">
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-medium text-neutral-500 uppercase tracking-wider">Email</label>
+                  <input
+                    name="email"
+                    type="email"
+                    autoComplete="email"
+                    value={loginData.email}
+                    onChange={handleLoginInputChange}
+                    placeholder="you@company.com"
+                    className={`w-full px-4 py-2.5 bg-white border rounded-lg text-neutral-900 placeholder-neutral-400 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500/30 focus:border-primary-500/50 transition-all ${
+                      formErrors.email ? "border-error-500/50" : "border-neutral-200"
+                    }`}
+                  />
+                  {formErrors.email && (
+                    <p className="text-xs text-error-500">{formErrors.email}</p>
+                  )}
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-medium text-neutral-500 uppercase tracking-wider">Password</label>
+                  <input
+                    name="password"
+                    type="password"
+                    autoComplete="current-password"
+                    value={loginData.password}
+                    onChange={handleLoginInputChange}
+                    placeholder="Enter your password"
+                    className={`w-full px-4 py-2.5 bg-white border rounded-lg text-neutral-900 placeholder-neutral-400 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500/30 focus:border-primary-500/50 transition-all ${
+                      formErrors.password ? "border-error-500/50" : "border-neutral-200"
+                    }`}
+                  />
+                  {formErrors.password && (
+                    <p className="text-xs text-error-500">{formErrors.password}</p>
+                  )}
+                </div>
+
+                <MinimalButton
+                  type="submit"
+                  variant="primary"
+                  size="lg"
+                  fullWidth
+                  loading={companyLoading}
+                  disabled={companyLoading}
+                >
+                  Sign In
+                </MinimalButton>
+              </form>
+
+              <div className="relative my-6">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-neutral-200" />
+                </div>
+                <div className="relative flex justify-center text-xs">
+                  <span className="bg-neutral-50 px-3 text-neutral-400">or</span>
+                </div>
               </div>
 
-              <div className="space-y-1.5">
-                <label className="block text-xs font-medium text-neutral-500 uppercase tracking-wider">Password</label>
-                <input
-                  name="password"
-                  type="password"
-                  autoComplete="current-password"
-                  value={loginData.password}
-                  onChange={handleLoginInputChange}
-                  placeholder="Enter your password"
-                  className={`w-full px-4 py-2.5 bg-white border rounded-lg text-neutral-900 placeholder-neutral-400 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500/30 focus:border-primary-500/50 transition-all ${
-                    formErrors.password ? "border-error-500/50" : "border-neutral-200"
-                  }`}
+              <div className="flex justify-center">
+                <GoogleLogin
+                  onSuccess={handleGoogleSuccess}
+                  onError={() => dispatch(clearError())}
+                  size="large"
+                  width="350"
+                  text="signin_with"
                 />
-                {formErrors.password && (
-                  <p className="text-xs text-error-500">{formErrors.password}</p>
-                )}
               </div>
-
-              <MinimalButton
-                type="submit"
-                variant="primary"
-                size="lg"
-                fullWidth
-                loading={companyLoading}
-                disabled={companyLoading}
-              >
-                Sign In
-              </MinimalButton>
-            </form>
+            </>
           ) : (
-            <form onSubmit={handleSignupSubmit} className="space-y-5">
-              <div className="space-y-1.5">
-                <label className="block text-xs font-medium text-neutral-500 uppercase tracking-wider">Company Name</label>
-                <input
-                  name="name"
-                  type="text"
-                  autoComplete="organization"
-                  value={signupData.name}
-                  onChange={handleSignupInputChange}
-                  placeholder="Acme Inc."
-                  className={`w-full px-4 py-2.5 bg-white border rounded-lg text-neutral-900 placeholder-neutral-400 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500/30 focus:border-primary-500/50 transition-all ${
-                    formErrors.name ? "border-error-500/50" : "border-neutral-200"
-                  }`}
-                />
-                {formErrors.name && (
-                  <p className="text-xs text-error-500">{formErrors.name}</p>
-                )}
+            <>
+              <form onSubmit={handleSignupSubmit} className="space-y-5">
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-medium text-neutral-500 uppercase tracking-wider">Company Name</label>
+                  <input
+                    name="name"
+                    type="text"
+                    autoComplete="organization"
+                    value={signupData.name}
+                    onChange={handleSignupInputChange}
+                    placeholder="Acme Inc."
+                    className={`w-full px-4 py-2.5 bg-white border rounded-lg text-neutral-900 placeholder-neutral-400 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500/30 focus:border-primary-500/50 transition-all ${
+                      formErrors.name ? "border-error-500/50" : "border-neutral-200"
+                    }`}
+                  />
+                  {formErrors.name && (
+                    <p className="text-xs text-error-500">{formErrors.name}</p>
+                  )}
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-medium text-neutral-500 uppercase tracking-wider">Email</label>
+                  <input
+                    name="email"
+                    type="email"
+                    autoComplete="email"
+                    value={signupData.email}
+                    onChange={handleSignupInputChange}
+                    placeholder="you@company.com"
+                    className={`w-full px-4 py-2.5 bg-white border rounded-lg text-neutral-900 placeholder-neutral-400 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500/30 focus:border-primary-500/50 transition-all ${
+                      formErrors.email ? "border-error-500/50" : "border-neutral-200"
+                    }`}
+                  />
+                  {formErrors.email && (
+                    <p className="text-xs text-error-500">{formErrors.email}</p>
+                  )}
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-medium text-neutral-500 uppercase tracking-wider">Password</label>
+                  <input
+                    name="password"
+                    type="password"
+                    autoComplete="new-password"
+                    value={signupData.password}
+                    onChange={handleSignupInputChange}
+                    placeholder="Min. 8 characters"
+                    className={`w-full px-4 py-2.5 bg-white border rounded-lg text-neutral-900 placeholder-neutral-400 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500/30 focus:border-primary-500/50 transition-all ${
+                      formErrors.password ? "border-error-500/50" : "border-neutral-200"
+                    }`}
+                  />
+                  {formErrors.password && (
+                    <p className="text-xs text-error-500">{formErrors.password}</p>
+                  )}
+                </div>
+
+                <MinimalButton
+                  type="submit"
+                  variant="primary"
+                  size="lg"
+                  fullWidth
+                  loading={companyLoading}
+                  disabled={companyLoading}
+                >
+                  Create Account
+                </MinimalButton>
+              </form>
+
+              <div className="relative my-6">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-neutral-200" />
+                </div>
+                <div className="relative flex justify-center text-xs">
+                  <span className="bg-neutral-50 px-3 text-neutral-400">or</span>
+                </div>
               </div>
 
-              <div className="space-y-1.5">
-                <label className="block text-xs font-medium text-neutral-500 uppercase tracking-wider">Email</label>
-                <input
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  value={signupData.email}
-                  onChange={handleSignupInputChange}
-                  placeholder="you@company.com"
-                  className={`w-full px-4 py-2.5 bg-white border rounded-lg text-neutral-900 placeholder-neutral-400 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500/30 focus:border-primary-500/50 transition-all ${
-                    formErrors.email ? "border-error-500/50" : "border-neutral-200"
-                  }`}
+              <div className="flex justify-center">
+                <GoogleLogin
+                  onSuccess={handleGoogleSuccess}
+                  onError={() => dispatch(clearError())}
+                  size="large"
+                  width="350"
+                  text="signup_with"
                 />
-                {formErrors.email && (
-                  <p className="text-xs text-error-500">{formErrors.email}</p>
-                )}
               </div>
-
-              <div className="space-y-1.5">
-                <label className="block text-xs font-medium text-neutral-500 uppercase tracking-wider">Password</label>
-                <input
-                  name="password"
-                  type="password"
-                  autoComplete="new-password"
-                  value={signupData.password}
-                  onChange={handleSignupInputChange}
-                  placeholder="Min. 8 characters"
-                  className={`w-full px-4 py-2.5 bg-white border rounded-lg text-neutral-900 placeholder-neutral-400 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500/30 focus:border-primary-500/50 transition-all ${
-                    formErrors.password ? "border-error-500/50" : "border-neutral-200"
-                  }`}
-                />
-                {formErrors.password && (
-                  <p className="text-xs text-error-500">{formErrors.password}</p>
-                )}
-              </div>
-
-              <MinimalButton
-                type="submit"
-                variant="primary"
-                size="lg"
-                fullWidth
-                loading={companyLoading}
-                disabled={companyLoading}
-              >
-                Create Account
-              </MinimalButton>
-            </form>
+            </>
           )}
 
           <p className="mt-8 text-center text-xs text-neutral-400">
