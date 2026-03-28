@@ -11,6 +11,7 @@ interface BatchUpdateSettingsRequest {
   default_model?: string;
   system_prompt?: string;
   tone?: string;
+  enable_user_portal?: boolean;
 }
 
 interface BatchUpdateSettingsResponse {

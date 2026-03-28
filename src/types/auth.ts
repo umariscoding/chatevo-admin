@@ -14,6 +14,10 @@ export interface Company {
   default_model?: string;
   system_prompt?: string;
   tone?: string;
+  settings?: {
+    enable_user_portal?: boolean;
+    embed?: Record<string, unknown>;
+  };
   created_at: string;
 }
 

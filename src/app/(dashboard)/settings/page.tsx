@@ -42,6 +42,9 @@ export default function SettingsPage() {
       if (changes.changedFields.has("isPublished")) {
         updateData.is_published = formData.isPublished;
       }
+      if (changes.changedFields.has("enableUserPortal")) {
+        updateData.enable_user_portal = formData.enableUserPortal;
+      }
 
       const result = await dispatch(batchUpdateSettings(updateData)).unwrap();
 
@@ -243,8 +246,34 @@ export default function SettingsPage() {
             </div>
           )}
 
-          {/* Public URLs */}
-          {formData.slug && formData.isPublished && (
+          {/* User Portal toggle — only visible when published */}
+          {formData.isPublished && (
+            <div className="px-5 pb-4">
+              <div className="border border-neutral-200 rounded-xl px-4 py-3 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <Icons.User className="h-4 w-4 text-neutral-400 flex-shrink-0" />
+                  <div>
+                    <span className="text-xs font-semibold text-neutral-700">
+                      User Portal
+                    </span>
+                    <p className="text-[11px] text-neutral-400 mt-0.5">
+                      {formData.enableUserPortal
+                        ? "Standalone chat page with login, history & accounts"
+                        : "Users can only interact through the embed widget on your website"}
+                    </p>
+                  </div>
+                </div>
+                <Toggle
+                  checked={formData.enableUserPortal}
+                  onChange={(checked) => updateField("enableUserPortal", checked)}
+                  size="md"
+                />
+              </div>
+            </div>
+          )}
+
+          {/* Public URLs — only when published AND user portal is on */}
+          {formData.slug && formData.isPublished && formData.enableUserPortal && (
             <div className="px-5 pb-4">
               <div className="grid grid-cols-2 gap-2">
                 <button
