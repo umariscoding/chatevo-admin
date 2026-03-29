@@ -11,13 +11,13 @@ import WidgetPreview from "./WidgetPreview";
 import type { ButtonIconType, ChatTemplateType } from "@/types/settings";
 
 const COLOR_PRESETS = [
-  { name: "Indigo", value: "#6366f1" },
-  { name: "Blue", value: "#3b82f6" },
+  { name: "Teal", value: "#0d9488" },
   { name: "Emerald", value: "#10b981" },
+  { name: "Sand", value: "#b0926a" },
   { name: "Rose", value: "#f43f5e" },
   { name: "Amber", value: "#f59e0b" },
-  { name: "Violet", value: "#8b5cf6" },
   { name: "Cyan", value: "#06b6d4" },
+  { name: "Coral", value: "#f97316" },
   { name: "Pink", value: "#ec4899" },
 ];
 
@@ -304,7 +304,7 @@ export default function EmbedPage() {
                       value={settings.primaryColor}
                       onChange={(e) => updateSetting("primaryColor", e.target.value)}
                       className="w-20 px-2 py-1.5 text-xs border border-neutral-200 rounded-lg font-mono focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400"
-                      placeholder="#6366f1"
+                      placeholder="#0d9488"
                     />
                   </div>
                 </div>

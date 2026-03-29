@@ -23,7 +23,7 @@ const Toggle: React.FC<ToggleProps> = ({
 
   const variantColors = {
     primary: { on: "bg-primary-600", glow: "shadow-primary-500/25" },
-    success: { on: "bg-emerald-500", glow: "shadow-emerald-500/25" },
+    success: { on: "bg-teal-500", glow: "shadow-teal-500/25" },
     warning: { on: "bg-amber-500", glow: "shadow-amber-500/25" },
     error: { on: "bg-red-500", glow: "shadow-red-500/25" },
   };

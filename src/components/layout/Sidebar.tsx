@@ -89,18 +89,18 @@ const NavigationItemComponent: React.FC<NavigationItemComponentProps> = ({
       prefetch={true}
     >
       {current && (
-        <span className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-4 rounded-r-full bg-indigo-400" />
+        <span className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-4 rounded-r-full bg-teal-400" />
       )}
 
       <Icon
         className={`flex-shrink-0 h-4 w-4 transition-colors ${
-          current ? "text-indigo-400" : "text-slate-500 group-hover:text-slate-300"
+          current ? "text-teal-400" : "text-slate-500 group-hover:text-slate-300"
         }`}
       />
       <span className="truncate">{item.name}</span>
 
       {item.badge && (
-        <span className="ml-auto text-[10px] font-semibold px-1.5 py-0.5 rounded-md bg-indigo-500/20 text-indigo-300 border border-indigo-500/20">
+        <span className="ml-auto text-[10px] font-semibold px-1.5 py-0.5 rounded-md bg-teal-500/20 text-teal-300 border border-teal-500/20">
           {item.badge}
         </span>
       )}
@@ -144,19 +144,19 @@ const Sidebar: React.FC<SidebarProps> = ({
         <div
           className={`
             fixed inset-y-0 left-0 z-50 w-72 flex flex-col
-            bg-[#0b1120] border-r border-white/[0.06]
+            bg-[#0E1515] border-r border-white/[0.06]
             transform transition-transform duration-300 ease-in-out
             md:relative md:translate-x-0 md:z-0 md:h-full
             ${isOpen ? "translate-x-0" : "-translate-x-full"}
             ${className}
           `}
         >
-          <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-indigo-500/30 to-transparent" />
+          <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-teal-500/30 to-transparent" />
 
           {/* Brand */}
           <div className="flex-shrink-0 flex items-center justify-between h-14 px-5 border-b border-white/[0.05]">
             <div className="flex items-center gap-2.5">
-              <div className="w-7 h-7 rounded-lg bg-indigo-600 flex items-center justify-center">
+              <div className="w-7 h-7 rounded-lg bg-teal-600 flex items-center justify-center">
                 <span className="text-white font-bold text-xs">C</span>
               </div>
               <div>
@@ -199,14 +199,14 @@ const Sidebar: React.FC<SidebarProps> = ({
           {/* Footer */}
           <div className="flex-shrink-0 p-4">
             <div className="flex items-center gap-3 px-2 py-2 rounded-lg">
-              <div className="flex-shrink-0 w-7 h-7 rounded-full bg-indigo-600/20 border border-indigo-500/20 flex items-center justify-center">
-                <span className="text-xs font-semibold text-indigo-300">{companyInitial}</span>
+              <div className="flex-shrink-0 w-7 h-7 rounded-full bg-teal-600/20 border border-teal-500/20 flex items-center justify-center">
+                <span className="text-xs font-semibold text-teal-300">{companyInitial}</span>
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-slate-200 truncate leading-none">{companyName}</p>
                 <p className="text-[10px] text-slate-500 mt-0.5">Company</p>
               </div>
-              <div className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+              <div className="w-1.5 h-1.5 rounded-full bg-teal-400" />
             </div>
           </div>
         </div>

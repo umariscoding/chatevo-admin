@@ -38,7 +38,7 @@ body {
 /* Dashboard dark background override */
 html.dashboard-bg,
 html.dashboard-bg body {
-  background-color: #0f172a;
+  background-color: #0E1515;
 }
 
 .sidebar-locked {

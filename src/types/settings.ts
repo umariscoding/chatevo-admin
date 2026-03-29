@@ -48,7 +48,7 @@ export interface EmbedSettings {
 export const DEFAULT_EMBED_SETTINGS: EmbedSettings = {
   theme: "dark",
   position: "right",
-  primaryColor: "#6366f1",
+  primaryColor: "#0d9488",
   headerColor: "",
   welcomeText: "Hi there! How can we help you today?",
   subtitleText: "We typically reply instantly",

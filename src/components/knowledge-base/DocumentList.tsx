@@ -291,7 +291,7 @@ const DocumentList: React.FC<DocumentListProps> = ({ className = "" }) => {
                         <span
                           className={`w-2 h-2 rounded-full ${
                             document.embeddings_status === "completed"
-                              ? "bg-emerald-600 animate-pulse"
+                              ? "bg-teal-600 animate-pulse"
                               : document.embeddings_status === "pending"
                                 ? "bg-amber-600 animate-pulse"
                                 : "bg-red-600"

@@ -25,7 +25,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   return (
     <div className="bg-slate-900 border border-white/10 rounded-lg px-3 py-2.5 shadow-xl">
       <p className="text-[11px] text-slate-400 mb-1">{label}</p>
-      <p className="text-sm font-semibold text-violet-300">
+      <p className="text-sm font-semibold text-teal-300">
         {payload[0].value?.toLocaleString()} messages
       </p>
     </div>
@@ -57,8 +57,8 @@ const MessagesChart: React.FC<MessagesChartProps> = ({
       {/* Header */}
       <div className="flex items-center justify-between mb-5">
         <div className="flex items-center gap-3">
-          <div className="p-2 rounded-lg bg-violet-50">
-            <Icons.MessageCircle className="h-4 w-4 text-violet-600" />
+          <div className="p-2 rounded-lg bg-teal-50">
+            <Icons.MessageCircle className="h-4 w-4 text-teal-600" />
           </div>
           <div>
             <h3 className="text-sm font-semibold text-slate-800 tracking-[-0.01em]">Messages Over Time</h3>
@@ -86,8 +86,8 @@ const MessagesChart: React.FC<MessagesChartProps> = ({
             <LineChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
               <defs>
                 <linearGradient id="msgLineGlow" x1="0" y1="0" x2="1" y2="0">
-                  <stop offset="0%" stopColor="#8b5cf6" />
-                  <stop offset="100%" stopColor="#7c3aed" />
+                  <stop offset="0%" stopColor="#14b8a6" />
+                  <stop offset="100%" stopColor="#0d9488" />
                 </linearGradient>
               </defs>
               <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
@@ -113,8 +113,8 @@ const MessagesChart: React.FC<MessagesChartProps> = ({
                 dataKey="Total Messages"
                 stroke="url(#msgLineGlow)"
                 strokeWidth={2.5}
-                dot={{ r: 3.5, fill: "#7c3aed", strokeWidth: 0 }}
-                activeDot={{ r: 5, fill: "#6d28d9", strokeWidth: 2, stroke: "white" }}
+                dot={{ r: 3.5, fill: "#0d9488", strokeWidth: 0 }}
+                activeDot={{ r: 5, fill: "#0f766e", strokeWidth: 2, stroke: "white" }}
               />
             </LineChart>
           </ResponsiveContainer>

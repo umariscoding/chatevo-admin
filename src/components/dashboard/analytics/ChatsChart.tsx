@@ -25,7 +25,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   return (
     <div className="bg-slate-900 border border-white/10 rounded-lg px-3 py-2.5 shadow-xl">
       <p className="text-[11px] text-slate-400 mb-1">{label}</p>
-      <p className="text-sm font-semibold text-cyan-300">
+      <p className="text-sm font-semibold text-amber-300">
         {payload[0].value?.toLocaleString()} chats
       </p>
     </div>
@@ -57,8 +57,8 @@ const ChatsChart: React.FC<ChatsChartProps> = ({
       {/* Header */}
       <div className="flex items-center justify-between mb-5">
         <div className="flex items-center gap-3">
-          <div className="p-2 rounded-lg bg-cyan-50">
-            <Icons.MessageSquare className="h-4 w-4 text-cyan-600" />
+          <div className="p-2 rounded-lg bg-accent-50">
+            <Icons.MessageSquare className="h-4 w-4 text-accent-600" />
           </div>
           <div>
             <h3 className="text-sm font-semibold text-slate-800 tracking-[-0.01em]">Chat Activity</h3>
@@ -86,8 +86,8 @@ const ChatsChart: React.FC<ChatsChartProps> = ({
             <AreaChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
               <defs>
                 <linearGradient id="chatAreaGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#0891b2" stopOpacity={0.15} />
-                  <stop offset="100%" stopColor="#0891b2" stopOpacity={0} />
+                  <stop offset="0%" stopColor="#c4a882" stopOpacity={0.2} />
+                  <stop offset="100%" stopColor="#c4a882" stopOpacity={0} />
                 </linearGradient>
               </defs>
               <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
@@ -111,11 +111,11 @@ const ChatsChart: React.FC<ChatsChartProps> = ({
               <Area
                 type="monotone"
                 dataKey="New Chats"
-                stroke="#0891b2"
+                stroke="#b0926a"
                 strokeWidth={2.5}
                 fill="url(#chatAreaGrad)"
-                dot={{ r: 3.5, fill: "#0891b2", strokeWidth: 0 }}
-                activeDot={{ r: 5, fill: "#0e7490", strokeWidth: 2, stroke: "white" }}
+                dot={{ r: 3.5, fill: "#b0926a", strokeWidth: 0 }}
+                activeDot={{ r: 5, fill: "#9a7d56", strokeWidth: 2, stroke: "white" }}
               />
             </AreaChart>
           </ResponsiveContainer>

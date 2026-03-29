@@ -201,9 +201,9 @@ const UploadDrawer: React.FC<UploadModalProps> = ({
               <div className="flex flex-col items-center justify-center py-16 space-y-6">
                 <div className="inline-flex items-center justify-center">
                   <div className="relative w-24 h-24">
-                    <div className="absolute inset-0 bg-gradient-to-br from-emerald-100 to-emerald-50 rounded-full shadow-lg shadow-emerald-200/50" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-teal-100 to-teal-50 rounded-full shadow-lg shadow-teal-200/50" />
                     <div className="absolute inset-2 bg-white rounded-full flex items-center justify-center">
-                      <Icons.Check className="h-10 w-10 text-emerald-600" />
+                      <Icons.Check className="h-10 w-10 text-teal-600" />
                     </div>
                   </div>
                 </div>

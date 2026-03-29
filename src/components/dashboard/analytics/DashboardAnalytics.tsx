@@ -31,7 +31,7 @@ const StatCard: React.FC<StatCardProps> = ({
 }) => {
   const changeColor =
     change?.type === "increase"
-      ? "text-emerald-500"
+      ? "text-teal-500"
       : change?.type === "decrease"
         ? "text-red-400"
         : "text-slate-400";
@@ -117,8 +117,8 @@ const DashboardAnalytics: React.FC<DashboardAnalyticsProps> = ({
       value: dashboard?.overview.totalMessages.count || 0,
       change: dashboard?.overview.totalMessages.change ?? null,
       loading,
-      accent: "text-violet-600",
-      iconBg: "bg-violet-50",
+      accent: "text-teal-600",
+      iconBg: "bg-teal-50",
     },
     {
       icon: Icons.Users,
@@ -127,8 +127,8 @@ const DashboardAnalytics: React.FC<DashboardAnalyticsProps> = ({
       value: dashboard?.overview.users.count || 0,
       change: dashboard?.overview.users.change ?? null,
       loading,
-      accent: "text-emerald-600",
-      iconBg: "bg-emerald-50",
+      accent: "text-teal-700",
+      iconBg: "bg-teal-50",
     },
     {
       icon: Icons.MessageSquare,
@@ -137,8 +137,8 @@ const DashboardAnalytics: React.FC<DashboardAnalyticsProps> = ({
       value: dashboard?.overview.totalChats.count || 0,
       change: dashboard?.overview.totalChats.change ?? null,
       loading,
-      accent: "text-cyan-600",
-      iconBg: "bg-cyan-50",
+      accent: "text-accent-600",
+      iconBg: "bg-accent-50",
     },
     {
       icon: Icons.FileText,

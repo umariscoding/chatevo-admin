@@ -114,7 +114,7 @@ const TONE_OPTIONS: {
     label: "Formal",
     icon: "Award",
     desc: "Corporate and precise",
-    color: { bg: "bg-violet-50", bgActive: "bg-violet-100", text: "text-violet-600", border: "border-violet-200" },
+    color: { bg: "bg-teal-50", bgActive: "bg-teal-100", text: "text-teal-600", border: "border-teal-200" },
   },
   {
     id: "witty",
