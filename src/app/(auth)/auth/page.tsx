@@ -415,7 +415,7 @@ export default function CompanyAuthPage() {
           className="absolute inset-0 pointer-events-none"
           aria-hidden="true"
           style={{
-            backgroundImage: "radial-gradient(circle, rgba(99,102,241,0.05) 1px, transparent 1px)",
+            backgroundImage: "radial-gradient(circle, rgba(13,148,136,0.05) 1px, transparent 1px)",
             backgroundSize: "32px 32px",
           }}
         />
@@ -424,18 +424,18 @@ export default function CompanyAuthPage() {
         <div className="relative w-[440px] h-[440px] flex-shrink-0">
           {/* SVG rings + dots */}
           <svg className="absolute inset-0 w-full h-full" viewBox="0 0 440 440" fill="none">
-            <circle cx="220" cy="220" r="210" stroke="rgba(99,102,241,0.06)" strokeWidth="1" />
-            <circle cx="220" cy="220" r="155" stroke="rgba(99,102,241,0.1)" strokeWidth="1" strokeDasharray="5 7" />
-            <circle cx="220" cy="220" r="85" stroke="rgba(99,102,241,0.15)" strokeWidth="1" />
+            <circle cx="220" cy="220" r="210" stroke="rgba(13,148,136,0.06)" strokeWidth="1" />
+            <circle cx="220" cy="220" r="155" stroke="rgba(13,148,136,0.1)" strokeWidth="1" strokeDasharray="5 7" />
+            <circle cx="220" cy="220" r="85" stroke="rgba(13,148,136,0.15)" strokeWidth="1" />
 
-            <circle cx="430" cy="220" r="3" fill="rgba(99,102,241,0.35)" />
-            <circle cx="220" cy="10" r="2.5" fill="rgba(99,102,241,0.25)" />
-            <circle cx="75" cy="345" r="3" fill="rgba(99,102,241,0.30)" />
-            <circle cx="360" cy="90" r="2" fill="rgba(99,102,241,0.20)" />
-            <circle cx="55" cy="160" r="2.5" fill="rgba(99,102,241,0.25)" />
-            <circle cx="330" cy="385" r="2" fill="rgba(99,102,241,0.18)" />
-            <circle cx="145" cy="55" r="2" fill="rgba(99,102,241,0.22)" />
-            <circle cx="390" cy="310" r="2.5" fill="rgba(99,102,241,0.20)" />
+            <circle cx="430" cy="220" r="3" fill="rgba(13,148,136,0.35)" />
+            <circle cx="220" cy="10" r="2.5" fill="rgba(13,148,136,0.25)" />
+            <circle cx="75" cy="345" r="3" fill="rgba(13,148,136,0.30)" />
+            <circle cx="360" cy="90" r="2" fill="rgba(13,148,136,0.20)" />
+            <circle cx="55" cy="160" r="2.5" fill="rgba(13,148,136,0.25)" />
+            <circle cx="330" cy="385" r="2" fill="rgba(13,148,136,0.18)" />
+            <circle cx="145" cy="55" r="2" fill="rgba(13,148,136,0.22)" />
+            <circle cx="390" cy="310" r="2.5" fill="rgba(13,148,136,0.20)" />
           </svg>
 
           {/* Center logo */}

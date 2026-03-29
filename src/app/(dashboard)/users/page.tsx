@@ -201,6 +201,14 @@ export default function UsersPage() {
 
   return (
     <div className="space-y-6 animate-in">
+      {/* Header */}
+      <div>
+        <h1 className="text-2xl font-bold text-neutral-900">Users</h1>
+        <p className="text-sm text-neutral-500 mt-1">
+          Manage users interacting with your chatbot
+        </p>
+      </div>
+
       {/* Error */}
       {error && (
         <div className="flex items-center gap-3 bg-error-50 border border-error-200 rounded-lg p-3.5">

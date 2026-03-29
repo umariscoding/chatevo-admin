@@ -16,6 +16,7 @@ import {
 } from "@/store/company/slices/companySlice";
 import { updateCompanyInfo } from "@/store/company/slices/companyAuthSlice";
 import { Icons, IOSContentLoader } from "@/components/ui";
+import IOSLoader from "@/components/ui/IOSLoader";
 import { useSettings } from "@/hooks/useSettings";
 import DocumentList from "@/components/knowledge-base/DocumentList";
 import UploadDrawer from "@/components/knowledge-base/UploadDrawer";
@@ -288,7 +289,7 @@ export default function AIStudioPage() {
                   className="px-5 py-2 text-sm font-semibold text-white bg-primary-600 hover:bg-primary-500 rounded-lg transition-all disabled:opacity-50 flex items-center gap-2 min-w-[80px] justify-center"
                 >
                   {settingsLoading ? (
-                    <div className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    <IOSLoader size="sm" color="white" />
                   ) : (
                     "Save"
                   )}

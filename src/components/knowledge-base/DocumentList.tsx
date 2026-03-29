@@ -11,6 +11,7 @@ import {
   deleteDocument,
 } from "@/store/company/slices/knowledgeBaseSlice";
 import { Icons } from "@/components/ui";
+import IOSLoader from "@/components/ui/IOSLoader";
 import type { DocumentListProps } from "@/interfaces/KnowledgeBase.interface";
 import type { Document } from "@/types/knowledgeBase";
 
@@ -127,16 +128,11 @@ const DocumentList: React.FC<DocumentListProps> = ({ className = "" }) => {
     return (
       <div className={`${className}`}>
         <div className="py-24 flex flex-col items-center justify-center">
-          <div className="flex justify-center mb-8">
-            <div className="relative w-16 h-16">
-              <div className="absolute inset-0 rounded-full border-4 border-slate-200" />
-              <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-primary-600 border-r-primary-600 animate-spin" />
-            </div>
-          </div>
-          <h3 className="text-xl font-bold text-slate-900 mb-2">
+          <IOSLoader size="xl" color="primary" className="mb-6" />
+          <h3 className="text-sm font-semibold text-slate-900 mb-1">
             Loading documents
           </h3>
-          <p className="text-slate-600 text-sm">
+          <p className="text-slate-500 text-xs">
             Fetching your knowledge base...
           </p>
         </div>
@@ -312,7 +308,7 @@ const DocumentList: React.FC<DocumentListProps> = ({ className = "" }) => {
                         aria-label="Delete document"
                       >
                         {deletingDocId === document.doc_id ? (
-                          <div className="animate-spin h-4 w-4 border-2 border-red-600 border-t-transparent rounded-full" />
+                          <IOSLoader size="sm" color="dark" />
                         ) : (
                           <Icons.Trash className="h-4 w-4 group-hover/btn:scale-110 transition-transform" />
                         )}

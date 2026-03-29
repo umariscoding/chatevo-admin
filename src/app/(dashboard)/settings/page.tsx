@@ -11,6 +11,7 @@ import {
 } from "@/store/company/slices/companySlice";
 import { updateCompanyInfo } from "@/store/company/slices/companyAuthSlice";
 import { Icons, IOSContentLoader, Toggle } from "@/components/ui";
+import IOSLoader from "@/components/ui/IOSLoader";
 import { useSettings } from "@/hooks/useSettings";
 
 export default function SettingsPage() {
@@ -116,7 +117,7 @@ export default function SettingsPage() {
 
       {/* ── Page header ── */}
       <div className="flex items-center justify-between mb-6 pt-1">
-        <h1 className="text-xl font-semibold text-neutral-900 tracking-tight">
+        <h1 className="text-2xl font-bold text-neutral-900 tracking-tight">
           Settings
         </h1>
 
@@ -135,7 +136,7 @@ export default function SettingsPage() {
               className="px-4 py-1.5 text-sm font-semibold text-white bg-primary-600 hover:bg-primary-500 rounded-lg transition-all disabled:opacity-40 flex items-center gap-2 min-w-[68px] justify-center"
             >
               {loading ? (
-                <div className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                <IOSLoader size="sm" color="white" />
               ) : (
                 "Save"
               )}

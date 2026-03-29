@@ -107,7 +107,7 @@ function SetupRequiredBanner({
                       </div>
                     </div>
                     <div className="flex-1">
-                      <p className="text-sm font-medium text-neutral-900">{step.title}</p>
+                      <p className="text-sm font-semibold text-neutral-900">{step.title}</p>
                       <p className="text-xs text-neutral-500">{step.description}</p>
                     </div>
                   </div>
@@ -197,7 +197,7 @@ export default function EmbedPage() {
             {/* Appearance */}
             <div className="bg-white rounded-lg border border-neutral-200 p-5 space-y-5">
               <div>
-                <p className="text-sm font-medium text-neutral-900">Appearance</p>
+                <p className="text-sm font-semibold text-neutral-900">Appearance</p>
                 <p className="text-xs text-neutral-500 mt-0.5">
                   Theme, colors, and widget position
                 </p>
@@ -362,7 +362,7 @@ export default function EmbedPage() {
             {/* Content */}
             <div className="bg-white rounded-lg border border-neutral-200 p-5 space-y-5">
               <div>
-                <p className="text-sm font-medium text-neutral-900">Content</p>
+                <p className="text-sm font-semibold text-neutral-900">Content</p>
                 <p className="text-xs text-neutral-500 mt-0.5">
                   Messages and bot identity
                 </p>
@@ -465,7 +465,7 @@ export default function EmbedPage() {
             {/* Chat Template */}
             <div className="bg-white rounded-lg border border-neutral-200 p-5 space-y-5">
               <div>
-                <p className="text-sm font-medium text-neutral-900">Chat Style</p>
+                <p className="text-sm font-semibold text-neutral-900">Chat Style</p>
                 <p className="text-xs text-neutral-500 mt-0.5">
                   Overall look and feel of the widget
                 </p>
@@ -635,7 +635,7 @@ export default function EmbedPage() {
             {/* Behavior */}
             <div className="bg-white rounded-lg border border-neutral-200 divide-y divide-neutral-100">
               <div className="p-5">
-                <p className="text-sm font-medium text-neutral-900">Behavior</p>
+                <p className="text-sm font-semibold text-neutral-900">Behavior</p>
                 <p className="text-xs text-neutral-500 mt-0.5">
                   Button style and branding
                 </p>
@@ -711,7 +711,7 @@ export default function EmbedPage() {
               {/* Hide Branding */}
               <div className="p-5 flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-neutral-900">
+                  <p className="text-sm font-semibold text-neutral-900">
                     {settings.hideBranding ? "Branding hidden" : "Branding visible"}
                   </p>
                   <p className="text-xs text-neutral-500 mt-0.5">
@@ -739,7 +739,7 @@ export default function EmbedPage() {
             <div className="bg-white rounded-lg border border-neutral-200 p-5 space-y-3">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-neutral-900">
+                  <p className="text-sm font-semibold text-neutral-900">
                     Embed Code
                   </p>
                   <p className="text-xs text-neutral-500 mt-0.5">
@@ -783,7 +783,7 @@ export default function EmbedPage() {
               <div className="flex items-center justify-between p-5 border-b border-neutral-100 bg-white">
                 <div className="flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-accent-500 animate-pulse" />
-                  <p className="text-sm font-medium text-neutral-900">
+                  <p className="text-sm font-semibold text-neutral-900">
                     Live Preview
                   </p>
                 </div>

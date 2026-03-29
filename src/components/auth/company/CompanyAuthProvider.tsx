@@ -8,6 +8,7 @@ import {
   loadFromStorage,
   verifyCompanyToken,
 } from "@/store/company/slices/companyAuthSlice";
+import IOSLoader from "@/components/ui/IOSLoader";
 
 interface CompanyAuthProviderProps {
   children: React.ReactNode;
@@ -47,7 +48,7 @@ export const CompanyAuthProvider: React.FC<CompanyAuthProviderProps> = ({
   if (!isInitialized) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-bg-primary">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+        <IOSLoader size="xl" color="primary" />
       </div>
     );
   }

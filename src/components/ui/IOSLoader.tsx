@@ -55,7 +55,7 @@ export const IOSContentLoader: React.FC<IOSContentLoaderProps> = ({
 
   return (
     <div
-      className={`flex flex-col items-center justify-center py-16 ${className}`}
+      className={`flex flex-col items-center justify-center min-h-[60vh] ${className}`}
     >
       <IOSLoader size="lg" color="primary" className="mb-3" />
       <p className="text-sm text-text-secondary">{message}</p>
