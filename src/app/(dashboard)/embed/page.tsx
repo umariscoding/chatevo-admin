@@ -9,6 +9,7 @@ import IOSLoader from "@/components/ui/IOSLoader";
 import { API_CONFIG } from "@/constants/api";
 import { usePlan } from "@/hooks/usePlan";
 import UpgradeNudge from "@/components/billing/UpgradeNudge";
+import { DEFAULT_EMBED_SETTINGS } from "@/types/settings";
 import WidgetPreview from "./WidgetPreview";
 import {
   MessageCircle,
@@ -166,6 +167,16 @@ export default function EmbedPage() {
   const chatbotTitle = companyAuth.company?.chatbot_title;
   const companyName = companyAuth.company?.name;
   const apiUrl = API_CONFIG.BASE_URL;
+
+  // Preview shows what the public widget actually looks like —
+  // free users see default styling for Pro-only fields
+  const previewSettings = isFree
+    ? {
+        ...DEFAULT_EMBED_SETTINGS,
+        // Keep free-tier fields from actual settings
+        autoOpenDelay: settings.autoOpenDelay,
+      }
+    : settings;
 
   const embedCode = slug
     ? `<!-- ChatEvo Widget -->\n<script\n  src="${apiUrl}/embed.js"\n  data-company-slug="${slug}"\n  data-api-url="${apiUrl}"\n  async\n></script>`
@@ -723,8 +734,8 @@ export default function EmbedPage() {
               </div>
             </div>
 
-            {/* Behavior */}
-            <div className="bg-white rounded-lg border border-neutral-200 overflow-hidden">
+            {/* Behavior — disabled for free users */}
+            <div className={`bg-white rounded-lg border border-neutral-200 overflow-hidden ${isFree ? "opacity-50 pointer-events-none select-none" : ""}`}>
               <div className="p-5 border-b border-neutral-100">
                 <p className="text-sm font-semibold text-neutral-900">Behavior</p>
                 <p className="text-xs text-neutral-500 mt-0.5">
@@ -919,7 +930,7 @@ export default function EmbedPage() {
 
               <div className="p-4">
                 <WidgetPreview
-                  settings={settings}
+                  settings={previewSettings}
                   chatbotTitle={chatbotTitle}
                   companyName={companyName}
                   companySlug={slug}

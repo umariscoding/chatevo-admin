@@ -5,6 +5,8 @@ import React, { useState, useEffect } from "react";
 import { useCompanyAppSelector } from "@/hooks/company/useCompanyAuth";
 import { getApiUrl } from "@/constants/api";
 import { Icons, IOSContentLoader } from "@/components/ui";
+import { usePlan } from "@/hooks/usePlan";
+import UpgradeNudge from "@/components/billing/UpgradeNudge";
 
 interface CompanyUser {
   user_id: string;
@@ -26,6 +28,7 @@ interface UsersApiResponse {
 
 export default function UsersPage() {
   const companyAuth = useCompanyAppSelector((state) => state.companyAuth);
+  const { isFree } = usePlan();
   const [users, setUsers] = useState<CompanyUser[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -95,6 +98,29 @@ export default function UsersPage() {
         <p className="text-sm text-neutral-500">
           Only company administrators can manage users.
         </p>
+      </div>
+    );
+  }
+
+  if (isFree) {
+    return (
+      <div className="space-y-6 animate-in">
+        <div>
+          <h1 className="text-2xl font-bold text-neutral-900">Users</h1>
+          <p className="text-sm text-neutral-500 mt-1">
+            Manage users interacting with your chatbot
+          </p>
+        </div>
+        <UpgradeNudge feature="User portal" />
+        <div className="flex flex-col items-center justify-center py-20 bg-white rounded-lg border border-neutral-200">
+          <Icons.Users className="h-10 w-10 text-neutral-300 mb-4" />
+          <h3 className="text-base font-semibold text-neutral-900 mb-1">
+            Pro Feature
+          </h3>
+          <p className="text-sm text-neutral-500 max-w-xs mx-auto text-center">
+            Upgrade to Pro to view and manage users who interact with your chatbot.
+          </p>
+        </div>
       </div>
     );
   }
