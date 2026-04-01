@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { useCompanyAppSelector } from "@/hooks/company/useCompanyAuth";
+import { usePlan } from "@/hooks/usePlan";
 import { Icons } from "@/components/ui";
 import type {
   SidebarProps,
@@ -128,6 +129,7 @@ const Sidebar: React.FC<SidebarProps> = ({
     }))
     .filter((section) => section.items.length > 0);
 
+  const { isPro } = usePlan();
   const companyName = companyAuth.company?.name || "Company";
   const companyInitial = companyName.charAt(0).toUpperCase();
 
@@ -206,7 +208,13 @@ const Sidebar: React.FC<SidebarProps> = ({
                 <p className="text-sm font-medium text-slate-200 truncate leading-none">{companyName}</p>
                 <p className="text-[10px] text-slate-500 mt-0.5">Company</p>
               </div>
-              <div className="w-1.5 h-1.5 rounded-full bg-teal-400" />
+              <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-md ${
+                isPro
+                  ? "bg-teal-500/20 text-teal-300 border border-teal-500/20"
+                  : "bg-white/[0.06] text-slate-400 border border-white/[0.08]"
+              }`}>
+                {isPro ? "Pro" : "Free"}
+              </span>
             </div>
           </div>
         </div>
