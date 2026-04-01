@@ -78,6 +78,7 @@ export default function UsersPage() {
   };
 
   useEffect(() => {
+    if (isFree) return;
     if (companyAuth.company?.company_id && companyAuth.isAuthenticated) {
       fetchUsers();
     } else if (
@@ -86,7 +87,7 @@ export default function UsersPage() {
     ) {
       setLoading(true);
     }
-  }, [companyAuth.company?.company_id, companyAuth.isAuthenticated]);
+  }, [companyAuth.company?.company_id, companyAuth.isAuthenticated, isFree]);
 
   if (!companyAuth.isAuthenticated) {
     return (
