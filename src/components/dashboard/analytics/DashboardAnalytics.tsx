@@ -11,23 +11,17 @@ import type { DashboardAnalyticsProps } from "@/interfaces/Analytics.interface";
 interface StatCardProps {
   icon: React.ElementType;
   label: string;
-  sublabel: string;
   value: string | number;
   change?: { value: string; type: "increase" | "decrease" | "neutral" } | null;
   loading: boolean;
-  accent: string;
-  iconBg: string;
 }
 
 const StatCard: React.FC<StatCardProps> = ({
   icon: Icon,
   label,
-  sublabel,
   value,
   change,
   loading,
-  accent,
-  iconBg,
 }) => {
   const changeColor =
     change?.type === "increase"
@@ -40,9 +34,7 @@ const StatCard: React.FC<StatCardProps> = ({
     <div className="group relative bg-white rounded-xl border border-slate-200/80 p-5 hover:border-slate-300 hover:shadow-md hover:shadow-slate-200/50 transition-all duration-200">
       {/* Top row */}
       <div className="flex items-start justify-between mb-4">
-        <div className="p-2 rounded-lg bg-neutral-100">
-          <Icon className="h-4 w-4 text-neutral-900" />
-        </div>
+        <Icon className="h-4 w-4 text-neutral-400" />
         {!loading && change && (
           <span className={`text-xs font-semibold ${changeColor} bg-transparent`}>
             {change.value}
@@ -64,7 +56,6 @@ const StatCard: React.FC<StatCardProps> = ({
               {Number(value).toLocaleString()}
             </p>
             <p className="text-sm font-medium text-slate-700 mt-1.5">{label}</p>
-            <p className="text-[11px] text-slate-400">{sublabel}</p>
           </>
         )}
       </div>
@@ -100,7 +91,7 @@ const DashboardAnalytics: React.FC<DashboardAnalyticsProps> = ({
           </p>
           <button
             onClick={() => loadDashboardAnalytics()}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-900 text-white text-sm font-medium hover:bg-slate-800 transition-colors"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-900 text-white text-sm font-medium hover:bg-slate-800 transition-colors"
           >
             Try again
           </button>
@@ -113,52 +104,37 @@ const DashboardAnalytics: React.FC<DashboardAnalyticsProps> = ({
     {
       icon: Icons.MessageCircle,
       label: "Total Messages",
-      sublabel: "Last 7 days",
       value: dashboard?.overview.totalMessages.count || 0,
       change: dashboard?.overview.totalMessages.change ?? null,
       loading,
-      accent: "text-teal-600",
-      iconBg: "bg-teal-50",
     },
     {
       icon: Icons.Users,
       label: "New Users",
-      sublabel: "Registered users",
       value: dashboard?.overview.users.count || 0,
       change: dashboard?.overview.users.change ?? null,
       loading,
-      accent: "text-teal-700",
-      iconBg: "bg-teal-50",
     },
     {
       icon: Icons.MessageSquare,
       label: "Total Chats",
-      sublabel: "Last 7 days",
       value: dashboard?.overview.totalChats.count || 0,
       change: dashboard?.overview.totalChats.change ?? null,
       loading,
-      accent: "text-accent-600",
-      iconBg: "bg-accent-50",
     },
     {
       icon: Icons.FileText,
       label: "Knowledge Bases",
-      sublabel: "Last 7 days",
       value: dashboard?.overview.knowledgeBases.count || 0,
       change: dashboard?.overview.knowledgeBases.change ?? null,
       loading,
-      accent: "text-amber-600",
-      iconBg: "bg-amber-50",
     },
     {
       icon: Icons.UserX,
       label: "Guest Sessions",
-      sublabel: "Last 7 days",
       value: dashboard?.overview.guestSessions.count || 0,
       change: dashboard?.overview.guestSessions.change ?? null,
       loading,
-      accent: "text-rose-600",
-      iconBg: "bg-rose-50",
     },
   ];
 
