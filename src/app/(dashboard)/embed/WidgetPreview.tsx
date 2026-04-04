@@ -437,7 +437,7 @@ export default function WidgetPreview({
           background: colors.textMuted,
           marginLeft: 2,
           verticalAlign: "text-bottom",
-          animation: "chatevo-preview-blink 0.8s infinite",
+          animation: "botbeetle-preview-blink 0.8s infinite",
         }}
       />
     );
@@ -800,7 +800,7 @@ export default function WidgetPreview({
                           height: 6,
                           background: colors.textMuted,
                           borderRadius: "50%",
-                          animation: `chatevo-preview-bounce 1.4s infinite ease-in-out`,
+                          animation: `botbeetle-preview-bounce 1.4s infinite ease-in-out`,
                           animationDelay: `${-0.32 + d * 0.16}s`,
                         }}
                       />
@@ -856,18 +856,18 @@ export default function WidgetPreview({
               borderTop: `1px solid ${colors.border}`,
             }}
           >
-            Powered by ChatEvo
+            Powered by BotBeetle
           </div>
         )}
       </div>
 
       {/* Animations */}
       <style>{`
-        @keyframes chatevo-preview-blink {
+        @keyframes botbeetle-preview-blink {
           0%, 50% { opacity: 1; }
           51%, 100% { opacity: 0; }
         }
-        @keyframes chatevo-preview-bounce {
+        @keyframes botbeetle-preview-bounce {
           0%, 80%, 100% { opacity: 0.4; }
           40% { opacity: 1; }
         }

@@ -85,7 +85,7 @@ export default function SettingsPage() {
 
   const changes = getChanges();
 
-  const CHAT_DOMAIN = "chatevo.vercel.app";
+  const CHAT_DOMAIN = "botbeetle.vercel.app";
   const isLocalhost =
     typeof window !== "undefined" &&
     (window.location.hostname === "localhost" ||
@@ -365,7 +365,7 @@ export default function SettingsPage() {
               </label>
               <div className="flex items-stretch rounded-xl border border-neutral-200 bg-neutral-50 focus-within:border-primary-400 focus-within:ring-2 focus-within:ring-primary-500/20 focus-within:bg-white transition-all overflow-hidden">
                 <span className="inline-flex items-center px-3.5 border-r border-neutral-200 text-xs text-neutral-400 font-mono bg-neutral-100 select-none whitespace-nowrap">
-                  chatevo.vercel.app/
+                  botbeetle.vercel.app/
                 </span>
                 <input
                   type="text"

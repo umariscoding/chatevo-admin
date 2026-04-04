@@ -1,6 +1,6 @@
-# Chatelio Admin
+# BotBeetle Admin
 
-A Next.js 14 admin frontend application for the Chatelio multi-tenant chatbot platform.
+A Next.js 14 admin frontend application for the BotBeetle multi-tenant chatbot platform.
 
 ## Project Structure
 
@@ -121,7 +121,7 @@ This project follows a 7-day development plan:
 
 ## API Integration
 
-The frontend integrates with the Chatelio backend API for:
+The frontend integrates with the BotBeetle backend API for:
 
 - Authentication and user management
 - Knowledge base operations

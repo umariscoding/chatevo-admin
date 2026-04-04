@@ -14,7 +14,7 @@ export default function PublishingSection({
   slug,
   onPublishToggle,
 }: PublishingSectionProps) {
-  const CHAT_DOMAIN = "chatevo.vercel.app";
+  const CHAT_DOMAIN = "botbeetle.vercel.app";
   const [chatBaseUrl, setChatBaseUrl] = useState(`https://${CHAT_DOMAIN}`);
 
   useEffect(() => {

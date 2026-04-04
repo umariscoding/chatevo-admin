@@ -162,7 +162,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                 <span className="text-white font-bold text-xs">C</span>
               </div>
               <div>
-                <p className="text-white font-semibold text-sm leading-none">Chatevo</p>
+                <p className="text-white font-semibold text-sm leading-none">BotBeetle</p>
                 <p className="text-slate-500 text-[10px] mt-0.5 font-medium tracking-wider uppercase">Admin</p>
               </div>
             </div>

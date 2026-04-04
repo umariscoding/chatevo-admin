@@ -179,7 +179,7 @@ export default function EmbedPage() {
     : settings;
 
   const embedCode = slug
-    ? `<!-- ChatEvo Widget -->\n<script\n  src="${apiUrl}/embed.js"\n  data-company-slug="${slug}"\n  data-api-url="${apiUrl}"\n  async\n></script>`
+    ? `<!-- BotBeetle Widget -->\n<script\n  src="${apiUrl}/embed.js"\n  data-company-slug="${slug}"\n  data-api-url="${apiUrl}"\n  async\n></script>`
     : "";
 
   const handleCopy = async () => {
@@ -888,7 +888,7 @@ export default function EmbedPage() {
                       {settings.hideBranding ? "Branding hidden" : "Show branding"}
                     </p>
                     <p className="text-[11px] text-neutral-400 mt-0.5">
-                      &quot;Powered by ChatEvo&quot; footer
+                      &quot;Powered by BotBeetle&quot; footer
                     </p>
                   </div>
                 </div>

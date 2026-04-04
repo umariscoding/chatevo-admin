@@ -475,7 +475,7 @@ export default function Home() {
                 </div>
                 <pre className="whitespace-pre-wrap">
 {`<`}<span className="text-primary-300">script</span>{`
-  `}<span className="text-accent-300">src</span>=<span className="text-warning-300">&quot;https://api.chatelio.com/embed.js&quot;</span>{`
+  `}<span className="text-accent-300">src</span>=<span className="text-warning-300">&quot;https://api.botbeetle.com/embed.js&quot;</span>{`
   `}<span className="text-accent-300">data-company-slug</span>=<span className="text-warning-300">&quot;your-company&quot;</span>{`
   `}<span className="text-accent-300">data-primary-color</span>=<span className="text-warning-300">&quot;#0d9488&quot;</span>{`
   `}<span className="text-accent-300">async</span>{`

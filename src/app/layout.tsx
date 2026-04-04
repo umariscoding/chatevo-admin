@@ -10,7 +10,7 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Chatelio - Chatbot as a Service",
+  title: "BotBeetle - Chatbot as a Service",
   description: "Multi-tenant chatbot platform for businesses",
 };
 

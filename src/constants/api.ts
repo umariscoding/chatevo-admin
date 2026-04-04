@@ -4,7 +4,7 @@
 // API Configuration
 // Uses environment variable NEXT_PUBLIC_API_URL if available,
 // falls back to production Railway URL
-// https://chatelio-api-production.up.railway.app/
+// https://botbeetle-api-production.up.railway.app/
 export const API_CONFIG = {
   BASE_URL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000",
   TIMEOUT: 30000,

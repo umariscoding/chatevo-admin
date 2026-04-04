@@ -1,8 +1,8 @@
 {
   "info": {
-    "_postman_id": "chatelio-api-tests",
-    "name": "Chatelio Multi-Tenant Chatbot API - Complete Test Suite",
-    "description": "Comprehensive test collection for the Chatelio multi-tenant chatbot platform covering all critical scenarios including company isolation, authentication, knowledge base management, and chat functionality.",
+    "_postman_id": "botbeetle-api-tests",
+    "name": "BotBeetle Multi-Tenant Chatbot API - Complete Test Suite",
+    "description": "Comprehensive test collection for the BotBeetle multi-tenant chatbot platform covering all critical scenarios including company isolation, authentication, knowledge base management, and chat functionality.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
@@ -1589,7 +1589,7 @@
                   "pm.test(\"System is healthy\", function () {",
                   "    const responseJson = pm.response.json();",
                   "    pm.expect(responseJson.status).to.equal('healthy');",
-                  "    pm.expect(responseJson.message).to.include('Chatelio');",
+                  "    pm.expect(responseJson.message).to.include('BotBeetle');",
                   "});"
                 ],
                 "type": "text/javascript"
