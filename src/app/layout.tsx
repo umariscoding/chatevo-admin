@@ -10,7 +10,7 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Wispoke - Chatbot as a Service",
+  title: "Wispoke",
   description: "Multi-tenant chatbot platform for businesses",
 };
 

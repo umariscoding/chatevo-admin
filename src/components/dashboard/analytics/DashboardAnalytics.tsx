@@ -40,8 +40,8 @@ const StatCard: React.FC<StatCardProps> = ({
     <div className="group relative bg-white rounded-xl border border-slate-200/80 p-5 hover:border-slate-300 hover:shadow-md hover:shadow-slate-200/50 transition-all duration-200">
       {/* Top row */}
       <div className="flex items-start justify-between mb-4">
-        <div className={`p-2 rounded-lg ${iconBg}`}>
-          <Icon className={`h-4 w-4 ${accent}`} />
+        <div className="p-2 rounded-lg bg-neutral-100">
+          <Icon className="h-4 w-4 text-neutral-900" />
         </div>
         {!loading && change && (
           <span className={`text-xs font-semibold ${changeColor} bg-transparent`}>
@@ -70,7 +70,7 @@ const StatCard: React.FC<StatCardProps> = ({
       </div>
 
       {/* Bottom accent line on hover */}
-      <div className={`absolute bottom-0 left-4 right-4 h-[2px] rounded-full ${iconBg} opacity-0 group-hover:opacity-100 transition-opacity duration-200`} />
+      <div className="absolute bottom-0 left-4 right-4 h-[2px] rounded-full bg-neutral-200 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
     </div>
   );
 };
