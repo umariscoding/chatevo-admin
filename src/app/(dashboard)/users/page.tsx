@@ -413,7 +413,7 @@ export default function UsersPage() {
               <button
                 onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
                 disabled={currentPage === 1}
-                className="px-2.5 py-1.5 text-sm rounded-md text-neutral-600 hover:bg-neutral-100 disabled:text-neutral-300 disabled:hover:bg-transparent transition-colors"
+                className="px-2.5 py-1.5 text-sm rounded-full text-neutral-600 hover:bg-neutral-100 disabled:text-neutral-300 disabled:hover:bg-transparent transition-colors"
               >
                 Previous
               </button>
@@ -427,7 +427,7 @@ export default function UsersPage() {
                   <button
                     key={page}
                     onClick={() => setCurrentPage(page as number)}
-                    className={`w-8 h-8 text-sm rounded-md transition-colors ${
+                    className={`w-8 h-8 text-sm rounded-full transition-colors ${
                       currentPage === page
                         ? "bg-primary-600 text-white"
                         : "text-neutral-600 hover:bg-neutral-100"
@@ -443,7 +443,7 @@ export default function UsersPage() {
                   setCurrentPage((prev) => Math.min(prev + 1, totalPages))
                 }
                 disabled={currentPage === totalPages}
-                className="px-2.5 py-1.5 text-sm rounded-md text-neutral-600 hover:bg-neutral-100 disabled:text-neutral-300 disabled:hover:bg-transparent transition-colors"
+                className="px-2.5 py-1.5 text-sm rounded-full text-neutral-600 hover:bg-neutral-100 disabled:text-neutral-300 disabled:hover:bg-transparent transition-colors"
               >
                 Next
               </button>

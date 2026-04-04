@@ -137,10 +137,10 @@ function SetupRequiredBanner({
             <div className="flex-shrink-0">
               <button
                 onClick={() => router.push("/settings")}
-                className="relative group inline-flex items-center gap-2 px-6 py-3.5 bg-primary-600 hover:bg-primary-700 active:bg-primary-800 text-white font-semibold rounded-xl transition-all duration-200 shadow-lg shadow-primary-600/20 hover:shadow-primary-600/40 active:scale-[0.98] whitespace-nowrap"
+                className="relative group inline-flex items-center gap-2 px-6 py-3.5 bg-primary-600 hover:bg-primary-700 active:bg-primary-800 text-white font-semibold rounded-full transition-all duration-200 shadow-lg shadow-primary-600/20 hover:shadow-primary-600/40 active:scale-[0.98] whitespace-nowrap"
               >
                 {/* Subtle shine effect on hover */}
-                <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-10 transition-opacity duration-300" />
+                <div className="absolute inset-0 rounded-full bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-10 transition-opacity duration-300" />
 
                 <span className="relative flex items-center gap-2">
                   Go to Settings
@@ -248,7 +248,7 @@ export default function EmbedPage() {
             </button>
             <button
               onClick={(e) => { e.stopPropagation(); handleCopy(); }}
-              className={`flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs font-semibold transition-all duration-200 flex-shrink-0 ml-3 ${
+              className={`flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-semibold transition-all duration-200 flex-shrink-0 ml-3 ${
                 copied
                   ? "bg-primary-500/15 text-primary-400 border border-primary-500/25"
                   : "bg-white/[0.06] text-slate-400 hover:text-slate-200 hover:bg-white/[0.1] border border-white/[0.08]"

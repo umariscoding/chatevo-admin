@@ -50,7 +50,7 @@ export default function UpgradePrompt({
   return (
     <div className="space-y-2">
       <div className="flex items-center gap-3 bg-neutral-50 border border-neutral-200 rounded-xl px-4 py-3">
-        <div className="w-8 h-8 rounded-lg bg-primary-100 flex items-center justify-center flex-shrink-0">
+        <div className="w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center flex-shrink-0">
           <Icons.Crown className="h-3.5 w-3.5 text-primary-600" />
         </div>
         <div className="flex-1 min-w-0">
@@ -64,7 +64,7 @@ export default function UpgradePrompt({
           disabled={checkoutLoading}
           aria-busy={checkoutLoading}
           aria-label={`Upgrade to Pro to unlock ${feature}`}
-          className="px-3 py-1.5 text-[11px] font-semibold text-white bg-primary-600 hover:bg-primary-500 rounded-lg transition-all disabled:opacity-40 flex items-center gap-1.5 flex-shrink-0"
+          className="px-3 py-1.5 text-[11px] font-semibold text-white bg-primary-600 hover:bg-primary-500 rounded-full transition-all disabled:opacity-40 flex items-center gap-1.5 flex-shrink-0"
         >
           {checkoutLoading ? (
             <IOSLoader size="sm" color="white" />

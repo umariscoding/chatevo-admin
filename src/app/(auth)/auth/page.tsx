@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 import MinimalButton from "@/components/ui/MinimalButton";
 import {
@@ -183,7 +184,7 @@ export default function CompanyAuthPage() {
   };
 
   const inputBase =
-    "w-full px-4 py-2.5 bg-white border rounded-lg text-neutral-900 placeholder-neutral-400 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500/30 focus:border-primary-500/50 transition-all";
+    "w-full px-4 py-2.5 bg-white border rounded-full text-neutral-900 placeholder-neutral-400 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500/30 focus:border-primary-500/50 transition-all";
   const inputOk = "border-neutral-200";
   const inputErr = "border-error-500/50";
 
@@ -195,10 +196,13 @@ export default function CompanyAuthPage() {
           <div className="mx-auto w-full max-w-sm">
             {/* Logo */}
             <div className="flex items-center gap-2.5 mb-10">
-              <svg className="w-7 h-7 text-primary-600" viewBox="0 0 28 28" fill="none">
-                <rect x="2" y="2" width="24" height="24" rx="7" stroke="currentColor" strokeWidth="2" />
-                <path d="M9 12.5C9 11.12 10.12 10 11.5 10h5c1.38 0 2.5 1.12 2.5 2.5v3c0 1.38-1.12 2.5-2.5 2.5H13l-2.5 2V18h-.5A1.5 1.5 0 019 16.5v-4z" fill="currentColor" opacity="0.7" />
-              </svg>
+              <Image
+                src="/logo.png"
+                alt={APP_CONFIG.NAME}
+                width={28}
+                height={28}
+                className="w-7 h-7"
+              />
               <span className="text-lg font-semibold text-neutral-900 tracking-tight">
                 {APP_CONFIG.NAME}
               </span>
@@ -206,10 +210,10 @@ export default function CompanyAuthPage() {
 
             {/* Tab switch */}
             <div className="mb-8">
-              <div className="flex bg-neutral-100 border border-neutral-200 rounded-lg p-1">
+              <div className="flex bg-neutral-100 border border-neutral-200 rounded-full p-1">
                 <button
                   onClick={() => setIsLogin(true)}
-                  className={`flex-1 py-2 px-4 text-sm font-medium rounded-md transition-all duration-150 ${
+                  className={`flex-1 py-2 px-4 text-sm font-medium rounded-full transition-all duration-150 ${
                     isLogin
                       ? "bg-primary-600 text-white shadow-sm"
                       : "text-neutral-500 hover:text-neutral-700"
@@ -219,7 +223,7 @@ export default function CompanyAuthPage() {
                 </button>
                 <button
                   onClick={() => setIsLogin(false)}
-                  className={`flex-1 py-2 px-4 text-sm font-medium rounded-md transition-all duration-150 ${
+                  className={`flex-1 py-2 px-4 text-sm font-medium rounded-full transition-all duration-150 ${
                     !isLogin
                       ? "bg-primary-600 text-white shadow-sm"
                       : "text-neutral-500 hover:text-neutral-700"
@@ -244,7 +248,7 @@ export default function CompanyAuthPage() {
 
             {/* Error */}
             {error && (
-              <div className="mb-5 flex items-start gap-3 bg-error-50 border border-error-200 text-error-700 px-4 py-3 rounded-lg text-sm">
+              <div className="mb-5 flex items-start gap-3 bg-error-50 border border-error-200 text-error-700 px-4 py-3 rounded-full text-sm">
                 <svg className="w-4 h-4 text-error-500 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
                 </svg>
@@ -295,6 +299,7 @@ export default function CompanyAuthPage() {
                     fullWidth
                     loading={companyLoading}
                     disabled={companyLoading}
+                    className=""
                   >
                     Sign In
                   </MinimalButton>
@@ -309,12 +314,12 @@ export default function CompanyAuthPage() {
                   </div>
                 </div>
 
-                <div className="flex justify-center">
+                <div className="w-full [&>div]:!w-full [&_iframe]:!w-full">
                   <GoogleLogin
                     onSuccess={handleGoogleSuccess}
                     onError={() => dispatch(clearError())}
                     size="large"
-                    width="350"
+                    width="384"
                     text="signin_with"
                   />
                 </div>
@@ -371,6 +376,7 @@ export default function CompanyAuthPage() {
                     fullWidth
                     loading={companyLoading}
                     disabled={companyLoading}
+                    className=""
                   >
                     Create Account
                   </MinimalButton>
@@ -385,12 +391,12 @@ export default function CompanyAuthPage() {
                   </div>
                 </div>
 
-                <div className="flex justify-center">
+                <div className="w-full [&>div]:!w-full [&_iframe]:!w-full">
                   <GoogleLogin
                     onSuccess={handleGoogleSuccess}
                     onError={() => dispatch(clearError())}
                     size="large"
-                    width="350"
+                    width="384"
                     text="signup_with"
                   />
                 </div>

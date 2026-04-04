@@ -82,7 +82,7 @@ const NavigationItemComponent: React.FC<NavigationItemComponentProps> = ({
     <Link
       href={item.href}
       onClick={onNavigate}
-      className={`group relative flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-150 ${
+      className={`group relative flex items-center gap-3 px-3 py-2 rounded-full text-sm font-medium transition-all duration-150 ${
         current
           ? "bg-white/[0.08] text-white"
           : "text-slate-400 hover:text-slate-200 hover:bg-white/[0.04]"
@@ -101,7 +101,7 @@ const NavigationItemComponent: React.FC<NavigationItemComponentProps> = ({
       <span className="truncate">{item.name}</span>
 
       {item.badge && (
-        <span className="ml-auto text-[10px] font-semibold px-1.5 py-0.5 rounded-md bg-teal-500/20 text-teal-300 border border-teal-500/20">
+        <span className="ml-auto text-[10px] font-semibold px-1.5 py-0.5 rounded-full bg-teal-500/20 text-teal-300 border border-teal-500/20">
           {item.badge}
         </span>
       )}
@@ -164,7 +164,7 @@ const Sidebar: React.FC<SidebarProps> = ({
 
             <button
               onClick={onClose}
-              className="md:hidden p-1.5 rounded-md text-slate-500 hover:text-slate-300 hover:bg-white/[0.05] transition-colors"
+              className="md:hidden p-1.5 rounded-full text-slate-500 hover:text-slate-300 hover:bg-white/[0.05] transition-colors"
             >
               <Icons.Close className="h-4 w-4" />
             </button>
@@ -203,7 +203,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                 <p className="text-sm font-medium text-slate-200 truncate leading-none">{companyName}</p>
                 <p className="text-[10px] text-slate-500 mt-0.5">Company</p>
               </div>
-              <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-md ${
+              <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${
                 isPro
                   ? "bg-teal-500/20 text-teal-300 border border-teal-500/20"
                   : "bg-white/[0.06] text-slate-400 border border-white/[0.08]"

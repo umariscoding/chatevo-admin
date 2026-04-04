@@ -108,11 +108,11 @@ const UploadDrawer: React.FC<UploadModalProps> = ({
               <>
                 {/* Mode Tabs - Centered */}
                 <div className="mb-8 flex justify-center">
-                  <div className="inline-flex gap-2 p-1.5 bg-slate-100/80 rounded-xl">
+                  <div className="inline-flex gap-2 p-1.5 bg-slate-100/80 rounded-full">
                     <button
                       onClick={() => setUploadMode("file")}
                       disabled={loading}
-                      className={`flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed ${
+                      className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed ${
                         uploadMode === "file"
                           ? "bg-white text-slate-900 shadow-md shadow-slate-200/50"
                           : "text-slate-700 hover:text-slate-900"
@@ -124,7 +124,7 @@ const UploadDrawer: React.FC<UploadModalProps> = ({
                     <button
                       onClick={() => setUploadMode("text")}
                       disabled={loading}
-                      className={`flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed ${
+                      className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed ${
                         uploadMode === "text"
                           ? "bg-white text-slate-900 shadow-md shadow-slate-200/50"
                           : "text-slate-700 hover:text-slate-900"

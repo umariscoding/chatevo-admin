@@ -22,15 +22,15 @@ const Button = memo(
 
       const variants = {
         primary:
-          "bg-primary-600 hover:bg-primary-700 text-white rounded-lg shadow-sm hover:shadow-md",
+          "bg-primary-600 hover:bg-primary-700 text-white rounded-full shadow-sm hover:shadow-md",
         secondary:
-          "bg-neutral-100 hover:bg-neutral-200 text-neutral-700 border border-neutral-200 rounded-lg",
+          "bg-neutral-100 hover:bg-neutral-200 text-neutral-700 border border-neutral-200 rounded-full",
         outline:
-          "border border-neutral-300 bg-transparent hover:bg-primary-50 text-neutral-700 hover:text-primary-600 hover:border-primary-400 rounded-lg",
+          "border border-neutral-300 bg-transparent hover:bg-primary-50 text-neutral-700 hover:text-primary-600 hover:border-primary-400 rounded-full",
         ghost:
-          "hover:bg-neutral-100 text-neutral-600 hover:text-neutral-900 rounded-lg",
+          "hover:bg-neutral-100 text-neutral-600 hover:text-neutral-900 rounded-full",
         destructive:
-          "bg-error-600 text-white hover:bg-error-700 rounded-lg shadow-sm",
+          "bg-error-600 text-white hover:bg-error-700 rounded-full shadow-sm",
       };
 
       const sizes = {

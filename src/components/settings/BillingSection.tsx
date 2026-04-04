@@ -185,7 +185,7 @@ export default function BillingSection() {
       <div className="bg-white rounded-2xl border border-neutral-200 overflow-hidden">
         <div className="px-5 pt-5 pb-4">
           <div className="flex items-center gap-2 mb-4">
-            <div className="w-6 h-6 rounded-md bg-neutral-100 flex items-center justify-center">
+            <div className="w-6 h-6 rounded-full bg-neutral-100 flex items-center justify-center">
               <Icons.CreditCard className="h-3.5 w-3.5 text-neutral-500" />
             </div>
             <span className="text-xs font-bold uppercase tracking-widest text-neutral-400">
@@ -213,12 +213,12 @@ export default function BillingSection() {
                     {isPro ? "Pro" : "Free"} Plan
                   </span>
                   {isPro && !isCancelled && (
-                    <span className="inline-flex items-center px-1.5 py-0.5 rounded-md bg-green-100 text-green-700 text-[10px] font-semibold uppercase tracking-wider">
+                    <span className="inline-flex items-center px-1.5 py-0.5 rounded-full bg-green-100 text-green-700 text-[10px] font-semibold uppercase tracking-wider">
                       Active
                     </span>
                   )}
                   {isCancelled && (
-                    <span className="inline-flex items-center px-1.5 py-0.5 rounded-md bg-amber-100 text-amber-700 text-[10px] font-semibold uppercase tracking-wider">
+                    <span className="inline-flex items-center px-1.5 py-0.5 rounded-full bg-amber-100 text-amber-700 text-[10px] font-semibold uppercase tracking-wider">
                       Cancelling
                     </span>
                   )}
@@ -237,7 +237,7 @@ export default function BillingSection() {
             </div>
 
             {isPro && !isCancelled && (
-              <span className="text-xs font-bold text-neutral-900 bg-neutral-100 px-3 py-1.5 rounded-lg">
+              <span className="text-xs font-bold text-neutral-900 bg-neutral-100 px-3 py-1.5 rounded-full">
                 $99/mo
               </span>
             )}
@@ -258,7 +258,7 @@ export default function BillingSection() {
                 onClick={handleUpgrade}
                 disabled={checkoutLoading}
                 aria-busy={checkoutLoading}
-                className="w-full px-4 py-2.5 text-sm font-semibold text-white bg-primary-600 hover:bg-primary-500 rounded-xl transition-all disabled:opacity-40 flex items-center justify-center gap-2"
+                className="w-full px-4 py-2.5 text-sm font-semibold text-white bg-primary-600 hover:bg-primary-500 rounded-full transition-all disabled:opacity-40 flex items-center justify-center gap-2"
               >
                 {checkoutLoading ? (
                   <IOSLoader size="sm" color="white" />
@@ -288,7 +288,7 @@ export default function BillingSection() {
               onClick={handleResume}
               disabled={billingLoading}
               aria-busy={billingLoading}
-              className="w-full px-4 py-2.5 text-sm font-semibold text-white bg-primary-600 hover:bg-primary-500 rounded-xl transition-all disabled:opacity-40 flex items-center justify-center gap-2"
+              className="w-full px-4 py-2.5 text-sm font-semibold text-white bg-primary-600 hover:bg-primary-500 rounded-full transition-all disabled:opacity-40 flex items-center justify-center gap-2"
             >
               {billingLoading ? (
                 <IOSLoader size="sm" color="white" />
@@ -316,7 +316,7 @@ export default function BillingSection() {
                   onClick={handleCancel}
                   disabled={billingLoading}
                   aria-busy={billingLoading}
-                  className="px-3.5 py-1.5 text-xs font-semibold text-white bg-red-500 hover:bg-red-600 rounded-lg transition-all disabled:opacity-40 flex items-center gap-1.5"
+                  className="px-3.5 py-1.5 text-xs font-semibold text-white bg-red-500 hover:bg-red-600 rounded-full transition-all disabled:opacity-40 flex items-center gap-1.5"
                 >
                   {billingLoading ? (
                     <IOSLoader size="sm" color="white" />
@@ -327,7 +327,7 @@ export default function BillingSection() {
                 <button
                   onClick={() => setShowCancelConfirm(false)}
                   disabled={billingLoading}
-                  className="px-3.5 py-1.5 text-xs font-medium text-neutral-500 hover:text-neutral-700 rounded-lg border border-neutral-200 hover:bg-neutral-50 transition-all disabled:opacity-40"
+                  className="px-3.5 py-1.5 text-xs font-medium text-neutral-500 hover:text-neutral-700 rounded-full border border-neutral-200 hover:bg-neutral-50 transition-all disabled:opacity-40"
                 >
                   Keep subscription
                 </button>

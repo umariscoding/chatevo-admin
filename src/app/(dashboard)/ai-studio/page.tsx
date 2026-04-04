@@ -292,14 +292,14 @@ export default function AIStudioPage() {
                 <button
                   onClick={() => resetChanges()}
                   disabled={settingsLoading}
-                  className="px-4 py-2 text-sm font-medium text-neutral-500 hover:text-neutral-700 border border-neutral-200 rounded-lg transition-all disabled:opacity-50 hover:bg-neutral-50"
+                  className="px-4 py-2 text-sm font-medium text-neutral-500 hover:text-neutral-700 border border-neutral-200 rounded-full transition-all disabled:opacity-50 hover:bg-neutral-50"
                 >
                   Discard
                 </button>
                 <button
                   onClick={handleSaveAIConfig}
                   disabled={settingsLoading}
-                  className="px-5 py-2 text-sm font-semibold text-white bg-primary-600 hover:bg-primary-500 rounded-lg transition-all disabled:opacity-50 flex items-center gap-2 min-w-[80px] justify-center"
+                  className="px-5 py-2 text-sm font-semibold text-white bg-primary-600 hover:bg-primary-500 rounded-full transition-all disabled:opacity-50 flex items-center gap-2 min-w-[80px] justify-center"
                 >
                   {settingsLoading ? (
                     <IOSLoader size="sm" color="white" />
@@ -327,7 +327,7 @@ export default function AIStudioPage() {
             </p>
             <button
               onClick={() => dispatch(clearError())}
-              className="text-error-400 hover:text-error-600 transition-colors p-1 rounded-lg hover:bg-error-100"
+              className="text-error-400 hover:text-error-600 transition-colors p-1 rounded-full hover:bg-error-100"
             >
               <Icons.Close className="h-4 w-4" />
             </button>
@@ -336,14 +336,14 @@ export default function AIStudioPage() {
 
         {/* Section tabs */}
         <div className="flex justify-center">
-          <div className="inline-flex items-center border border-neutral-200 bg-white rounded-xl p-1 gap-0.5">
+          <div className="inline-flex items-center border border-neutral-200 bg-white rounded-full p-1 gap-0.5">
             {sections.map((section) => {
               const isActive = activeSection === section.id;
               return (
                 <button
                   key={section.id}
                   onClick={() => setActiveSection(section.id)}
-                  className={`flex items-center gap-2 px-5 py-2 text-[13px] font-medium rounded-[10px] transition-all duration-200 ${
+                  className={`flex items-center gap-2 px-5 py-2 text-[13px] font-medium rounded-full transition-all duration-200 ${
                     isActive
                       ? "bg-primary-600 text-white shadow-sm shadow-primary-600/25"
                       : "text-neutral-500 hover:text-neutral-800 hover:bg-neutral-50"
@@ -380,7 +380,7 @@ export default function AIStudioPage() {
               </div>
               <button
                 onClick={() => setIsDrawerOpen(true)}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary-600 hover:bg-primary-500 text-white text-sm font-semibold transition-all active:scale-[0.97]"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-600 hover:bg-primary-500 text-white text-sm font-semibold transition-all active:scale-[0.97]"
               >
                 <Icons.Plus className="h-3.5 w-3.5" />
                 Add content
@@ -515,7 +515,7 @@ export default function AIStudioPage() {
                   {!isFree && formData.systemPrompt && (
                     <button
                       onClick={() => updateField("systemPrompt", "")}
-                      className="flex items-center gap-1.5 text-xs font-medium text-neutral-400 hover:text-neutral-600 px-2.5 py-1.5 rounded-lg hover:bg-neutral-100 transition-all"
+                      className="flex items-center gap-1.5 text-xs font-medium text-neutral-400 hover:text-neutral-600 px-2.5 py-1.5 rounded-full hover:bg-neutral-100 transition-all"
                     >
                       <Icons.RotateCcw className="h-3 w-3" />
                       Clear

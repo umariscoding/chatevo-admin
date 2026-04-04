@@ -304,7 +304,7 @@ const DocumentList: React.FC<DocumentListProps> = ({ className = "" }) => {
                       <button
                         onClick={() => handleDelete(document.doc_id)}
                         disabled={deletingDocId === document.doc_id}
-                        className="inline-flex items-center justify-center p-2 text-slate-400 hover:text-red-600 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-red-50 rounded-lg transition-all duration-200 group/btn"
+                        className="inline-flex items-center justify-center p-2 text-slate-400 hover:text-red-600 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-red-50 rounded-full transition-all duration-200 group/btn"
                         aria-label="Delete document"
                       >
                         {deletingDocId === document.doc_id ? (
@@ -352,7 +352,7 @@ const DocumentList: React.FC<DocumentListProps> = ({ className = "" }) => {
             <button
               onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
               disabled={currentPage === 1}
-              className={`inline-flex items-center gap-1.5 px-3 py-2 text-xs font-bold rounded-md transition-all duration-200 ${
+              className={`inline-flex items-center gap-1.5 px-3 py-2 text-xs font-bold rounded-full transition-all duration-200 ${
                 currentPage === 1
                   ? "text-slate-300 cursor-not-allowed"
                   : "text-slate-700 hover:text-slate-900 hover:bg-slate-100"
@@ -376,7 +376,7 @@ const DocumentList: React.FC<DocumentListProps> = ({ className = "" }) => {
                   <button
                     key={page}
                     onClick={() => setCurrentPage(page as number)}
-                    className={`inline-flex items-center px-3 py-2 text-xs font-bold rounded-md transition-all duration-200 ${
+                    className={`inline-flex items-center px-3 py-2 text-xs font-bold rounded-full transition-all duration-200 ${
                       currentPage === page
                         ? "bg-primary-600 text-white shadow-md shadow-primary-200/50"
                         : "text-slate-700 hover:text-slate-900 hover:bg-slate-100"
@@ -394,7 +394,7 @@ const DocumentList: React.FC<DocumentListProps> = ({ className = "" }) => {
                 setCurrentPage((prev) => Math.min(prev + 1, totalPages))
               }
               disabled={currentPage === totalPages}
-              className={`inline-flex items-center gap-1.5 px-3 py-2 text-xs font-bold rounded-md transition-all duration-200 ${
+              className={`inline-flex items-center gap-1.5 px-3 py-2 text-xs font-bold rounded-full transition-all duration-200 ${
                 currentPage === totalPages
                   ? "text-slate-300 cursor-not-allowed"
                   : "text-slate-700 hover:text-slate-900 hover:bg-slate-100"

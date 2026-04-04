@@ -56,7 +56,7 @@ export default function SettingsSidebar({
             key={section.id}
             onClick={() => onSectionChange(section.id)}
             className={`
-              w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all text-left
+              w-full flex items-center gap-3 px-3 py-2.5 rounded-full transition-all text-left
               ${
                 isActive
                   ? "bg-primary-50 text-primary-700"
@@ -66,7 +66,7 @@ export default function SettingsSidebar({
           >
             <div
               className={`
-              w-7 h-7 rounded-md flex items-center justify-center flex-shrink-0
+              w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0
               ${isActive ? "bg-primary-100" : isComplete ? "bg-accent-50" : "bg-neutral-100"}
             `}
             >
