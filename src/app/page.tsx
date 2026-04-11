@@ -50,7 +50,7 @@ export default function Home() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [scrolled, setScrolled] = useState(false);
   const [wordIndex, setWordIndex] = useState(0);
-  const [isAnimating, setIsAnimating] = useState(false);
+  const [enableTransition, setEnableTransition] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
@@ -81,14 +81,21 @@ export default function Home() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setIsAnimating(true);
-      setTimeout(() => {
-        setWordIndex((prev) => (prev + 1) % rotatingWords.length);
-        setIsAnimating(false);
-      }, 300);
-    }, 3000);
+      setEnableTransition(true);
+      setWordIndex((prev) => prev + 1);
+    }, 2800);
     return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    if (wordIndex === rotatingWords.length) {
+      const t = setTimeout(() => {
+        setEnableTransition(false);
+        setWordIndex(0);
+      }, 650);
+      return () => clearTimeout(t);
+    }
+  }, [wordIndex]);
 
   return (
     <div className="min-h-screen bg-white text-neutral-900 overflow-x-hidden">
@@ -178,18 +185,26 @@ export default function Home() {
             <br />
             deployed on
             <br />
-            <span className="relative inline-block">
+            <span className="relative inline-block overflow-hidden align-bottom h-[1.3em] -mb-[0.1em]">
               <span className="invisible" aria-hidden="true">
                 any website
               </span>
               <span
-                className={`absolute inset-0 flex items-center justify-center text-primary-400 transition-all duration-300 ${
-                  isAnimating
-                    ? "opacity-0 -translate-y-3"
-                    : "opacity-100 translate-y-0"
+                className={`absolute inset-0 flex flex-col items-center text-primary-400 ${
+                  enableTransition
+                    ? "transition-transform duration-[650ms] ease-[cubic-bezier(0.65,0,0.35,1)]"
+                    : ""
                 }`}
+                style={{ transform: `translateY(-${wordIndex * 100}%)` }}
               >
-                {rotatingWords[wordIndex]}
+                {[...rotatingWords, rotatingWords[0]].map((word, i) => (
+                  <span
+                    key={i}
+                    className="h-[1.3em] shrink-0 flex items-center justify-center leading-[1.3]"
+                  >
+                    {word}
+                  </span>
+                ))}
               </span>
             </span>
           </h1>
