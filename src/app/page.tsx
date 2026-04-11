@@ -101,17 +101,14 @@ export default function Home() {
         }`}
       >
         <div className="w-full px-8 lg:px-12 h-16 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2.5">
+          <Link href="/" className="flex items-center">
             <Image
-              src="/logo.png"
+              src="/wordmark.svg"
               alt={APP_CONFIG.NAME}
-              width={40}
-              height={40}
-              className="w-10 h-10"
+              width={240}
+              height={80}
+              className="h-12 w-auto"
             />
-            <span className="text-xl font-bold tracking-tight">
-              {APP_CONFIG.NAME}
-            </span>
           </Link>
 
           <div className="hidden md:flex items-center gap-8">
@@ -978,17 +975,14 @@ export default function Home() {
         <div className="max-w-6xl mx-auto">
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
             <div className="sm:col-span-2 lg:col-span-1">
-              <div className="flex items-center gap-2.5 mb-4">
+              <div className="mb-4">
                 <Image
-                  src="/logo.png"
+                  src="/wordmark.svg"
                   alt={APP_CONFIG.NAME}
-                  width={24}
-                  height={24}
-                  className="w-6 h-6"
+                  width={170}
+                  height={56}
+                  className="h-9 w-auto"
                 />
-                <span className="text-base font-bold">
-                  {APP_CONFIG.NAME}
-                </span>
               </div>
               <p className="text-sm text-neutral-400 leading-relaxed max-w-xs">
                 AI-powered customer support that scales with your business.

@@ -195,17 +195,14 @@ export default function CompanyAuthPage() {
         <div className="flex flex-col justify-center min-h-full py-12 px-6 sm:px-12 lg:pl-16 lg:pr-12">
           <div className="mx-auto w-full max-w-sm">
             {/* Logo */}
-            <div className="flex items-center gap-2.5 mb-10">
+            <div className="mb-10">
               <Image
-                src="/logo.png"
+                src="/wordmark.svg"
                 alt={APP_CONFIG.NAME}
-                width={28}
-                height={28}
-                className="w-7 h-7"
+                width={200}
+                height={64}
+                className="h-11 w-auto"
               />
-              <span className="text-lg font-semibold text-neutral-900 tracking-tight">
-                {APP_CONFIG.NAME}
-              </span>
             </div>
 
             {/* Tab switch */}

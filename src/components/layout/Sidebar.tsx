@@ -156,11 +156,8 @@ const Sidebar: React.FC<SidebarProps> = ({
           <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-teal-500/30 to-transparent" />
 
           {/* Brand */}
-          <div className="flex-shrink-0 flex items-center justify-between h-14 px-5 border-b border-white/[0.05]">
-            <div className="flex items-center gap-2.5">
-              <img src="/logo-white.png" alt="Wispoke" className="w-9 h-9" />
-              <p className="text-white font-bold text-base leading-none tracking-tight">Wispoke</p>
-            </div>
+          <div className="flex-shrink-0 flex items-center justify-between h-16 px-5 border-b border-white/[0.05]">
+            <img src="/wordmark-teal.svg" alt="Wispoke" className="h-10 w-auto" />
 
             <button
               onClick={onClose}
