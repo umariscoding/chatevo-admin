@@ -42,6 +42,35 @@ const getNavigationSections = (): NavigationSection[] => [
     ],
   },
   {
+    title: "Voice Agent",
+    items: [
+      {
+        name: "Voice Agent",
+        href: "/voice-agent",
+        icon: Icons.Mic,
+        allowedUserTypes: ["company"],
+      },
+      {
+        name: "Availability",
+        href: "/availability",
+        icon: Icons.Clock,
+        allowedUserTypes: ["company"],
+      },
+      {
+        name: "Calendar",
+        href: "/calendar",
+        icon: Icons.Calendar,
+        allowedUserTypes: ["company"],
+      },
+      {
+        name: "Reservations",
+        href: "/reservations",
+        icon: Icons.FileText,
+        allowedUserTypes: ["company"],
+      },
+    ],
+  },
+  {
     title: "Integration",
     items: [
       {

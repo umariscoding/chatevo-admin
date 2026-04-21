@@ -60,6 +60,9 @@ import {
   Lock,
   CreditCard,
   Crown,
+  Calendar,
+  CalendarDays,
+  Mic,
 } from "lucide-react";
 
 // Icon component props interface
@@ -319,5 +322,17 @@ export const Icons = {
 
   Crown: ({ className = "h-5 w-5", size }: IconProps) => (
     <Crown className={className} size={size} />
+  ),
+
+  Calendar: ({ className = "h-5 w-5", size }: IconProps) => (
+    <Calendar className={className} size={size} />
+  ),
+
+  CalendarDays: ({ className = "h-5 w-5", size }: IconProps) => (
+    <CalendarDays className={className} size={size} />
+  ),
+
+  Mic: ({ className = "h-5 w-5", size }: IconProps) => (
+    <Mic className={className} size={size} />
   ),
 };
