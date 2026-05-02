@@ -159,7 +159,7 @@ export default function VoiceAgentPage() {
             onClick={() => !isFree && setShowTest(true)}
             disabled={isFree}
             title={isFree ? "Voice agent is a Pro feature" : "Test in your browser"}
-            className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 border border-neutral-200 dark:border-white/[0.06] bg-white rounded-full transition-colors hover:bg-slate-100 dark:hover:bg-white/[0.04] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white"
+            className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 border border-neutral-200 dark:border-white/[0.06] bg-white dark:bg-white/[0.02] rounded-full transition-colors hover:bg-slate-100 dark:hover:bg-white/[0.06] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white dark:disabled:hover:bg-white/[0.02]"
           >
             <Icons.Phone className="h-3.5 w-3.5" /> Try it
           </button>
@@ -240,18 +240,18 @@ export default function VoiceAgentPage() {
 
       {/* Sticky save bar — pinned to viewport bottom, only when there are changes. */}
       {hasChanges && !isFree && (
-        <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-30 bg-neutral-900 text-white rounded-full shadow-2xl shadow-black/20 flex items-center gap-3 pl-5 pr-2 py-2 border border-white/10">
+        <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-30 bg-[#0a1414] text-white rounded-full shadow-2xl shadow-black/30 flex items-center gap-3 pl-5 pr-2 py-2 border border-primary-500/20">
           <span className="text-xs font-medium">Unsaved changes</span>
           <button
             onClick={fetchSettings}
-            className="text-xs font-medium text-slate-300 dark:text-slate-600 hover:text-white px-2 py-1 rounded-full"
+            className="text-xs font-medium text-white/60 hover:text-white px-2 py-1 rounded-full transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/40"
           >
             Discard
           </button>
           <button
             onClick={save}
             disabled={saving}
-            className="px-4 py-1.5 text-xs font-semibold text-white bg-primary-600 hover:bg-teal-500 dark:hover:bg-teal-500/25 dark:border dark:border-teal-500/30 rounded-full transition-colors disabled:opacity-50 flex items-center gap-1.5 min-w-[64px] justify-center"
+            className="px-4 py-1.5 text-xs font-semibold text-white bg-primary-600 hover:bg-primary-500 rounded-full transition-colors disabled:opacity-50 flex items-center gap-1.5 min-w-[64px] justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/40 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a1414]"
           >
             {saving ? <IOSLoader size="sm" color="white" /> : "Save"}
           </button>
@@ -311,7 +311,13 @@ const StatusPill = React.memo(function StatusPill({
       className={`flex items-center gap-2.5 pl-3 pr-1 py-1 rounded-full border transition-colors ${
         enabled ? "border-primary-200 dark:border-primary-900/40 bg-primary-50 dark:bg-primary-900/20" : "border-neutral-200 dark:border-white/[0.06] bg-white dark:bg-white/[0.02]"
       } ${disabled ? "opacity-50 pointer-events-none" : ""}`}
-      title={disabled ? "Voice agent is a Pro feature" : undefined}
+      title={
+        disabled
+          ? "Voice agent is a Pro feature"
+          : enabled
+          ? "Active — agent answers incoming calls. Toggle off to pause."
+          : "Inactive — agent will not answer calls. Toggle on to enable."
+      }
     >
       <span
         className={`text-[10px] font-semibold uppercase tracking-wider ${

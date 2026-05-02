@@ -174,7 +174,7 @@ export default function TestCallPanel({ open, onClose }: Props) {
       }}
     >
       <div
-        className="bg-white dark:bg-white/[0.02] w-full max-w-md h-full flex flex-col shadow-2xl border-l border-neutral-200 dark:border-white/[0.06]"
+        className="bg-white dark:bg-[#0E1515] w-full max-w-md h-full flex flex-col shadow-2xl border-l border-neutral-200 dark:border-white/[0.06]"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
