@@ -47,9 +47,6 @@ export default function SettingsPage() {
       if (changes.changedFields.has("isPublished")) {
         updateData.is_published = formData.isPublished;
       }
-      if (changes.changedFields.has("enableUserPortal")) {
-        updateData.enable_user_portal = formData.enableUserPortal;
-      }
 
       const result = await dispatch(batchUpdateSettings(updateData)).unwrap();
 
@@ -84,37 +81,6 @@ export default function SettingsPage() {
   }
 
   const changes = getChanges();
-
-  const CHAT_DOMAIN = "wispoke.vercel.app";
-  const isLocalhost =
-    typeof window !== "undefined" &&
-    (window.location.hostname === "localhost" ||
-      window.location.hostname === "127.0.0.1");
-  const chatBaseUrl = isLocalhost
-    ? "http://localhost:3001"
-    : `https://${CHAT_DOMAIN}`;
-
-  const handleVisitPublicChatbot = () => {
-    if (formData.slug) {
-      window.open(`${chatBaseUrl}/${formData.slug}`, "_blank");
-    }
-  };
-
-  const handleVisitSubdomain = () => {
-    if (formData.slug) {
-      const url = isLocalhost
-        ? `http://${formData.slug}.localhost:3001`
-        : `https://${formData.slug}.${CHAT_DOMAIN}`;
-      window.open(url, "_blank");
-    }
-  };
-
-  const getSubdomainUrl = () => {
-    if (!formData.slug) return "";
-    return isLocalhost
-      ? `${formData.slug}.localhost:3001`
-      : `${formData.slug}.${CHAT_DOMAIN}`;
-  };
 
   return (
     <div className="max-w-2xl mx-auto pb-16">
@@ -226,8 +192,8 @@ export default function SettingsPage() {
                 </div>
                 <p className="text-xs text-neutral-500 mt-0.5">
                   {formData.isPublished
-                    ? "Your chatbot is publicly accessible"
-                    : "Toggle to make your chatbot public"}
+                    ? "Your chatbot is enabled for embed"
+                    : "Toggle to enable your chatbot"}
                 </p>
               </div>
             </div>
@@ -253,78 +219,6 @@ export default function SettingsPage() {
             </div>
           )}
 
-          {/* User Portal toggle — only visible when published */}
-          {formData.isPublished && (
-            <div className="px-5 pb-4">
-              <div className={`border rounded-xl px-4 py-3 flex items-center justify-between ${isFree ? "border-neutral-100 bg-neutral-50/50" : "border-neutral-200"}`}>
-                <div className="flex items-center gap-3">
-                  <Icons.User className={`h-4 w-4 flex-shrink-0 ${isFree ? "text-neutral-300" : "text-neutral-400"}`} />
-                  <div>
-                    <div className="flex items-center gap-1.5">
-                      <span className={`text-xs font-semibold ${isFree ? "text-neutral-400" : "text-neutral-700"}`}>
-                        User Portal
-                      </span>
-                      {isFree && (
-                        <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-primary-100 text-primary-600 text-[9px] font-bold uppercase tracking-wider">
-                          <Icons.Lock className="h-2.5 w-2.5" />
-                          Pro
-                        </span>
-                      )}
-                    </div>
-                    <p className={`text-[11px] mt-0.5 ${isFree ? "text-neutral-300" : "text-neutral-400"}`}>
-                      {isFree
-                        ? "Upgrade to Pro to enable the standalone chat portal"
-                        : formData.enableUserPortal
-                          ? "Standalone chat page with login, history & accounts"
-                          : "Users can only interact through the embed widget on your website"}
-                    </p>
-                  </div>
-                </div>
-                <Toggle
-                  checked={isFree ? false : formData.enableUserPortal}
-                  onChange={(checked) => updateField("enableUserPortal", checked)}
-                  size="md"
-                  disabled={isFree}
-                />
-              </div>
-            </div>
-          )}
-
-          {/* Public URLs — only when published AND user portal is on AND not free */}
-          {formData.slug && formData.isPublished && formData.enableUserPortal && !isFree && (
-            <div className="px-5 pb-4">
-              <div className="grid grid-cols-2 gap-2">
-                <button
-                  onClick={handleVisitPublicChatbot}
-                  className="flex items-center justify-between bg-white hover:bg-primary-50 border border-primary-100 hover:border-primary-200 px-3.5 py-3 rounded-xl group transition-all text-left"
-                >
-                  <div>
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-neutral-400">
-                      Path
-                    </p>
-                    <p className="text-xs font-mono text-primary-600 font-semibold mt-0.5 truncate max-w-[120px]">
-                      /{formData.slug}
-                    </p>
-                  </div>
-                  <Icons.ExternalLink className="h-3.5 w-3.5 text-neutral-300 group-hover:text-primary-500 transition-colors flex-shrink-0" />
-                </button>
-                <button
-                  onClick={handleVisitSubdomain}
-                  className="flex items-center justify-between bg-white hover:bg-primary-50 border border-primary-100 hover:border-primary-200 px-3.5 py-3 rounded-xl group transition-all text-left"
-                >
-                  <div>
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-neutral-400">
-                      Subdomain
-                    </p>
-                    <p className="text-xs font-mono text-primary-600 font-semibold mt-0.5 truncate max-w-[120px]">
-                      {formData.slug}.
-                    </p>
-                  </div>
-                  <Icons.ExternalLink className="h-3.5 w-3.5 text-neutral-300 group-hover:text-primary-500 transition-colors flex-shrink-0" />
-                </button>
-              </div>
-            </div>
-          )}
         </div>
       </div>
 
@@ -363,20 +257,15 @@ export default function SettingsPage() {
               <label className="text-xs font-semibold text-neutral-600 mb-2 block">
                 URL Slug
               </label>
-              <div className="flex items-stretch rounded-xl border border-neutral-200 bg-neutral-50 focus-within:border-primary-400 focus-within:ring-2 focus-within:ring-primary-500/20 focus-within:bg-white transition-all overflow-hidden">
-                <span className="inline-flex items-center px-3.5 border-r border-neutral-200 text-xs text-neutral-400 font-mono bg-neutral-100 select-none whitespace-nowrap">
-                  wispoke.vercel.app/
-                </span>
-                <input
-                  type="text"
-                  value={formData.slug}
-                  onChange={(e) => updateField("slug", e.target.value)}
-                  placeholder="my-company"
-                  className="flex-1 bg-transparent text-neutral-900 placeholder-neutral-400 px-3.5 py-2.5 text-sm font-mono focus:outline-none"
-                />
-              </div>
+              <input
+                type="text"
+                value={formData.slug}
+                onChange={(e) => updateField("slug", e.target.value)}
+                placeholder="my-company"
+                className="w-full rounded-xl border border-neutral-200 bg-neutral-50 text-neutral-900 placeholder-neutral-400 px-3.5 py-2.5 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400 focus:bg-white transition-all"
+              />
               <p className="text-xs text-neutral-400 mt-1.5">
-                Lowercase letters, numbers, hyphens · 3–50 chars
+                Unique identifier for your embed widget · lowercase letters, numbers, hyphens · 3–50 chars
               </p>
             </div>
           </div>

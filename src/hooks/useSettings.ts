@@ -17,7 +17,6 @@ export function useSettings() {
     systemPrompt: company?.system_prompt || "",
     tone: company?.tone || "professional",
     isPublished: company?.is_published || false,
-    enableUserPortal: company?.settings?.enable_user_portal ?? true,
   });
 
   const [initialData, setInitialData] = useState<SettingsFormData>(formData);
@@ -37,7 +36,6 @@ export function useSettings() {
         systemPrompt: company.system_prompt || "",
         tone: company.tone || "professional",
         isPublished: company.is_published || false,
-        enableUserPortal: company.settings?.enable_user_portal ?? true,
       };
       setFormData(newData);
       setInitialData(newData);

@@ -15,9 +15,6 @@ export interface SettingsFormData {
 
   // Publishing
   isPublished: boolean;
-
-  // Access
-  enableUserPortal: boolean;
 }
 
 export interface SettingsChanges {

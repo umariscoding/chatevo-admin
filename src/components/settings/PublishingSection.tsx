@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Icons, Toggle } from "@/components/ui";
 
 interface PublishingSectionProps {
@@ -14,51 +14,12 @@ export default function PublishingSection({
   slug,
   onPublishToggle,
 }: PublishingSectionProps) {
-  const CHAT_DOMAIN = "wispoke.vercel.app";
-  const [chatBaseUrl, setChatBaseUrl] = useState(`https://${CHAT_DOMAIN}`);
-
-  useEffect(() => {
-    const isLocalhost =
-      window.location.hostname === "localhost" ||
-      window.location.hostname === "127.0.0.1";
-    if (isLocalhost) setChatBaseUrl("http://localhost:3001");
-  }, []);
-
-  const handleVisitPublicChatbot = () => {
-    if (slug) {
-      window.open(`${chatBaseUrl}/${slug}`, "_blank");
-    }
-  };
-
-  const handleVisitSubdomain = () => {
-    if (slug) {
-      const isLocalhost =
-        window.location.hostname === "localhost" ||
-        window.location.hostname === "127.0.0.1";
-      const subdomainUrl = isLocalhost
-        ? `http://${slug}.localhost:3001`
-        : `https://${slug}.${CHAT_DOMAIN}`;
-      window.open(subdomainUrl, "_blank");
-    }
-  };
-
-  const getSubdomainUrl = () => {
-    if (!slug) return "Loading...";
-    const isLocalhost =
-      typeof window !== "undefined" &&
-      (window.location.hostname === "localhost" ||
-        window.location.hostname === "127.0.0.1");
-    return isLocalhost
-      ? `${slug}.localhost:3001`
-      : `${slug}.${CHAT_DOMAIN}`;
-  };
-
   return (
     <div className="space-y-5">
       <div>
         <h2 className="text-lg font-semibold text-neutral-900">Publishing</h2>
         <p className="text-sm text-neutral-500 mt-0.5">
-          Control public access to your chatbot
+          Enable your chatbot for embed on your website
         </p>
       </div>
 
@@ -70,7 +31,9 @@ export default function PublishingSection({
               {isPublished ? "Live" : "Private"}
             </p>
             <p className="text-xs text-neutral-500 mt-0.5">
-              {isPublished ? "Your chatbot is publicly accessible" : "Not accessible to visitors"}
+              {isPublished
+                ? "Your chatbot is enabled for embed"
+                : "Embed widget will not respond to visitors"}
             </p>
           </div>
 
@@ -93,7 +56,7 @@ export default function PublishingSection({
           </div>
         </div>
 
-        {/* Warnings / URLs */}
+        {/* Warnings */}
         <div className="p-5">
           {!slug && (
             <div className="flex items-start gap-2.5 bg-warning-50 border border-warning-200 rounded-lg p-3.5">
@@ -110,36 +73,11 @@ export default function PublishingSection({
           )}
 
           {slug && isPublished && (
-            <div className="space-y-3">
-              <p className="text-xs font-medium text-neutral-500 uppercase tracking-wider">
-                Public URLs
+            <div className="flex items-center gap-2.5 text-neutral-500">
+              <Icons.CheckCircle className="h-4 w-4 text-accent-500" />
+              <p className="text-sm">
+                Install the embed widget on your site to start chatting with visitors
               </p>
-
-              <button
-                onClick={handleVisitPublicChatbot}
-                className="w-full flex items-center justify-between bg-neutral-50 hover:bg-neutral-100 px-3.5 py-2.5 rounded-lg border border-neutral-200 group transition-colors text-left"
-              >
-                <div>
-                  <p className="text-xs text-neutral-400">Path URL</p>
-                  <p className="text-sm font-mono text-neutral-700 mt-0.5">
-                    {chatBaseUrl}/<span className="text-primary-600">{slug}</span>
-                  </p>
-                </div>
-                <Icons.Eye className="h-4 w-4 text-neutral-400 group-hover:text-primary-600 transition-colors" />
-              </button>
-
-              <button
-                onClick={handleVisitSubdomain}
-                className="w-full flex items-center justify-between bg-neutral-50 hover:bg-neutral-100 px-3.5 py-2.5 rounded-lg border border-neutral-200 group transition-colors text-left"
-              >
-                <div>
-                  <p className="text-xs text-neutral-400">Subdomain URL</p>
-                  <p className="text-sm font-mono text-neutral-700 mt-0.5">
-                    {getSubdomainUrl()}
-                  </p>
-                </div>
-                <Icons.Eye className="h-4 w-4 text-neutral-400 group-hover:text-primary-600 transition-colors" />
-              </button>
             </div>
           )}
 
@@ -147,7 +85,7 @@ export default function PublishingSection({
             <div className="flex items-center gap-2.5 text-neutral-500">
               <Icons.Eye className="h-4 w-4" />
               <p className="text-sm">
-                Toggle the switch to make your chatbot public
+                Toggle the switch to enable your chatbot
               </p>
             </div>
           )}
