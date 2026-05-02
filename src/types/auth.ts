@@ -21,6 +21,7 @@ export interface Company {
   ls_subscription_status?: "none" | "active" | "cancelled" | "expired" | "past_due" | "paused";
   subscription_ends_at?: string | null;
   subscription_renews_at?: string | null;
+  theme_preference?: "light" | "dark" | "system";
   created_at: string;
 }
 

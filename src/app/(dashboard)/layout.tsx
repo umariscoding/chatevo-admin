@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { CompanyReduxProvider } from "@/lib/company-redux-provider";
 import { CompanyAuthProvider } from "@/components/auth/company/CompanyAuthProvider";
 import { CompanyProtectedRoute } from "@/components/auth/company/CompanyProtectedRoute";
+import ThemeHydrator from "@/components/auth/company/ThemeHydrator";
 import Header from "@/components/layout/Header";
 import Sidebar from "@/components/layout/Sidebar";
 
@@ -25,6 +26,7 @@ export default function DashboardLayout({
   return (
     <CompanyReduxProvider>
       <CompanyAuthProvider>
+        <ThemeHydrator />
         <CompanyProtectedRoute>
           <div className="h-screen overflow-hidden bg-sidebar-bg flex">
             <div className="w-72 flex-shrink-0 h-screen fixed left-0 top-0 z-10">

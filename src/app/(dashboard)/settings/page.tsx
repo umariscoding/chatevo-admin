@@ -285,50 +285,73 @@ export default function SettingsPage() {
               </span>
             </div>
 
-            <div className="grid grid-cols-2 gap-2">
-              <button
-                onClick={() => setTheme("light")}
-                className={`relative flex flex-col items-center gap-2 px-4 py-4 rounded-xl border transition-all ${
-                  theme === "light"
-                    ? "border-teal-400 dark:border-teal-500/40 bg-teal-50/60 dark:bg-teal-500/[0.06] ring-2 ring-teal-500/15 dark:ring-teal-500/20"
-                    : "border-slate-200 bg-slate-50/60 dark:bg-white/[0.02] hover:border-slate-300 dark:border-white/[0.06] dark:hover:border-white/[0.10]"
-                }`}
-              >
-                {/* Swatch always shows light-theme colors (this is what you'll get) */}
-                <div className="w-12 h-8 rounded-md bg-white border border-slate-200 flex items-center justify-end pr-1.5">
-                  <div className="w-3 h-3 rounded-full bg-slate-200" />
-                </div>
-                <span className={`text-xs font-semibold ${theme === "light" ? "text-teal-700 dark:text-teal-200" : "text-slate-600 dark:text-slate-400"}`}>
-                  Light
-                </span>
-                {theme === "light" && (
-                  <span className="absolute top-2 right-2">
-                    <Icons.CheckCircle className="h-3.5 w-3.5 text-teal-600 dark:text-teal-400" />
-                  </span>
-                )}
-              </button>
-
-              <button
-                onClick={() => setTheme("dark")}
-                className={`relative flex flex-col items-center gap-2 px-4 py-4 rounded-xl border transition-all ${
-                  theme === "dark"
-                    ? "border-teal-400 dark:border-teal-500/40 bg-teal-50/60 dark:bg-teal-500/[0.06] ring-2 ring-teal-500/15 dark:ring-teal-500/20"
-                    : "border-slate-200 bg-slate-50/60 dark:bg-white/[0.02] hover:border-slate-300 dark:border-white/[0.06] dark:hover:border-white/[0.10]"
-                }`}
-              >
-                {/* Swatch always shows dark-theme colors (this is what you'll get) */}
-                <div className="w-12 h-8 rounded-md bg-[#0E1515] border border-white/[0.08] flex items-center justify-end pr-1.5">
-                  <div className="w-3 h-3 rounded-full bg-white/[0.10]" />
-                </div>
-                <span className={`text-xs font-semibold ${theme === "dark" ? "text-teal-700 dark:text-teal-200" : "text-slate-600 dark:text-slate-400"}`}>
-                  Dark
-                </span>
-                {theme === "dark" && (
-                  <span className="absolute top-2 right-2">
-                    <Icons.CheckCircle className="h-3.5 w-3.5 text-teal-600 dark:text-teal-400" />
-                  </span>
-                )}
-              </button>
+            <div className="grid grid-cols-3 gap-2">
+              {(
+                [
+                  {
+                    value: "light" as const,
+                    label: "Light",
+                    swatch: (
+                      <div className="w-12 h-8 rounded-md bg-white border border-slate-200 flex items-center justify-end pr-1.5">
+                        <div className="w-3 h-3 rounded-full bg-slate-200" />
+                      </div>
+                    ),
+                  },
+                  {
+                    value: "dark" as const,
+                    label: "Dark",
+                    swatch: (
+                      <div className="w-12 h-8 rounded-md bg-[#0E1515] border border-white/[0.08] flex items-center justify-end pr-1.5">
+                        <div className="w-3 h-3 rounded-full bg-white/[0.10]" />
+                      </div>
+                    ),
+                  },
+                  {
+                    value: "system" as const,
+                    label: "System",
+                    swatch: (
+                      <div className="w-12 h-8 rounded-md border border-slate-200 dark:border-white/[0.10] overflow-hidden flex">
+                        <div className="w-1/2 bg-white flex items-center justify-end pr-1">
+                          <div className="w-2 h-2 rounded-full bg-slate-200" />
+                        </div>
+                        <div className="w-1/2 bg-[#0E1515] flex items-center justify-end pr-1">
+                          <div className="w-2 h-2 rounded-full bg-white/[0.10]" />
+                        </div>
+                      </div>
+                    ),
+                  },
+                ]
+              ).map((opt) => {
+                const active = theme === opt.value;
+                return (
+                  <button
+                    key={opt.value}
+                    onClick={() => setTheme(opt.value)}
+                    aria-pressed={active}
+                    className={`relative flex flex-col items-center gap-2 px-4 py-4 rounded-xl border transition-all ${
+                      active
+                        ? "border-teal-400 dark:border-teal-500/40 bg-teal-50/60 dark:bg-teal-500/[0.06] ring-2 ring-teal-500/15 dark:ring-teal-500/20"
+                        : "border-slate-200 bg-slate-50/60 dark:bg-white/[0.02] hover:border-slate-300 dark:border-white/[0.06] dark:hover:border-white/[0.10]"
+                    }`}
+                  >
+                    {opt.swatch}
+                    <span
+                      className={`text-xs font-semibold ${
+                        active
+                          ? "text-teal-700 dark:text-teal-200"
+                          : "text-slate-600 dark:text-slate-400"
+                      }`}
+                    >
+                      {opt.label}
+                    </span>
+                    {active && (
+                      <span className="absolute top-2 right-2">
+                        <Icons.CheckCircle className="h-3.5 w-3.5 text-teal-600 dark:text-teal-400" />
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
             </div>
           </div>
         </div>
