@@ -10,6 +10,14 @@ body {
   scrollbar-color: #e2e8f0 transparent;
   height: 100%;
   overscroll-behavior: auto;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+html.dark,
+html.dark body {
+  background-color: #0b1212;
+  color: #f8fafc;
+  scrollbar-color: #1e293b transparent;
 }
 
 ::-webkit-scrollbar {
@@ -30,9 +38,21 @@ body {
   background: #cbd5e1;
 }
 
+html.dark ::-webkit-scrollbar-thumb {
+  background: #1e293b;
+}
+
+html.dark ::-webkit-scrollbar-thumb:hover {
+  background: #334155;
+}
+
 * {
   scrollbar-width: thin;
   scrollbar-color: #e2e8f0 transparent;
+}
+
+html.dark * {
+  scrollbar-color: #1e293b transparent;
 }
 
 /* Dashboard dark background override */

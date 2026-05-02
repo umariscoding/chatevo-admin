@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { CompanyReduxProvider } from "@/lib/company-redux-provider";
 import { CompanyAuthProvider } from "@/components/auth/company/CompanyAuthProvider";
 import { CompanyProtectedRoute } from "@/components/auth/company/CompanyProtectedRoute";
@@ -13,15 +13,6 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-
-  useEffect(() => {
-    document.documentElement.style.backgroundColor = "#f8fafc";
-    document.body.style.backgroundColor = "#f8fafc";
-    return () => {
-      document.documentElement.style.backgroundColor = "";
-      document.body.style.backgroundColor = "";
-    };
-  }, []);
 
   const handleMenuToggle = () => {
     setSidebarOpen(!sidebarOpen);
@@ -40,7 +31,7 @@ export default function DashboardLayout({
               <Sidebar isOpen={sidebarOpen} onClose={handleSidebarClose} />
             </div>
 
-            <div className="flex-1 ml-72 bg-neutral-50 h-screen overflow-y-auto smooth-scroll-container">
+            <div className="flex-1 ml-72 bg-neutral-50 dark:bg-neutral-950 h-screen overflow-y-auto smooth-scroll-container">
               <Header
                 onMenuToggle={handleMenuToggle}
                 showMobileMenuButton={true}
