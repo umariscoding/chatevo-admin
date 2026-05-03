@@ -25,6 +25,17 @@ interface VoiceSettings {
   appointment_fields: string[];
 }
 
+// Apply UI defaults so the saved baseline matches what the form actually
+// renders — otherwise the snapshot diff would flag default-fallbacks as
+// "unsaved changes" the moment the page loads.
+const normalizeSettings = (raw: VoiceSettings): VoiceSettings => ({
+  ...raw,
+  appointment_fields:
+    raw.appointment_fields && raw.appointment_fields.length > 0
+      ? raw.appointment_fields
+      : ["name", "phone"],
+});
+
 const SECTIONS = [
   { id: "agent", label: "Agent", icon: Icons.Bot },
   { id: "voice", label: "Voice", icon: Icons.Mic },
@@ -41,10 +52,15 @@ const labelCls = "text-xs font-medium text-slate-500 dark:text-slate-400 upperca
 export default function VoiceAgentPage() {
   const { isFree } = usePlan();
   const [s, setS] = useState<VoiceSettings | null>(null);
+  // Last-saved baseline. `hasChanges` is derived by diffing `s` against this.
+  const [baseline, setBaseline] = useState<VoiceSettings | null>(null);
+  // Auth token is write-only — server never returns it. Tracked separately
+  // so it doesn't pollute the change-detection diff (and so browser autofill
+  // can't trip the "Unsaved changes" bar on page load).
+  const [authToken, setAuthToken] = useState("");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
-  const [hasChanges, setHasChanges] = useState(false);
   const [activeSection, setActiveSection] = useState<SectionId>("agent");
   const [showTest, setShowTest] = useState(false);
 
@@ -56,34 +72,46 @@ export default function VoiceAgentPage() {
     phone: null,
   });
 
-  const fetchSettings = useCallback(async () => {
-    try {
-      const res = await companyApi.get("/voice-agent/settings");
-      setS(res.data);
-      setHasChanges(false);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
   useEffect(() => {
-    fetchSettings();
-  }, [fetchSettings]);
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await companyApi.get("/voice-agent/settings");
+        if (cancelled) return;
+        const next = normalizeSettings(res.data);
+        setS(next);
+        setBaseline(next);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const update = useCallback(<K extends keyof VoiceSettings>(field: K, value: VoiceSettings[K]) => {
     setS((prev) => (prev ? { ...prev, [field]: value } : prev));
-    setHasChanges(true);
     setSaveSuccess(false);
   }, []);
+
+  const discard = useCallback(() => {
+    if (baseline) setS(baseline);
+    setAuthToken("");
+    setSaveSuccess(false);
+  }, [baseline]);
 
   const save = async () => {
     if (!s) return;
     setSaving(true);
     try {
-      await companyApi.put("/voice-agent/settings", s);
-      setHasChanges(false);
+      const payload: VoiceSettings & { twilio_auth_token?: string } = { ...s };
+      if (authToken) payload.twilio_auth_token = authToken;
+      await companyApi.put("/voice-agent/settings", payload);
+      setBaseline(s);
+      setAuthToken("");
       setSaveSuccess(true);
       setTimeout(() => setSaveSuccess(false), 3000);
     } catch (err) {
@@ -92,6 +120,12 @@ export default function VoiceAgentPage() {
       setSaving(false);
     }
   };
+
+  const hasChanges = useMemo(() => {
+    if (!s || !baseline) return false;
+    if (JSON.stringify(s) !== JSON.stringify(baseline)) return true;
+    return authToken.length > 0;
+  }, [s, baseline, authToken]);
 
   // Scroll spy — observe each section, mark the topmost visible one active.
   useEffect(() => {
@@ -232,6 +266,8 @@ export default function VoiceAgentPage() {
               }}
               settings={s}
               onUpdate={update}
+              authToken={authToken}
+              onAuthTokenChange={setAuthToken}
               apiBase={apiBase}
             />
           </div>
@@ -243,7 +279,7 @@ export default function VoiceAgentPage() {
         <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-30 bg-[#0a1414] text-white rounded-full shadow-2xl shadow-black/30 flex items-center gap-3 pl-5 pr-2 py-2 border border-primary-500/20">
           <span className="text-xs font-medium">Unsaved changes</span>
           <button
-            onClick={fetchSettings}
+            onClick={discard}
             className="text-xs font-medium text-white/60 hover:text-white px-2 py-1 rounded-full transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/40"
           >
             Discard
@@ -456,8 +492,14 @@ const FieldsSection = React.memo(
 const PhoneSection = React.memo(
   React.forwardRef<
     HTMLElement,
-    { settings: VoiceSettings; onUpdate: UpdateFn; apiBase: string }
-  >(function PhoneSection({ settings: s, onUpdate, apiBase }, ref) {
+    {
+      settings: VoiceSettings;
+      onUpdate: UpdateFn;
+      authToken: string;
+      onAuthTokenChange: (v: string) => void;
+      apiBase: string;
+    }
+  >(function PhoneSection({ settings: s, onUpdate, authToken, onAuthTokenChange, apiBase }, ref) {
     return (
       <SectionCard
         ref={ref}
@@ -492,10 +534,10 @@ const PhoneSection = React.memo(
             <label className={labelCls}>Auth Token</label>
             <input
               type="password"
-              onChange={(e) =>
-                onUpdate("twilio_auth_token" as keyof VoiceSettings, e.target.value as never)
-              }
+              value={authToken}
+              onChange={(e) => onAuthTokenChange(e.target.value)}
               placeholder="Enter to update (hidden)"
+              autoComplete="new-password"
               className={`${inputCls} font-mono`}
             />
           </div>
