@@ -35,6 +35,7 @@ export default function TestCallPanel({ open, onClose }: Props) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
+  const ttsBufferRef = useRef<string>("");
 
   useEffect(() => setMounted(true), []);
   useEffect(() => {
@@ -103,8 +104,19 @@ export default function TestCallPanel({ open, onClose }: Props) {
         onUserTranscript: (data) => {
           if (data.final && data.text) addMsg("user", data.text);
         },
-        onBotTranscript: (data) => {
-          if (data.text) addMsg("agent", data.text);
+        // Use TTS events (what's actually spoken), not LLM text events.
+        // onBotTtsText fires per word/chunk — buffer between started/stopped
+        // so each transcript entry matches one spoken utterance.
+        onBotTtsStarted: () => {
+          ttsBufferRef.current = "";
+        },
+        onBotTtsText: (data) => {
+          if (data.text) ttsBufferRef.current += data.text;
+        },
+        onBotTtsStopped: () => {
+          const text = ttsBufferRef.current.trim();
+          ttsBufferRef.current = "";
+          if (text) addMsg("agent", text);
         },
         onError: (msg) => {
           const text =
