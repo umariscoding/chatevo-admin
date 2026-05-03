@@ -4,7 +4,6 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { companyApi } from "@/utils/company/api";
 import { Icons, IOSContentLoader} from "@/components/ui";
-import IOSLoader from "@/components/ui/IOSLoader";
 import CallDetailDrawer from "@/components/calls/CallDetailDrawer";
 
 export interface TranscriptEntry {
@@ -87,7 +86,6 @@ export default function CallsPage() {
   const [logs, setLogs] = useState<CallLog[]>([]);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
 
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
@@ -96,7 +94,6 @@ export default function CallsPage() {
   const [drawerLog, setDrawerLog] = useState<CallLog | null>(null);
 
   const fetchLogs = useCallback(async () => {
-    setRefreshing(true);
     try {
       const r = await companyApi.get<CallLogsResponse>("/voice-agent/call-logs", {
         params: { limit: pageSize, offset: page * pageSize },
@@ -107,7 +104,6 @@ export default function CallsPage() {
       console.error(err);
     } finally {
       setLoading(false);
-      setRefreshing(false);
     }
   }, [page, pageSize]);
 
@@ -160,14 +156,6 @@ export default function CallsPage() {
               booked on this page
             </p>
           </div>
-          <button
-            onClick={fetchLogs}
-            disabled={refreshing}
-            className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-300 border border-neutral-200 dark:border-white/[0.06] bg-white rounded-full transition-colors hover:bg-slate-100 dark:hover:bg-white/[0.04] disabled:opacity-50"
-          >
-            <Icons.Refresh className={`h-3.5 w-3.5 ${refreshing ? "animate-spin" : ""}`} />
-            Refresh
-          </button>
         </div>
 
         {/* ─── Filter bar ─────────────────────────────────────── */}
